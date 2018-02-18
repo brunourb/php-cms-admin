@@ -15,6 +15,7 @@ $container['view'] = function ($c) {
     // Add extensions
     $view->addExtension(new Slim\Views\TwigExtension($c->get('router'), $c->get('request')->getUri()));
     $view->addExtension(new Twig_Extension_Debug());
+    $view->addExtension(new \nochso\HtmlCompressTwig\Extension());
 
     return $view;
 };
@@ -64,4 +65,8 @@ $container['em'] = function ($c) {
 
 $container[App\Action\HomeAction::class] = function ($c) {
     return new App\Action\HomeAction($c->get('view'), $c->get('logger'));
+};
+
+$container[App\Action\CMSAction::class] = function ($c) {
+    return new App\Action\CMSAction($c->get('view'), $c->get('logger'), $c->get('em'));
 };
