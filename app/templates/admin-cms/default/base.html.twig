@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns#" itemscope itemtype="http://schema.org/Article">
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7"><![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8"><![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9"><![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js" lang="" prefix="og: http://ogp.me/ns#" itemscope itemtype="http://schema.org/Article"><!--<![endif]-->
+
+{% include 'base-head.twig' %}
+<body class="sticky-header">
+    <section>
+        {% include 'base-nav.twig' %}
+        <!-- body content start-->
+        <div class="body-content" style="min-height: 1000px;">
+            {% include 'base-content.twig' %}
+            <!--body wrapper start-->
+            <div class="wrapper">
+                {% block content %}
+
+                {% endblock %}
+            </div>
+            <!--body wrapper end-->
+            {% include 'base-footer.twig' %}
+
+            {% set file = partials ~ '-scripts.twig' %}
+            {% include file %}
+
+        </div>
+        <!-- body content end-->
+    </section>
+</body>
+</html>

@@ -21,7 +21,7 @@ final class HomeAction
     {
         $this->logger->info("Home page action dispatched");
         
-        $this->view->render($response, 'home.twig');
+        $this->view->render($response, 'home-1.twig');
         return $response;
     }
 }

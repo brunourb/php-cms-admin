@@ -3,11 +3,15 @@ return [
     'settings' => [
         // Slim Settings
         'determineRouteBeforeAppMiddleware' => false,
-        'displayErrorDetails' => false,
+        'displayErrorDetails' => true,
 
         // View settings
         'view' => [
-            'template_path' => __DIR__ . '/templates',
+            'template_path' => array(
+                               __DIR__ . '/templates/admin-cms/default',
+                               __DIR__ . '/templates/admin-cms/partials',
+                               __DIR__ . '/templates/admin-cms/partials/head',
+                               __DIR__ . '/templates/admin-cms/partials/script'),
             'twig' => [
                 'cache' => __DIR__ . '/../cache/twig',
                 'debug' => true,

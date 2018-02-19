@@ -27,6 +27,37 @@ final class CMSAction extends DefaultAction
     }
 
     public function page(Request $request, Response $response, $args) {
-        // TODO: Implement page() method.
+        $this->logger->info("Page action dispatched");
+        $page = $request->getUri()->getPath() == '/painel' ? explode("/", $request->getUri()->getPath())[1] : explode("/", $request->getUri()->getPath())[2];
+        $this->view->render($response, $page.'.twig', array("partials" => $page));
+        return $response;
+    }
+
+    public function upload(Request $request, Response $response) {
+
+        $errors = [];
+
+        $files = $request->getUploadedFiles();
+
+        foreach ($files as $data) {
+            try {
+                if (empty($data->file)) {
+                    throw new Exception('Expected a newfile');
+                }
+
+                if ($data->getError() === UPLOAD_ERR_OK) {
+                    $uploadFileName = $data->getClientFilename();
+                    $token = md5(uniqid(rand(), true));
+                    $data->moveTo("/tmp/$token.".pathinfo($data->getClientFilename(), PATHINFO_EXTENSION));
+                }
+            } catch (\Exception $e) {
+                array_push($errors, 'Failed to upload '. $data->getClientFilename());
+            }
+        }
+        return $response->withJson(['errors' => $errors], 200, JSON_PRETTY_PRINT);
+
+
+
+        return $response;
     }
 }
