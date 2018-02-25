@@ -20,8 +20,8 @@
 <script src="/cms/js/sparkline/sparkline-init.js"></script>
 
 <!--bootstrap-wysihtml5-->
-<script type="text/javascript" src="/cms/js/bootstrap-wysihtml5/wysihtml5-0.3.0.js"></script>
-<script type="text/javascript" src="/cms/js/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>
+{#<script type="text/javascript" src="/cms/js/bootstrap-wysihtml5/wysihtml5-0.3.0.js"></script>#}
+{#<script type="text/javascript" src="/cms/js/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>#}
 
 <!--summernote-->
 <script src="/cms/js/summernote/dist/summernote.min.js"></script>
@@ -80,15 +80,17 @@
 <!--data table init-->
 <script src="/cms/js/data-table-init.js"></script>
 
-
 <!--common scripts for all pages-->
 <script src="/cms/js/scripts.js"></script>
 
+<!-- Default app js -->
+<script src="/cms/js/default-config/defaul-cms-config.js"></script>
+
+<!--toastr-->
+<script type="text/javascript" src="/cms/js/toastr-master/build/toastr.min.js"/>
+
 <script>
-
     jQuery(document).ready(function(){
-        $('.wysihtml5').wysihtml5();
-
         $('.summernote').summernote({
             height: 200,                 // set editor height
 
@@ -102,6 +104,18 @@
 </script>
 
 <script>
+
+    String.prototype.format = function()
+    {
+        var content = this;
+        for (var i=0; i < arguments.length; i++)
+        {
+            var replacement = '{' + i + '}';
+            content = content.replace(replacement, arguments[i]);
+        }
+        return content;
+    };
+
     function resetForm(idForm) {
         document.getElementById(idForm).reset();
     }

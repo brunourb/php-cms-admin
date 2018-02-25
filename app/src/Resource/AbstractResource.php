@@ -5,6 +5,7 @@ namespace App\Resource;
 
 use Doctrine\ORM\EntityManager;
 use Slim\Http\Request;
+use Slim\Http\Response;
 
 abstract class AbstractResource {
     /**
@@ -19,6 +20,8 @@ abstract class AbstractResource {
     public function __construct(EntityManager $entityManager)        {
         $this->entityManager = $entityManager;
     }
+
+    abstract public function service(Request $request, Response $response, $args);
 
     /**
      * Get array copy of object

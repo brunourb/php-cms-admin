@@ -3,7 +3,7 @@
  * Created by IntelliJ IDEA.
  * User: bruno
  * Date: 25/02/18
- * Time: 18:49
+ * Time: 18:59
  */
 
 namespace App\Resource;
@@ -12,11 +12,10 @@ namespace App\Resource;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-class PageResource extends AbstractResource{
-
+class TariffResource extends AbstractResource{
 
     /**
-     * PageResource constructor.
+     * TariffResource constructor.
      * @param EntityManager $entityManager
      */
     public function __construct(EntityManager $entityManager) {

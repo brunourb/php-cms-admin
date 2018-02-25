@@ -12,22 +12,16 @@ namespace App\Resource;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-class PageResource extends AbstractResource{
-
+class MenuResource extends AbstractResource{
 
     /**
-     * PageResource constructor.
+     * MenuResource constructor.
      * @param EntityManager $entityManager
      */
     public function __construct(EntityManager $entityManager) {
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @param Request $request
-     * @param Response $response
-     * @param $args
-     */
     public function service(Request $request, Response $response, $args) {
         // TODO: Implement service() method.
     }

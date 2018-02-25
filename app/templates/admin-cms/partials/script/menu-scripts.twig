@@ -1,1 +1,91 @@
-|{% include 'default-script.twig' %}
+{% include 'default-script.twig' %}
+<script>
+    $(function () {
+
+        var ENDPOINT = "/painel/menu";
+        var METHOD_POST = "POST";
+        var METHOD_GET = "GET";
+        var METHOD_PUT = "PUT"
+        var METHOD_DELETE = "DELETE";
+
+        $(document.body).on('click', 'button', function(e) {
+            var button = this.id;
+            e.preventDefault();
+
+            switch (button){
+                case "btnNovoRegistro":
+                    $(".modal-body input").val("");
+                    $(".modal-body select").val("");
+                    $('#menuModal').modal('show');
+
+                    break;
+
+                case "btnSalvar":
+                    if($("#chkStatus").is(':checked')){
+                        $("#chkStatus").val('A');
+                    }
+
+                    $.ajax({
+                        url: ENDPOINT, //this is the submit URL
+                        type: METHOD_POST, //or POST
+                        data: $('#form-menu-modal').serialize(),
+                        success: function (data) {
+                            $(".modal-body input").val("");
+                            $(".modal-body select").val("");
+                            $('#menuModal').modal('hide')
+                            toastr.success('Valor inserido com sucesso.');
+                        }
+                    });
+
+                    break;
+
+                case "btnConfirmar":
+                    $.ajax({
+                        url: ENDPOINT, //this is the submit URL
+                        type: METHOD_POST, //or POST
+                        data: $('#data-id').val(), //$("#removeData").val($(event.relatedTarget).data('id')),
+                        success: function (data) {
+                            $('#removeData').modal('hide')
+                            toastr.success('Valor inserido com sucesso.');
+                        }
+                    });
+
+                    break;
+
+                case "btnRemover":
+;
+                    $.ajax({
+                        url: ENDPOINT, //this is the submit URL
+                        type: METHOD_DELETE, //or POST
+                        data: $('#data-id').val(),//$("#removeData").val($(event.relatedTarget).data('id')),
+                        success: function (data) {
+                            $('#removeData').modal('hide')
+                            toastr.warning('Valor removido com sucesso.');
+                        },
+                        error: function (request, status, error) {
+                            var message = 'Erro na operação. {0} \nStatus: {1} \nErro: {2}'.format(request.responseText, status, error);
+                            toastr.error(message);
+                        }
+                    });
+
+                    break;
+
+                case "btnEditMenu":
+                    $('#data-id').val($(this).data("id"));
+                    $('#removeData').modal('show');
+                    break;
+
+
+                case "btnUpdateMenu":
+
+                    $('#data-id').val($(this).data("id"));
+                    $('#menuModal').modal('show');
+
+                    break;
+
+
+            }
+        });
+
+    });
+</script>

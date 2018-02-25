@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2018-02-14 22:55:01.571
+-- Last modification date: 2018-02-19 05:40:58.744
 
 -- tables
 -- Table: banner
@@ -7,10 +7,12 @@ CREATE TABLE banner (
     id int NOT NULL,
     name_clean varchar(50) NOT NULL,
     description varchar(100) NOT NULL,
+    link varchar(255) NOT NULL,
     position varchar(20) NULL,
     date_created timestamp NOT NULL,
     page_id int NOT NULL,
-    type varchar(20) NULL,
+    interval_init timestamp NULL,
+    interlval_end timestamp NULL,
     CONSTRAINT banner_pk PRIMARY KEY (id)
 );
 
@@ -20,6 +22,7 @@ CREATE TABLE banner_image (
     name varchar(45) NOT NULL,
     location varchar(255) NOT NULL,
     priority varchar(20) NULL,
+    type varchar(100) NULL,
     date_init date NULL,
     date_end date NULL,
     banner_id int NOT NULL,
@@ -38,7 +41,10 @@ CREATE TABLE hotel (
 -- Table: image
 CREATE TABLE image (
     id int NOT NULL,
-    name varchar(200) NOT NULL,
+    type varchar(50) NULL,
+    description varchar(200) NOT NULL,
+    name_generate varchar(255) NULL,
+    code varchar(50) NULL,
     location varchar(255) NOT NULL,
     enabled tinyint(1) NULL,
     page_details_id int NOT NULL,
@@ -49,7 +55,7 @@ CREATE TABLE image (
 CREATE TABLE menu (
     id int NOT NULL,
     description varchar(50) NOT NULL,
-    enabled bool NULL,
+    enabled tinyint(1) NULL,
     data_created timestamp NOT NULL,
     menu_id int NULL,
     CONSTRAINT menu_pk PRIMARY KEY (id)
@@ -61,6 +67,7 @@ CREATE TABLE page (
     name varchar(100) NOT NULL,
     name_clean varchar(50) NULL,
     menu_id int NOT NULL,
+    enabled tinyint(1) NOT NULL,
     CONSTRAINT page_pk PRIMARY KEY (id)
 );
 
@@ -108,7 +115,6 @@ CREATE TABLE tag (
 CREATE TABLE tag_values (
     id int NOT NULL,
     value text NOT NULL,
-    enabled tinyint(1) NOT NULL,
     tag_id int NOT NULL,
     CONSTRAINT tag_values_pk PRIMARY KEY (id)
 );

@@ -26,7 +26,7 @@ return [
         ],
         'doctrine' => [
             'meta' => [
-                'entity_path' => ['app/src/Entities/'],
+                'entity_path' => ['app/src/Entity/'],
                 'auto_generate_proxies' => true,
                 'proxy_dir' =>  __DIR__.'/../cache/proxies',
                 'cache' => null,
@@ -34,7 +34,7 @@ return [
             'connection' => [
                 'driver'   => 'pdo_mysql',
                 'host'     => 'localhost',
-                'dbname'   => 'db-cms',
+                'dbname'   => 'php-cms-admin',
                 'user'     => 'root',
                 'password' => 'root',
                 'charset'  => 'utf8',

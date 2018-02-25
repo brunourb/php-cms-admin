@@ -5,7 +5,7 @@
 
 $app->group('/painel', function() use ($app) {
     $app->get('',App\Action\CMSAction::class . ':page')->setName('homepage');
-    $app->get('/menu',App\Action\CMSAction::class . ':page');
+    $app->map(['GET', 'POST'], '/menu', App\Action\CMSAction::class . ':page');
     $app->get('/page',App\Action\CMSAction::class . ':page');
     $app->get('/page-details',App\Action\CMSAction::class . ':page');
     $app->get('/img-video',App\Action\CMSAction::class . ':page');

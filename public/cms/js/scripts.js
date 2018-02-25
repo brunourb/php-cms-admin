@@ -86,8 +86,8 @@
          adjustMainContentHeight();
       }
 
-       var owl = $("#news-feed").data("owlCarousel");
-       owl.reinit();
+       // var owl = $("#news-feed").data("owlCarousel");
+       // owl.reinit();
 
    });
    
@@ -199,6 +199,17 @@
 
     $('.popovers').popover();
 
+    $('.menu-list').on('click', function (ev) {
+        //ev.preventDefault();
+        $(this).addClass('active')
+    });
 
+
+    $('.child-list').on('click', function (ev) {
+        //ev.preventDefault();
+        $(this).addClass('active')
+    });
+
+    $('[data-toggle="tooltip"]').tooltip();
 
 })(jQuery);
