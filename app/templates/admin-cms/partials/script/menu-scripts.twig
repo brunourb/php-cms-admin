@@ -39,19 +39,6 @@
 
                     break;
 
-                case "btnConfirmar":
-                    $.ajax({
-                        url: ENDPOINT, //this is the submit URL
-                        type: METHOD_POST, //or POST
-                        data: $('#data-id').val(), //$("#removeData").val($(event.relatedTarget).data('id')),
-                        success: function (data) {
-                            $('#removeData').modal('hide')
-                            toastr.success('Valor inserido com sucesso.');
-                        }
-                    });
-
-                    break;
-
                 case "btnRemover":
 ;
                     $.ajax({
@@ -72,15 +59,26 @@
 
                 case "btnEditMenu":
                     $('#data-id').val($(this).data("id"));
-                    $('#removeData').modal('show');
+
+                    $.ajax({
+                        url: ENDPOINT, //this is the submit URL
+                        type: METHOD_GET, //or POST
+                        data: { id: $('#data-id').val()},//$("#removeData").val($(event.relatedTarget).data('id')),
+                        success: function (response) {
+                            $('#menuModal').modal('show');
+                        },
+                        error: function (request, status, error) {
+                            var message = 'Erro na operação. {0} \nStatus: {1} \nErro: {2}'.format(request.responseText, status, error);
+                            toastr.error(message);
+                        }
+                    });
+
                     break;
 
 
                 case "btnUpdateMenu":
-
                     $('#data-id').val($(this).data("id"));
-                    $('#menuModal').modal('show');
-
+                    $('#removeData').modal('show');
                     break;
 
 

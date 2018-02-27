@@ -51,17 +51,24 @@ final class CMSAction extends DefaultAction
 
         $data = $this->resource($page,$request,$response,$args);
 
-        $this->view->render($response, $page.'.twig', array("partials" => $page));
-        return $response;
+        if($request->getParam('id')){
+            return $response->withStatus(200)
+                ->withHeader('Content-Type', 'application/json')
+                ->write(json_encode($data));
+        }else{
+            $this->view->render($response, $page.'.twig', array("partials" => $page,"data" =>$data));
+            return $response;
+        }
     }
 
     /**
      * @param Request $request
      * @param Response $response
      * @param $args
+     * @return mixed|string
      */
     public function resource($page, Request $request, Response $response, $args){
-        $this->genericResource->service($page,$request,$response,$args);
+        return $this->genericResource->resourse($page,$request,$response,$args);
     }
 
     /**

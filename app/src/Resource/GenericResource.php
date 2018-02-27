@@ -10,7 +10,7 @@ use Slim\Http\Response;
 class GenericResource extends AbstractResource {
 
 
-    protected $entityManager;
+    public $entityManager;
 
     protected $resource;
 
@@ -29,94 +29,92 @@ class GenericResource extends AbstractResource {
      * @param $args
      * @return mixed|string
      */
-    public function service($page, Request $request, Response $response, $args){
+    public function resourse($page, Request $request, Response $response, $args){
+        try{
+            switch ($page){
+                case 'menu':
 
-        switch ($page){
-            case 'menu':
+                    $menuResource = new MenuResource($this->getEntityManager());
+                    return $menuResource->service($request,$response,$args);
 
-                $menuResource = new MenuResource($this->entityManager);
-                //$this->resource =
-                break;
+                    break;
 
-            case 'page':
+                case 'page':
 
-                break;
+                    $pageResource = new PageResource($this->getEntityManager());
+                    return $pageResource->service($request,$response,$args);
 
-            case 'page-details':
+                    break;
 
-                break;
+                case 'page-details':
 
-            case 'img-video':
+                    $details = new PageDetailsResource($this->getEntityManager());
+                    return $details->service($request,$response,$args);
 
-                break;
+                    break;
 
-            case 'tag':
+                case 'img-video':
 
-                break;
+                    $imgVideo = new BannerImageVideoResource($this->getEntityManager());
+                    return $imgVideo->service($request,$response,$args);
 
-            case 'tag-values':
+                    break;
 
-                break;
+                case 'tag':
 
-            case 'banner':
+                    $tagResource = new TagResource($this->getEntityManager());
+                    return $tagResource->service($request,$response,$args);
 
-                break;
+                    break;
 
-            case 'tariff':
+                case 'tag-values':
 
-                break;
 
-            case 'hotel':
+                    break;
 
-                break;
+                case 'banner':
 
-            case 'room':
+                    $bannerResource = new BannerResource($this->getEntityManager());
+                    return $bannerResource->service($request,$response,$args);
 
-                break;
+                    break;
 
-            case 'room-values':
+                case 'tariff':
 
-                break;
+                    $tariffResource = new TariffResource($this->getEntityManager());
+                    return $tariffResource->service($request,$response,$args);
 
-            case 'upload':
+                    break;
 
-                break;
+                case 'hotel':
 
-            default:
+                    $hotelResource = new HotelResource($this->getEntityManager());
+                    return $hotelResource->service($request,$response,$args);
 
-                break;
+                    break;
+
+                case 'room':
+
+                    $roomResource = new RoomResource($this->getEntityManager());
+                    return $roomResource->service($request,$response,$args);
+
+                    break;
+
+                case 'room-values':
+
+                    break;
+
+                case 'upload':
+
+                    break;
+
+                default:
+
+                    break;
+            }
+        }catch (\Exception $e){
+            return $response->withStatus(500, utf8_decode($e->getMessage()));
         }
-
-
-
-        switch ($request->getMethod()){
-
-            case HTTP_POST:
-                return $this->post($request,$args);
-                break;
-
-            case HTTP_GET:
-                return $this->get($request,$args);
-                break;
-
-            case HTTP_PUT:
-                return $this->put($request,$args);
-                break;
-
-            case HTTP_DELETE:
-                return $this->delete($request,$args);
-                break;
-
-            case HTTP_PATCH:
-                return $this->path($request,$args);
-                break;
-
-            default:
-                return "erro";
-
-                break;
-        }
-
     }
 
 
@@ -163,5 +161,23 @@ class GenericResource extends AbstractResource {
      */
     function path(Request $request, $args) {
         // TODO: Implement path() method.
+    }
+
+    public function service(Request $request, Response $response, $args) {
+        // TODO: Implement service() method.
+    }
+
+    /**
+     * @return EntityManager
+     */
+    public function getEntityManager() {
+        return $this->entityManager;
+    }
+
+    /**
+     * @param EntityManager $entityManager
+     */
+    public function setEntityManager($entityManager) {
+        $this->entityManager = $entityManager;
     }
 }

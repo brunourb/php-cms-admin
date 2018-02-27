@@ -11,15 +11,12 @@ abstract class AbstractResource {
     /**
      * @var \Doctrine\ORM\EntityManager
      */
-    protected $entityManager = null;
+    public $entityManager = null;
 
     public function formatText($str){
         return iconv('UTF-8','ASCII//TRANSLIT',str_replace(' ', '', strtolower($str)));
     }
 
-    public function __construct(EntityManager $entityManager)        {
-        $this->entityManager = $entityManager;
-    }
 
     abstract public function service(Request $request, Response $response, $args);
 
