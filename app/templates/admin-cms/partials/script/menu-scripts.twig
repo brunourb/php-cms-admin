@@ -1,0 +1,136 @@
+{% include 'default-script.twig' %}
+<script>
+    $(function () {
+
+        var ENDPOINT = "/painel/menu";
+        var METHOD_POST = "POST";
+        var METHOD_GET = "GET";
+        var METHOD_PUT = "PUT"
+        var METHOD_DELETE = "DELETE";
+
+        $(document.body).on('click', 'button', function(e) {
+            var button = this.id;
+            e.preventDefault();
+
+            switch (button){
+                case "btnNovoRegistro":
+                    $(".modal-body input").val("");
+                    $(".modal-body select").val("");
+                    $('#menuModal').modal('show');
+
+                    break;
+
+                case "btnSalvar":
+
+                    if($("#chkStatus").is(':checked')){
+                        $("#chkStatus").val('true');
+                    }
+
+                    if(!$('#txtMenuEdit')){
+                        $.ajax({
+                            url: ENDPOINT, //this is the submit URL
+                            type: METHOD_PUT, //or POST
+                            data: $('#formMenu').serialize(),
+                            success: function (data) {
+                                $('#formMenu').trigger("reset");
+                                toastr.success('Registro atualizado com sucesso.').success(
+                                    setTimeout(function(){
+                                        location.reload();
+                                    }, 5000)
+
+                                ); //TODO Twig Ajax
+
+                            },
+                            error: function (request, status, error) {
+                                var message = 'Erro na operação. {0} \nStatus: {1} \nErro: {2}'.format(request.responseText, status, error);
+                                toastr.error(message);
+                            }
+                        });
+                    }else{
+                        $.ajax({
+                            url: ENDPOINT, //this is the submit URL
+                            type: METHOD_POST, //or POST
+                            data: $('#formMenu').serialize(),
+                            success: function (data) {
+                                $('#formMenu').trigger("reset");
+                                toastr.success('Registro inserido com sucesso.').success(
+                                    setTimeout(function(){
+                                        location.reload();
+                                    }, 5000)
+
+                                ); //TODO Twig Ajax
+                            },
+                            error: function (request, status, error) {
+                                var message = 'Erro na operação. {0} \nStatus: {1} \nErro: {2}'.format(request.responseText, status, error);
+                                toastr.error(message);
+                            }
+                        });
+                    }
+
+                    break;
+
+                case "btnRemover":
+;
+                    $.ajax({
+                        url: ENDPOINT, //this is the submit URL
+                        type: METHOD_DELETE, //or POST
+                        data: { id: $('#data-id').val()},//$("#removeData").val($(event.relatedTarget).data('id')),
+                        success: function (data) {
+                            $('#removeData').modal('hide')
+                            toastr.warning('Registro removido com sucesso.').success(
+                                setTimeout(function(){
+                                    location.reload();
+                                }, 5000)
+                            );
+                        },
+                        error: function (request, status, error) {
+                            var message = 'Erro na operação. {0} \nStatus: {1} \nErro: {2}'.format(request.responseText, status, error);
+                            toastr.error(message);
+                        }
+                    });
+
+                    break;
+
+                case "btnEditMenu":
+                    $('#data-id').val($(this).data("id"));
+
+                    $.ajax({
+                        url: ENDPOINT, //this is the submit URL
+                        type: METHOD_GET, //or POST
+                        data: { id: $('#data-id').val()},//$("#removeData").val($(event.relatedTarget).data('id')),
+                        success: function (response) {
+                            $('#formMenu').trigger("reset");
+
+                            var selected = response.menuEdit.menu;
+
+                            if(selected){
+                                $("#txtMenu").select2('data', { id:selected.id, text: selected.description});
+                            }else{
+                                $("#txtMenu").select2('data', { id:"", text: ""});
+                            }
+
+                            $('#txtMenuEdit').val(response.menuEdit.id);
+                            $('#txtDescricao').val(response.menuEdit.description);
+                            $('#chkStatus').val(response.menuEdit.enabled);
+
+                        },
+                        error: function (request, status, error) {
+                            var message = 'Erro na operação. {0} \nStatus: {1} \nErro: {2}'.format(request.responseText, status, error);
+                            toastr.error(message);
+                        }
+                    });
+
+                    break;
+
+
+                case "btnUpdateMenu":
+                    $('#data-id').val($(this).data("id"));
+                    $('#txtMenuEdit').val($(this).data("id"));
+                    break;
+
+
+            }
+        });
+
+    });
+</script>

@@ -23,5 +23,8 @@ require __DIR__ . '/../app/middleware.php';
 // Register routes
 require __DIR__ . '/../app/routes.php';
 
+// Register routes
+require __DIR__ . '/../app/util.php';
+
 // Run!
 $app->run();

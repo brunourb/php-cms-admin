@@ -38,3 +38,21 @@ forked by https://github.com/akrabat/slim3-skeleton
 * `app/routes.php`: All application routes are here
 * `app/src/Action/HomeAction.php`: Action class for the home page
 * `app/templates/home.twig`: Twig template file for the home page
+
+https://stackoverflow.com/questions/2068344/how-do-i-get-a-youtube-video-thumbnail-from-the-youtube-api
+
+## slime3 + Doctrine
+* http://blog.sub85.com/slim-3-with-doctrine-2.html
+
+'<?php
+ $page      = 1; // Página Atual
+ $numByPage = 5; // Número de registros por Página
+ $Empresa = $em->createQuery("SELECT e FROM Empresa e ")
+               ->setFirstResult( ( $numByPage * ($page-1) ) )
+               ->setMaxResults( $numByPage );
+ $Empresa = new \Doctrine\ORM\Tools\Pagination\Paginator($Empresa);'
+ 
+ ## Generate Entities
+ 
+     ./vendor/doctrine/orm/bin/doctrine orm:convert-mapping --namespace="App\\Entities\\" --force  --from-database annotation ./app/src/Entities
+     ./vendor/doctrine/orm/bin/doctrine orm:generate-entities ./app/src/Entities/ --generate-annotations=true

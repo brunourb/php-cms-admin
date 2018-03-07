@@ -1,0 +1,122 @@
+<!-- Placed js at the end of the document so the pages load faster -->
+<script src="/cms/js/jquery-1.10.2.min.js"></script>
+<script src="/cms/js/jquery-ui/jquery-ui-1.10.1.custom.min.js"></script>
+<script src="/cms/js/jquery-migrate.js"></script>
+<script src="/cms/js/bootstrap.min.js"></script>
+<script src="/cms/js/modernizr.min.js"></script>
+
+<!--Nice Scroll-->
+<script src="/cms/js/jquery.nicescroll.js" type="text/javascript"></script>
+
+<!--right slidebar-->
+<script src="/cms/js/slidebars.min.js"></script>
+
+<!--switchery-->
+<script src="/cms/js/switchery/switchery.min.js"></script>
+<script src="/cms/js/switchery/switchery-init.js"></script>
+
+<!--Sparkline Chart-->
+<script src="/cms/js/sparkline/jquery.sparkline.js"></script>
+<script src="/cms/js/sparkline/sparkline-init.js"></script>
+
+<!--bootstrap-wysihtml5-->
+{#<script type="text/javascript" src="/cms/js/bootstrap-wysihtml5/wysihtml5-0.3.0.js"></script>#}
+{#<script type="text/javascript" src="/cms/js/bootstrap-wysihtml5/bootstrap-wysihtml5.js"></script>#}
+
+<!--summernote-->
+<script src="/cms/js/summernote/dist/summernote.min.js"></script>
+
+<!--bootstrap picker-->
+<script type="text/javascript" src="/cms/js/bootstrap-datepicker/js/bootstrap-datepicker.js"></script>
+<script type="text/javascript" src="/cms/js/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+<script type="text/javascript" src="/cms/js/bootstrap-daterangepicker/moment.min.js"></script>
+<script type="text/javascript" src="/cms/js/bootstrap-daterangepicker/daterangepicker.js"></script>
+<script type="text/javascript" src="/cms/js/bootstrap-colorpicker/js/bootstrap-colorpicker.js"></script>
+<script type="text/javascript" src="/cms/js/bootstrap-timepicker/js/bootstrap-timepicker.js"></script>
+
+<!--picker initialization-->
+<script src="/cms/js/picker-init.js"></script>
+
+<!--Icheck-->
+<script src="/cms/js/icheck/skins/icheck.min.js"></script>
+<!--icheck init-->
+<script src="/cms/js/icheck-init.js"></script>
+
+<!--tags input-->
+<script src="/cms/js/tags-input.js"></script>
+
+<!--tags input init-->
+<script src="/cms/js/tags-input-init.js"></script>
+
+<!--bootstrap-inputmask-->
+<script src="/cms/js/bs-input-mask.min.js"></script>
+
+<!--touchspin spinner-->
+<script src="/cms/js/touchspin.js"></script>
+
+<!--spinner init-->
+<script src="/cms/js/spinner-init.js"></script>
+
+<!--dropzone-->
+<script src="/cms/js/dropzone.js"></script>
+
+<!--select2-->
+<script src="/cms/js/select2.js"></script>
+
+<!--select2 init-->
+<script src="/cms/js/select2-init.js"></script>
+
+<!--bootstrap-fileinput-master-->
+<script type="text/javascript" src="/cms/js/bootstrap-fileinput-master/js/fileinput.js"></script>
+<script type="text/javascript" src="/cms/js/file-input-init.js"></script>
+
+<!--Data Table-->
+<script src="/cms/js/data-table/js/jquery.dataTables.min.js"></script>
+<script src="/cms/js/data-table/js/dataTables.tableTools.min.js"></script>
+<script src="/cms/js/data-table/js/bootstrap-dataTable.js"></script>
+<script src="/cms/js/data-table/js/dataTables.colVis.min.js"></script>
+<script src="/cms/js/data-table/js/dataTables.responsive.min.js"></script>
+<script src="/cms/js/data-table/js/dataTables.scroller.min.js"></script>
+<!--data table init-->
+<script src="/cms/js/data-table-init.js"></script>
+
+<!--common scripts for all pages-->
+<script src="/cms/js/scripts.js"></script>
+
+<!-- Default app js -->
+<script src="/cms/js/default-config/defaul-cms-config.js"></script>
+
+<!--toastr-->
+<script type="text/javascript" src="/cms/js/toastr-master/build/toastr.min.js"/>
+
+<script>
+    jQuery(document).ready(function(){
+        $('.summernote').summernote({
+            height: 200,                 // set editor height
+
+            minHeight: null,             // set minimum height of editor
+            maxHeight: null,             // set maximum height of editor
+
+            focus: true                 // set focus to editable area after initializing summernote
+        });
+    });
+
+</script>
+
+<script>
+
+    String.prototype.format = function()
+    {
+        var content = this;
+        for (var i=0; i < arguments.length; i++)
+        {
+            var replacement = '{' + i + '}';
+            content = content.replace(replacement, arguments[i]);
+        }
+        return content;
+    };
+
+    function resetForm(idForm) {
+        document.getElementById(idForm).reset();
+    }
+</script>

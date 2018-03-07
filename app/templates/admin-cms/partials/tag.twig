@@ -1,0 +1,128 @@
+{% extends "base.html.twig" %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-lg-12">
+
+            <section class="panel">
+                <header class="panel-heading">
+                    NOVO REGISTRO
+                    <span class="tools pull-right">
+                        <a class="fa fa-repeat box-refresh" href="javascript:;"onclick="resetForm('formTag')"></a>
+                        <a class="t-collapse fa fa-chevron-down" href="javascript:;"></a>
+                    </span>
+                </header>
+                <div class="panel-body">
+
+                    <form role="form" id="formTag">
+                        <div class="form-group">
+                            <label for="txtMenu">P&aacute;gina</label>
+                                <select class="form-control  select2" id="txtMenu">
+                                    <option></option>
+                                    <optgroup label="Alaskan/Hawaiian Time Zone">
+                                        <option value="AK">Alaska</option>
+                                        <option value="HI">Hawaii</option>
+                                    </optgroup>
+                                    <optgroup label="Pacific Time Zone">
+                                        <option value="CA">California</option>
+                                        <option value="NV">Nevada</option>
+                                        <option value="OR">Oregon</option>
+                                        <option value="WA">Washington</option>
+                                    </optgroup>
+                                    <optgroup label="Mountain Time Zone">
+                                        <option value="AZ">Arizona</option>
+                                        <option value="CO">Colorado</option>
+                                        <option value="ID">Idaho</option>
+                                        <option value="MT">Montana</option>
+                                        <option value="NE">Nebraska</option>
+                                        <option value="NM">New Mexico</option>
+                                        <option value="ND">North Dakota</option>
+                                        <option value="UT">Utah</option>
+                                        <option value="WY">Wyoming</option>
+                                    </optgroup>
+                                </select>
+                            </div>
+
+                        <div class="form-group">
+                            <label for="menu">Tag</label>
+                            <input type="text" class="form-control" id="menu" placeholder="Informe o nome da tag">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="menu">Descri&ccedil;&atilde;o</label>
+                            <input type="text" class="form-control" id="menu" placeholder="Informe uma descrição da tag">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="txtValor">Valor</label>
+                            <input id="txtValor" type="text" class="tags tags-input" data-type="tags" value="foo,bar,baz,roffle"/>
+                        </div>
+
+                        <div class="form-group">
+                            <input id="txtStatus" type="checkbox" class="form-control js-switch-blue" checked/>
+                            <label for="txtStatus" class="control-label">Ativar/Inativar Registro</label>
+                        </div>
+
+                        <button type="submit" class="btn btn-info">Salvar</button>
+                    </form>
+
+                </div>
+            </section>
+
+
+            <section class="panel">
+                <header class="panel-heading ">
+                    Lista de registros
+                    <span class="tools pull-right">
+                                    <a class="fa fa-repeat box-refresh" href="javascript:;"></a>
+                                    <a class="t-close fa fa-times" href="javascript:;"></a>
+                                </span>
+                </header>
+                <table class="table colvis-data-table data-table">
+                    <thead>
+                    <tr>
+                        <th width="5%">&nbsp;</th>
+                        <th width="20%">P&aacute;gina</th>
+                        <th width="20%">Tag</th>
+                        <th width="50%">Tag</th>
+                        <th width="5%">AÇÃO</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>thermas-xxx</td>
+                        <td>description</td>
+                        <td>Lorem ipsum dolor sit amet</td>
+                        <td>
+                            <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
+                            <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>thermas-xxx</td>
+                        <td>keywords</td>
+                        <td>Lorem ipsum dolor sit amet</td>
+                        <td>
+                            <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
+                            <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>1</td>
+                        <td>thermas-xxx</td>
+                        <td>author</td>
+                        <td>Lorem ipsum dolor sit amet</td>
+                        <td>
+                            <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
+                            <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </section>
+        </div>
+    </div>
+
+{% endblock %}

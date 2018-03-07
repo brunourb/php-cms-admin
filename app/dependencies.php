@@ -15,6 +15,7 @@ $container['view'] = function ($c) {
     // Add extensions
     $view->addExtension(new Slim\Views\TwigExtension($c->get('router'), $c->get('request')->getUri()));
     $view->addExtension(new Twig_Extension_Debug());
+    $view->addExtension(new \nochso\HtmlCompressTwig\Extension());
 
     return $view;
 };
@@ -37,10 +38,35 @@ $container['logger'] = function ($c) {
     return $logger;
 };
 
+// Doctrine
+$container['em'] = function ($c) {
+    $settings = $c->get('settings');
+    $config = \Doctrine\ORM\Tools\Setup::createAnnotationMetadataConfiguration(
+        $settings['doctrine']['meta']['entity_path'],
+        $settings['doctrine']['meta']['auto_generate_proxies'],
+        $settings['doctrine']['meta']['proxy_dir'],
+        $settings['doctrine']['meta']['cache'],
+        false
+    );
+    $em = \Doctrine\ORM\EntityManager::create($settings['doctrine']['connection'], $config);
+
+    $helpers = new Symfony\Component\Console\Helper\HelperSet(array(
+        'db' => new \Doctrine\DBAL\Tools\Console\Helper\ConnectionHelper($em->getConnection()),
+        'em' => new \Doctrine\ORM\Tools\Console\Helper\EntityManagerHelper($em)
+    ));
+
+    return $em;
+};
+
+
 // -----------------------------------------------------------------------------
 // Action factories
 // -----------------------------------------------------------------------------
 
 $container[App\Action\HomeAction::class] = function ($c) {
     return new App\Action\HomeAction($c->get('view'), $c->get('logger'));
+};
+
+$container[App\Action\CMSAction::class] = function ($c) {
+    return new App\Action\CMSAction($c->get('view'), $c->get('logger'), $c->get('em'));
 };
