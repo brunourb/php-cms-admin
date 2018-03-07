@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="menu", indexes={@ORM\Index(name="menu_menu", columns={"menu_id"})})
  * @ORM\Entity
  */
-class Menu
+class Menu extends AbstractEntity
 {
     /**
      * @var integer
@@ -35,13 +35,6 @@ class Menu
      * @ORM\Column(name="enabled", type="boolean", nullable=true)
      */
     private $enabled;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="data_created", type="datetime", nullable=false)
-     */
-    private $dataCreated = 'CURRENT_TIMESTAMP';
 
     /**
      * @var \App\Entity\Menu
@@ -76,16 +69,20 @@ class Menu
         $this->pages = new ArrayCollection();
     }
 
-
     /**
-     * Get id
-     *
-     * @return integer
+     * @return int
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
+
+    /**
+     * @param int $id
+     */
+    public function setId($id) {
+        $this->id = $id;
+    }
+
 
     /**
      * Set description
@@ -133,30 +130,6 @@ class Menu
     public function getEnabled()
     {
         return $this->enabled;
-    }
-
-    /**
-     * Set dataCreated
-     *
-     * @param \DateTime $dataCreated
-     *
-     * @return Menu
-     */
-    public function setDataCreated($dataCreated)
-    {
-        $this->dataCreated = $dataCreated;
-
-        return $this;
-    }
-
-    /**
-     * Get dataCreated
-     *
-     * @return \DateTime
-     */
-    public function getDataCreated()
-    {
-        return $this->dataCreated;
     }
 
     /**

@@ -21,21 +21,51 @@
                     break;
 
                 case "btnSalvar":
+
                     if($("#chkStatus").is(':checked')){
-                        $("#chkStatus").val('A');
+                        $("#chkStatus").val('true');
                     }
 
-                    $.ajax({
-                        url: ENDPOINT, //this is the submit URL
-                        type: METHOD_POST, //or POST
-                        data: $('#form-menu-modal').serialize(),
-                        success: function (data) {
-                            $(".modal-body input").val("");
-                            $(".modal-body select").val("");
-                            $('#menuModal').modal('hide')
-                            toastr.success('Valor inserido com sucesso.');
-                        }
-                    });
+                    if(!$('#txtMenuEdit')){
+                        $.ajax({
+                            url: ENDPOINT, //this is the submit URL
+                            type: METHOD_PUT, //or POST
+                            data: $('#formMenu').serialize(),
+                            success: function (data) {
+                                $('#formMenu').trigger("reset");
+                                toastr.success('Registro atualizado com sucesso.').success(
+                                    setTimeout(function(){
+                                        location.reload();
+                                    }, 5000)
+
+                                ); //TODO Twig Ajax
+
+                            },
+                            error: function (request, status, error) {
+                                var message = 'Erro na operação. {0} \nStatus: {1} \nErro: {2}'.format(request.responseText, status, error);
+                                toastr.error(message);
+                            }
+                        });
+                    }else{
+                        $.ajax({
+                            url: ENDPOINT, //this is the submit URL
+                            type: METHOD_POST, //or POST
+                            data: $('#formMenu').serialize(),
+                            success: function (data) {
+                                $('#formMenu').trigger("reset");
+                                toastr.success('Registro inserido com sucesso.').success(
+                                    setTimeout(function(){
+                                        location.reload();
+                                    }, 5000)
+
+                                ); //TODO Twig Ajax
+                            },
+                            error: function (request, status, error) {
+                                var message = 'Erro na operação. {0} \nStatus: {1} \nErro: {2}'.format(request.responseText, status, error);
+                                toastr.error(message);
+                            }
+                        });
+                    }
 
                     break;
 
@@ -44,10 +74,14 @@
                     $.ajax({
                         url: ENDPOINT, //this is the submit URL
                         type: METHOD_DELETE, //or POST
-                        data: $('#data-id').val(),//$("#removeData").val($(event.relatedTarget).data('id')),
+                        data: { id: $('#data-id').val()},//$("#removeData").val($(event.relatedTarget).data('id')),
                         success: function (data) {
                             $('#removeData').modal('hide')
-                            toastr.warning('Valor removido com sucesso.');
+                            toastr.warning('Registro removido com sucesso.').success(
+                                setTimeout(function(){
+                                    location.reload();
+                                }, 5000)
+                            );
                         },
                         error: function (request, status, error) {
                             var message = 'Erro na operação. {0} \nStatus: {1} \nErro: {2}'.format(request.responseText, status, error);
@@ -65,7 +99,20 @@
                         type: METHOD_GET, //or POST
                         data: { id: $('#data-id').val()},//$("#removeData").val($(event.relatedTarget).data('id')),
                         success: function (response) {
-                            $('#menuModal').modal('show');
+                            $('#formMenu').trigger("reset");
+
+                            var selected = response.menuEdit.menu;
+
+                            if(selected){
+                                $("#txtMenu").select2('data', { id:selected.id, text: selected.description});
+                            }else{
+                                $("#txtMenu").select2('data', { id:"", text: ""});
+                            }
+
+                            $('#txtMenuEdit').val(response.menuEdit.id);
+                            $('#txtDescricao').val(response.menuEdit.description);
+                            $('#chkStatus').val(response.menuEdit.enabled);
+
                         },
                         error: function (request, status, error) {
                             var message = 'Erro na operação. {0} \nStatus: {1} \nErro: {2}'.format(request.responseText, status, error);
@@ -78,7 +125,7 @@
 
                 case "btnUpdateMenu":
                     $('#data-id').val($(this).data("id"));
-                    $('#removeData').modal('show');
+                    $('#txtMenuEdit').val($(this).data("id"));
                     break;
 
 

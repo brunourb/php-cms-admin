@@ -47,16 +47,19 @@ final class CMSAction extends DefaultAction
      */
     public function page(Request $request, Response $response, $args) {
         $this->logger->info("Page action dispatched");
+
         $page = $request->getUri()->getPath() == '/painel' ? explode("/", $request->getUri()->getPath())[1] : explode("/", $request->getUri()->getPath())[2];
 
         $data = $this->resource($page,$request,$response,$args);
 
-        if($request->getParam('id')){
+        if($request->getParam('id') && !$request->isPost()){
             return $response->withStatus(200)
                 ->withHeader('Content-Type', 'application/json')
                 ->write(json_encode($data));
         }else{
+
             $this->view->render($response, $page.'.twig', array("partials" => $page,"data" =>$data));
+
             return $response;
         }
     }

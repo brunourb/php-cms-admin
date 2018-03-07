@@ -1,64 +1,52 @@
 {% extends "base.html.twig" %}
 
 {% block content %}
-    <div class="row">
+    <div class="row" id="mainMenu">
         <div class="col-lg-12">
 
             <section class="panel">
                 <div class="panel-body">
-                    <button class="btn btn-success" data-toggle="modal" id="btnNovoRegistro">Novo Registro</button>
-                </div>
+                    <header class="panel-heading ">
+                        Novo Registro
+                        <span class="tools pull-right">
+                                    <a class="fa fa-repeat box-refresh" href="javascript:;" onclick="resetForm('formMenu')"></a>
+                                    <a class="t-collapse fa fa-chevron-down" href="javascript:;"></a>
+                                </span>
+                    </header>
 
-                <!-- Modal -->
-                <div class="modal fade" id="menuModal" tabindex="-1" role="dialog" aria-labelledby="menuModal"
-                     aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
-                                </button>
-                                <h4 class="modal-title">Novo registro</h4>
+                    <div class="panel-body">
+
+                        <form role="form" id="formMenu" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="txtMenu">Menu</label>
+                                <select class="form-control  select2" id="txtMenu" name="txtMenu">
+                                    <option value="">Selecione uma opção</option>
+                                    {% for menu in data.menus %}
+                                        <option value="{{ menu.id }}" {{ selected }}>{{ menu.description }}</option>
+                                    {% endfor %}
+                                </select>
                             </div>
-                            <div class="modal-body">
-                                <form role="form" enctype="multipart/form-data" id="form-menu-modal">
-                                    <div class="form-group">
-                                        <label for="txtMenu">Menu</label>
-                                        <select class="form-control  select2" id="txtMenu" name="txtMenu">
-                                            <option value="">Selecione uma opção</option>
-                                            {% for menu in data.menus %}
-                                                {% set selected = '' %}
-                                                {% if (menu.id == menuEdit.id) %}
-                                                    {% set selected = 'selected' %}
-                                                {% endif %}
 
-                                                <option value="{{ menu.id }}" {{ selected }}>{{ menu.description }}</option>
-                                            {% endfor %}
-                                        </select>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="menu">Descri&ccedil;&atilde;o</label>
-                                        <input type="text" class="form-control" id="menu" name="txtDescricao"
-                                               placeholder="Informe uma descrição. Se informar menu, este será sub-menu">
-                                    </div>
-
-                                    <div class="form-group">
-                                        <input id="chkStatus" type="checkbox" name="chkStatus" class="form-control js-switch-blue"
-                                               checked/>
-                                        <label for="chkStatus" class="control-label">Ativar/Inativar Registro</label>
-                                    </div>
-
-                                    <div class="modal-footer">
-                                        <button data-dismiss="modal" class="btn btn-default" type="button">Cancelar</button>
-                                        <button class="btn btn-success" type="submit" id="btnSalvar">Salvar</button>
-                                    </div>
-                                </form>
-
+                            <div class="form-group">
+                                <label for="menu">Descri&ccedil;&atilde;o</label>
+                                <input type="text" class="form-control" id="txtDescricao" name="txtDescricao" placeholder="Informe uma descrição. Se informar menu, este será sub-menu">
                             </div>
-                        </div>
+
+                            <div class="form-group">
+                                <input id="chkStatus" type="checkbox" name="chkStatus" class="form-control js-switch-blue"
+                                       checked/>
+                                <label for="chkStatus" class="control-label">Ativar/Inativar Registro</label>
+                            </div>
+
+                            <input type="text" id="txtMenuEdit" name="txtMenuEdit"/>
+
+                            <button class="btn btn-success" type="submit" id="btnSalvar">Salvar</button>
+
+                        </form>
+
                     </div>
+
                 </div>
-                <!-- modal -->
 
                 <!-- Modal -->
                 <div class="modal fade" id="removeData" data-toggle="modal" tabindex="-1" role="dialog" aria-labelledby="removeData"
@@ -97,7 +85,7 @@
                 <table class="table colvis-data-table data-table">
                     <thead>
                     <tr>
-                        <th width="5%">&nbsp;</th>
+                        <th width="5%">#</th>
                         <th width="40%">MENU</th>
                         <th width="50%">SUB-MENU</th>
                         <th width="5%">AÇÃO</th>
@@ -107,8 +95,8 @@
                     {% for menu in data.menus %}
                         <tr>
                             <td>{{ menu.id }}</td>
+                            <td>{{ menu.menu.description }}</td>
                             <td>{{ menu.description }}</td>
-                            <td>{{ menu.menu.id }} - {{ menu.menu.description }}</td>
                             <td>
                                 <button class="btn btn-primary btn-xs" id="btnEditMenu" data-id="{{ menu.id }}"><i class="fa fa-pencil"></i></button>
                                 <button class="btn btn-danger btn-xs" id="btnUpdateMenu" data-id="{{ menu.id }}"><i class="fa fa-trash-o "></i></button>

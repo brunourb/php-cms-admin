@@ -11,6 +11,7 @@ namespace App\Resource;
 
 use App\Entity\Menu;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\Query;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -67,7 +68,7 @@ class MenuResource extends AbstractResource{
 
         if($request->getParam("id")!=null){
             $menuEdit = $this->entityManager->getRepository($this->REPOSITORY)->findOneBy(array('id'=>$request->getParam('id')));
-            $data->menuEdit = $menuEdit;
+            $data->menuEdit = $menuEdit->toArray();
         }
         $menus = $this->entityManager->getRepository($this->REPOSITORY)->findAll();
         $data->menus = $menus;
@@ -82,9 +83,14 @@ class MenuResource extends AbstractResource{
      */
     function put(Request $request, $args) {
         $objMenu = new Menu();
+        $objMenu->setId($request->getParam("txtMenuEdit"));
         $objMenu->setDescription($request->getParam('txtDescricao'));
-        $objMenu->setEnabled(true);
-        $objMenu->setMenu($request->getParam('chkStatus'));
+        $objMenu->setEnabled((bool)$request->getParam('chkStatus') ? 1 : 0);
+
+        if($request->getParam('txtMenu')){
+            $menuEdit = $this->entityManager->getRepository($this->REPOSITORY)->findOneBy(array('id'=>$request->getParam('txtMenu')));
+            $objMenu->setMenu($menuEdit);
+        }
 
         $this->entityManager->merge($objMenu);
         $this->entityManager->flush();
@@ -100,7 +106,6 @@ class MenuResource extends AbstractResource{
         $objMenu = new Menu();
         $objMenu->setDescription($request->getParam('txtDescricao'));
         $objMenu->setEnabled($request->getParam('chkStatus') == 'A' ? true : false );
-        $objMenu->setDataCreated(new \DateTime());
         if(intval($request->getParam('txtMenu')) != 0){
             $parent = $this->entityManager->getRepository($this->REPOSITORY)->findOneBy(array('id' => $request->getParam('txtMenu')));
             $objMenu->setMenu($parent);
@@ -119,7 +124,7 @@ class MenuResource extends AbstractResource{
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     function delete(Request $request, $args) {
-        $objMenu = $this->entityManager->getRepository($this->REPOSITORY)->findOneBy(array('id' => $request->getParam('txtMenu')));
+        $objMenu = $this->entityManager->getRepository($this->REPOSITORY)->findOneBy(array('id' => $request->getParam('id')));
         $this->entityManager->remove($objMenu);
         $this->entityManager->flush();
     }

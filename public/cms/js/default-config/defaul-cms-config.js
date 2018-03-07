@@ -7,7 +7,7 @@ $(function() {
     var $toastlast;
 
     toastr.options = {
-        closeButton: true,
+        closeButton: false,
         debug: false,
         progressBar: true,
         positionClass: "toast-top-right",
