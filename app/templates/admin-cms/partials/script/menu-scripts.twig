@@ -26,20 +26,14 @@
                         $("#chkStatus").val('true');
                     }
 
-                    if(!$('#txtMenuEdit')){
+                    if($('#txtMenuEdit')){
                         $.ajax({
                             url: ENDPOINT, //this is the submit URL
                             type: METHOD_PUT, //or POST
                             data: $('#formMenu').serialize(),
                             success: function (data) {
                                 $('#formMenu').trigger("reset");
-                                toastr.success('Registro atualizado com sucesso.').success(
-                                    setTimeout(function(){
-                                        location.reload();
-                                    }, 5000)
-
-                                ); //TODO Twig Ajax
-
+                                toastr.success('Registro atualizado com sucesso.');
                             },
                             error: function (request, status, error) {
                                 var message = 'Erro na operação. {0} \nStatus: {1} \nErro: {2}'.format(request.responseText, status, error);
@@ -101,7 +95,7 @@
                         success: function (response) {
                             $('#formMenu').trigger("reset");
 
-                            var selected = response.menuEdit.menu;
+                            var selected = response.menuEdit[0];
 
                             if(selected){
                                 $("#txtMenu").select2('data', { id:selected.id, text: selected.description});
@@ -109,9 +103,9 @@
                                 $("#txtMenu").select2('data', { id:"", text: ""});
                             }
 
-                            $('#txtMenuEdit').val(response.menuEdit.id);
-                            $('#txtDescricao').val(response.menuEdit.description);
-                            $('#chkStatus').val(response.menuEdit.enabled);
+                            $('#txtMenuEdit').val(selected.id);
+                            $('#txtDescricao').val(selected.description);
+                            $('#chkStatus').val(selected.enabled);
 
                         },
                         error: function (request, status, error) {

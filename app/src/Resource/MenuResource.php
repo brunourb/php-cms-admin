@@ -12,6 +12,7 @@ namespace App\Resource;
 use App\Entity\Menu;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query;
+use Doctrine\ORM\Query\Expr\Join;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -66,9 +67,25 @@ class MenuResource extends AbstractResource{
     function get(Request $request, $args) {
         $data = new \stdClass();
 
-        if($request->getParam("id")!=null){
-            $menuEdit = $this->entityManager->getRepository($this->REPOSITORY)->findOneBy(array('id'=>$request->getParam('id')));
-            $data->menuEdit = $menuEdit->toArray();
+        if($request->getParam('id')!=null){
+
+            $queryBuilder = $this->entityManager->createQueryBuilder();
+            $queryBuilder->select("m.id,m.description,m.enabled, IDENTITY(m.menu) as parent")
+                ->from($this->REPOSITORY, 'm')
+                ->join($this->REPOSITORY,'m1', Join::WITH,'m.id = m1.id')
+                ->where('m.id = :id')->setParameter('id',$request->getParam('id'));
+
+
+
+
+            //$queryBuilder->select('m')->from($this->REPOSITORY,'m')->where('m.id = :id')->setParameter('id',$request->getParam('id'));
+            //$menuEdit = $this->entityManager->getRepository($this->REPOSITORY)->findOneBy(array('id'=>$request->getParam('id')));
+
+            $query = $queryBuilder->getQuery();
+
+            $data->menuEdit = $query->getArrayResult();
+
+            //$data->menuEdit = $menuEdit->toArray();
         }
         $menus = $this->entityManager->getRepository($this->REPOSITORY)->findAll();
         $data->menus = $menus;

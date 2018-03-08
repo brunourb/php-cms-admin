@@ -39,7 +39,7 @@ class Menu extends AbstractEntity
     /**
      * @var \App\Entity\Menu
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Menu")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Menu", inversedBy="menus", cascade={"persist"})
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="menu_id", referencedColumnName="id")
      * })
@@ -49,7 +49,7 @@ class Menu extends AbstractEntity
     /**
      * @var ArrayCollection|Menu[]
      *
-     * @ORM\OneToMany(targetEntity="Menu", mappedBy="menu")
+     * @ORM\OneToMany(targetEntity="Menu", mappedBy="menu", cascade={"all"}, orphanRemoval=true)
      */
     private $menus;
 
