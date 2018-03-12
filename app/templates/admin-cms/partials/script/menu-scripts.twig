@@ -71,7 +71,7 @@
                         data: { id: $('#data-id').val()},//$("#removeData").val($(event.relatedTarget).data('id')),
                         success: function (data) {
                             $('#removeData').modal('hide')
-                            toastr.warning('Registro removido com sucesso.').success(
+                            toastr.warning('Registro removido com sucesso.').onsuccess(
                                 setTimeout(function(){
                                     location.reload();
                                 }, 5000)
@@ -119,7 +119,7 @@
 
                 case "btnUpdateMenu":
                     $('#data-id').val($(this).data("id"));
-                    $('#txtMenuEdit').val($(this).data("id"));
+                    $('#removeData').modal('show');
                     break;
 
 
