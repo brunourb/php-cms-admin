@@ -26,14 +26,19 @@
                         $("#chkStatus").val('true');
                     }
 
-                    if($('#txtMenuEdit')){
+                    if($('#txtMenuEdit') && $('#txtMenuEdit').val() != ""){
                         $.ajax({
                             url: ENDPOINT, //this is the submit URL
                             type: METHOD_PUT, //or POST
                             data: $('#formMenu').serialize(),
                             success: function (data) {
                                 $('#formMenu').trigger("reset");
-                                toastr.success('Registro atualizado com sucesso.');
+                                toastr.success('Registro atualizado com sucesso.').success(
+                                    setTimeout(function(){
+                                        location.reload();
+                                    }, 5000)
+
+                                ); //TODO Twig Ajax
                             },
                             error: function (request, status, error) {
                                 var message = 'Erro na operação. {0} \nStatus: {1} \nErro: {2}'.format(request.responseText, status, error);
