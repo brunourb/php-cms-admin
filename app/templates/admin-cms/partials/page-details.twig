@@ -33,8 +33,8 @@
                             </div>
 
                             <div class="form-group">
-                                <label for="menu">Descri&ccedil;&atilde;o</label>
-                                <input type="text" class="form-control" id="txtName" name="txtName" placeholder="Informe uma descrição">
+                                <label for="menu">Valor</label>
+                                <input type="text" class="form-control" id="txtValue" name="txtValue" placeholder="Informe um valor">
                             </div>
 
                             <div class="form-group">
@@ -43,7 +43,7 @@
                                 <label for="chkStatus" class="control-label">Ativar/Inativar Registro</label>
                             </div>
 
-                            <input type="hidden" id="txtPageEdit" name="txtPageEdit"/>
+                            <input type="hidden" id="txtPageDetailEdit" name="txtPageDetailEdit"/>
 
                             <button class="btn btn-success" type="submit" id="btnSalvar">Salvar</button>
 
@@ -91,17 +91,17 @@
                     <thead>
                     <tr>
                         <th width="5%">#</th>
-                        <th width="35%">P&aacute;gina</th>
-                        <th width="35%">MENU</th>
+                        <th width="35%">DESCRI&Ccedil;&Atilde;O</th>
+                        <th width="35%">P&Aacute;GINA</th>
                         <th width="5%">AÇÃO</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for page in data.pages %}
+                    {% for detail in data.pageDetails %}
                         <tr>
-                            <td>{{ page.id }}</td>
-                            <td>{{ page.nameClean }}</td>
-                            <td>{{ page.menu.descripton }}</td>
+                            <td>{{ detail.id }}</td>
+                            <td>{{ detail.description }}</td>
+                            <td>{{ detail.page.name }}</td>
                             <td>
                                 <button class="btn btn-primary btn-xs" id="btnEditPage" data-id="{{ page.id }}"><i class="fa fa-pencil"></i></button>
                                 <button class="btn btn-danger btn-xs" id="btnUpdatePage" data-id="{{ page.id }}"><i class="fa fa-trash-o "></i></button>

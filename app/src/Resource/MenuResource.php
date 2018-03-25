@@ -18,7 +18,7 @@ use Slim\Http\Response;
 
 class MenuResource extends AbstractResource{
 
-    protected $REPOSITORY = 'App\Entity\Menu';
+    public static $REPOSITORY = 'App\Entity\Menu';
 
     /**
      * MenuResource constructor.
@@ -28,6 +28,13 @@ class MenuResource extends AbstractResource{
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @param $args
+     * @return mixed|string
+     * @throws \Doctrine\ORM\OptimisticLockException
+     */
     public function service(Request $request, Response $response, $args) {
 
         switch ($request->getMethod()){
@@ -87,7 +94,15 @@ class MenuResource extends AbstractResource{
 
             //$data->menuEdit = $menuEdit->toArray();
         }
-        $menus = $this->entityManager->getRepository($this->REPOSITORY)->findAll();
+
+        $menus = $this->entityManager->getRepository(MenuResource::$REPOSITORY)->findAll();
+        $data->menus = $menus;
+        return $data;
+    }
+
+    function getAll(\stdClass $stdClass){
+        $data = $stdClass==null ? new \stdClass() : $stdClass;
+        $menus = $this->entityManager->getRepository(MenuResource::$REPOSITORY)->findAll();
         $data->menus = $menus;
         return $data;
     }
@@ -105,7 +120,7 @@ class MenuResource extends AbstractResource{
         $objMenu->setEnabled((bool)$request->getParam('chkStatus') ? 1 : 0);
 
         if($request->getParam('txtMenu')){
-            $menuEdit = $this->entityManager->getRepository($this->REPOSITORY)->findOneBy(array('id'=>$request->getParam('txtMenu')));
+            $menuEdit = $this->entityManager->getRepository(MenuResource::$REPOSITORY)->findOneBy(array('id'=>$request->getParam('txtMenu')));
             $objMenu->setMenu($menuEdit);
         }
 
@@ -124,7 +139,7 @@ class MenuResource extends AbstractResource{
         $objMenu->setDescription($request->getParam('txtDescricao'));
         $objMenu->setEnabled($request->getParam('chkStatus') == 'A' ? true : false );
         if(intval($request->getParam('txtMenu')) != 0){
-            $parent = $this->entityManager->getRepository($this->REPOSITORY)->findOneBy(array('id' => $request->getParam('txtMenu')));
+            $parent = $this->entityManager->getRepository(MenuResource::$REPOSITORY)->findOneBy(array('id' => $request->getParam('txtMenu')));
             $objMenu->setMenu($parent);
         }
 
@@ -141,7 +156,7 @@ class MenuResource extends AbstractResource{
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     function delete(Request $request, $args) {
-        $objMenu = $this->entityManager->getRepository($this->REPOSITORY)->findOneBy(array('id' => $request->getParam('id')));
+        $objMenu = $this->entityManager->getRepository(MenuResource::$REPOSITORY)->findOneBy(array('id' => $request->getParam('id')));
         $this->entityManager->remove($objMenu);
         $this->entityManager->flush();
     }

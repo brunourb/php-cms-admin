@@ -94,6 +94,10 @@ class Page
         return $this->id;
     }
 
+    public function setId($id){
+        $this->id = $id;
+    }
+
     /**
      * Set name
      *
@@ -231,4 +235,5 @@ class Page
     public function setBanners($banners) {
         $this->banners = $banners;
     }
+
 }

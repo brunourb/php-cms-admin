@@ -18,8 +18,8 @@
 
                         <form role="form" id="formPage" enctype="multipart/form-data">
                             <div class="form-group">
-                                <label for="txtPage">Menu</label>
-                                <select class="form-control  select2" id="txtPage" name="txtMenu">
+                                <label for="txtMenu">Menu</label>
+                                <select class="form-control  select2" id="txtMenu" name="txtMenu">
                                     <option value="">Selecione uma opção</option>
                                     {% for menu in data.menus %}
                                         <option value="{{ menu.id }}" {{ selected }}>{{ menu.description }}</option>
@@ -101,7 +101,7 @@
                         <tr>
                             <td>{{ page.id }}</td>
                             <td>{{ page.nameClean }}</td>
-                            <td>{{ page.menu.descripton }}</td>
+                            <td>{{ page.menu.description }}</td>
                             <td>
                                 <button class="btn btn-primary btn-xs" id="btnEditPage" data-id="{{ page.id }}"><i class="fa fa-pencil"></i></button>
                                 <button class="btn btn-danger btn-xs" id="btnUpdatePage" data-id="{{ page.id }}"><i class="fa fa-trash-o "></i></button>

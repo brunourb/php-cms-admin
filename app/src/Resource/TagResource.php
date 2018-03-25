@@ -9,6 +9,7 @@
 namespace App\Resource;
 
 
+use Doctrine\ORM\EntityManager;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
