@@ -100,10 +100,10 @@
                         success: function (response) {
                             $('#formMenu').trigger("reset");
 
-                            var selected = response.menuEdit[0];
+                            var selected = response.menuEdit;
 
                             if(selected){
-                                $("#txtMenu").select2('data', { id:selected.id, text: selected.description});
+                                $("#txtMenu").select2('data', { id:selected.parent.id, text: selected.parent.description});
                             }else{
                                 $("#txtMenu").select2('data', { id:"", text: ""});
                             }

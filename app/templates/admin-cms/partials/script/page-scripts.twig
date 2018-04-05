@@ -30,9 +30,9 @@
                         $.ajax({
                             url: ENDPOINT, //this is the submit URL
                             type: METHOD_PUT, //or POST
-                            data: $('#formMenu').serialize(),
+                            data: $('#formPage').serialize(),
                             success: function (data) {
-                                $('#formMenu').trigger("reset");
+                                $('#formPage').trigger("reset");
                                 toastr.success('Registro atualizado com sucesso.').success(
                                     setTimeout(function(){
                                         location.reload();
@@ -100,10 +100,10 @@
                         success: function (response) {
                             $('#formPage').trigger("reset");
 
-                            var selected = response.menuEdit[0];
+                            var selected = response.pageEdit;
 
                             if(selected){
-                                $("#txtMenu").select2('data', { id:selected.id, text: selected.description});
+                                $("#txtMenu").select2('data', { id:selected.menu.id, text: selected.menu.description});
                             }else{
                                 $("#txtMenu").select2('data', { id:"", text: ""});
                             }

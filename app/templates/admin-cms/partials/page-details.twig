@@ -19,10 +19,10 @@
                         <form role="form" id="formPage" enctype="multipart/form-data">
                             <div class="form-group">
                                 <label for="txtPage">P&aacute;gina</label>
-                                <select class="form-control  select2" id="txtPage" name="txtPagina">
+                                <select class="form-control  select2" id="txtPage" name="txtPage">
                                     <option value="">Selecione uma opção</option>
-                                    {% for pages in data.pages %}
-                                        <option value="{{ menu.id }}" {{ selected }}>{{ page.nameClean }}</option>
+                                    {% for page in data.pages %}
+                                        <option value="{{ page.id }}" {{ selected }}>{{ page.nameClean }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -97,14 +97,14 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for detail in data.pageDetails %}
+                    {% for detail in data.pagesDetails %}
                         <tr>
                             <td>{{ detail.id }}</td>
+                            <td>{{ detail.page.nameClean }}</td>
                             <td>{{ detail.description }}</td>
-                            <td>{{ detail.page.name }}</td>
                             <td>
-                                <button class="btn btn-primary btn-xs" id="btnEditPage" data-id="{{ page.id }}"><i class="fa fa-pencil"></i></button>
-                                <button class="btn btn-danger btn-xs" id="btnUpdatePage" data-id="{{ page.id }}"><i class="fa fa-trash-o "></i></button>
+                                <button class="btn btn-primary btn-xs" id="btnEditPage" data-id="{{ detail.id }}"><i class="fa fa-pencil"></i></button>
+                                <button class="btn btn-danger btn-xs" id="btnUpdatePage" data-id="{{ detail.id }}"><i class="fa fa-trash-o "></i></button>
                             </td>
                         </tr>
                     {% endfor %}

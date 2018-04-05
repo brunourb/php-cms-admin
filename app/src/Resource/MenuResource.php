@@ -11,7 +11,6 @@ namespace App\Resource;
 
 use App\Entity\Menu;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\Query;
 use Doctrine\ORM\Query\Expr\Join;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -78,8 +77,8 @@ class MenuResource extends AbstractResource{
 
             $queryBuilder = $this->entityManager->createQueryBuilder();
             $queryBuilder->select("m.id,m.description,m.enabled, IDENTITY(m.menu) as parent")
-                ->from($this->REPOSITORY, 'm')
-                ->join($this->REPOSITORY,'m1', Join::WITH,'m.id = m1.id')
+                ->from(MenuResource::$REPOSITORY, 'm')
+                ->join(MenuResource::$REPOSITORY,'m1', Join::WITH,'m.id = m1.id')
                 ->where('m.id = :id')->setParameter('id',$request->getParam('id'));
 
 
@@ -90,7 +89,15 @@ class MenuResource extends AbstractResource{
 
             $query = $queryBuilder->getQuery();
 
-            $data->menuEdit = $query->getArrayResult();
+            $data->menuEdit = is_array($query->getArrayResult()) ? $query->getArrayResult()[0] : $query->getArrayResult();
+
+            $queryBuilder = $this->entityManager->createQueryBuilder();
+            $queryBuilder->select('m')
+                ->from(MenuResource::$REPOSITORY,'m')
+                ->where('m.id = :parent')->setParameter('parent',$data->menuEdit['parent']);
+            $query  = $queryBuilder->getQuery();
+
+            $data->menuEdit['parent'] = is_array($query->getArrayResult()) ? $query->getArrayResult()[0] : $query->getArrayResult();
 
             //$data->menuEdit = $menuEdit->toArray();
         }

@@ -2,3 +2,139 @@
 
 <!--summernote-->
 <script src="/cms/js/summernote/dist/summernote.min.js"></script>
+
+<script>
+    $(function () {
+
+        var ENDPOINT = "/painel/page-details";
+        var METHOD_POST = "POST";
+        var METHOD_GET = "GET";
+        var METHOD_PUT = "PUT"
+        var METHOD_DELETE = "DELETE";
+
+        $(document.body).on('click', 'button', function(e) {
+            var button = this.id;
+            e.preventDefault();
+
+            switch (button){
+                case "btnNovoRegistro":
+                    $(".modal-body input").val("");
+                    $(".modal-body select").val("");
+                    $('#menuModal').modal('show');
+
+                    break;
+
+                case "btnSalvar":
+
+                    if($("#chkStatus").is(':checked')){
+                        $("#chkStatus").val('true');
+                    }
+
+                    if($('#txtPageDetailEdit') && $('#txtPageDetailEdit').val() != ""){
+                        $.ajax({
+                            url: ENDPOINT, //this is the submit URL
+                            type: METHOD_PUT, //or POST
+                            data: $('#formPage').serialize(),
+                            success: function (data) {
+                                $('#formPage').trigger("reset");
+                                toastr.success('Registro atualizado com sucesso.').success(
+                                    setTimeout(function(){
+                                        location.reload();
+                                    }, 5000)
+
+                                ); //TODO Twig Ajax
+                            },
+                            error: function (request, status, error) {
+                                var message = 'Erro na operação. {0} \nStatus: {1} \nErro: {2}'.format(request.responseText, status, error);
+                                toastr.error(message);
+                            }
+                        });
+                    }else{
+                        $.ajax({
+                            url: ENDPOINT, //this is the submit URL
+                            type: METHOD_POST, //or POST
+                            data: $('#formPage').serialize(),
+                            success: function (data) {
+                                $('#formPage').trigger("reset");
+                                toastr.success('Registro inserido com sucesso.').success(
+                                    setTimeout(function(){
+                                        location.reload();
+                                    }, 5000)
+
+                                ); //TODO Twig Ajax
+                            },
+                            error: function (request, status, error) {
+                                var message = 'Erro na operação. {0} \nStatus: {1} \nErro: {2}'.format(request.responseText, status, error);
+                                toastr.error(message);
+                            }
+                        });
+                    }
+
+                    break;
+
+                case "btnRemover":
+                    ;
+                    $.ajax({
+                        url: ENDPOINT, //this is the submit URL
+                        type: METHOD_DELETE, //or POST
+                        data: { id: $('#data-id').val()},//$("#removeData").val($(event.relatedTarget).data('id')),
+                        success: function (data) {
+                            $('#removeData').modal('hide')
+                            toastr.warning('Registro removido com sucesso.').onsuccess(
+                                setTimeout(function(){
+                                    location.reload();
+                                }, 5000)
+                            );
+                        },
+                        error: function (request, status, error) {
+                            var message = 'Erro na operação. {0} \nStatus: {1} \nErro: {2}'.format(request.responseText, status, error);
+                            toastr.error(message);
+                        }
+                    });
+
+                    break;
+
+                case "btnEditPage":
+                    $('#data-id').val($(this).data("id"));
+
+                    $.ajax({
+                        url: ENDPOINT, //this is the submit URL
+                        type: METHOD_GET, //or POST
+                        data: { id: $('#data-id').val()},//$("#removeData").val($(event.relatedTarget).data('id')),
+                        success: function (response) {
+                            $('#formPage').trigger("reset");
+
+                            var selected = response.pageEdit;
+
+                            if(selected){
+                                $("#txtPage").select2('data', { id:selected.page.id, text: selected.page.nameClean});
+                            }else{
+                                $("#txtPage").select2('data', { id:"", text: ""});
+                            }
+
+                            $('#txtPageEdit').val(selected.id);
+                            $('#txtDescription').val(selected.description);
+                            $('#txtValue').val(selected.value);
+                            $('#chkStatus').val(selected.enabled);
+
+                        },
+                        error: function (request, status, error) {
+                            var message = 'Erro na operação. {0} \nStatus: {1} \nErro: {2}'.format(request.responseText, status, error);
+                            toastr.error(message);
+                        }
+                    });
+
+                    break;
+
+
+                case "btnUpdatePage":
+                    $('#data-id').val($(this).data("id"));
+                    $('#removeData').modal('show');
+                    break;
+
+
+            }
+        });
+
+    });
+</script>

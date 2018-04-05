@@ -9,6 +9,7 @@
 namespace App\Resource;
 
 
+use App\Entity\Menu;
 use App\Entity\Page;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\Query\Expr\Join;
@@ -76,14 +77,23 @@ class PageResource extends AbstractResource{
 
         if($request->getParam('id')!=null){
             $queryBuilder = $this->entityManager->createQueryBuilder();
-            $queryBuilder->select("p.id,p.name,p.name_clean, p.menu, p.enabled,")
+            $queryBuilder->select("p.id,p.name,p.nameClean, IDENTITY(p.menu) as menu, p.enabled")
                 ->from(PageResource::$REPOSITORY, 'p')
-                ->join(MenuResource::$REPOSITORY,'m', Join::WITH,'p.menu = m.id')
-                ->where('m.id = :id')->setParameter('id',$request->getParam('id'));
+                ->where('p.id = :id')->setParameter('id',$request->getParam('id'));
 
             $query = $queryBuilder->getQuery();
 
-            $data->pageEdit = $query->getArrayResult();
+            $data->pageEdit = is_array($query->getArrayResult()) ? $query->getArrayResult()[0] : $query->getArrayResult();
+
+            $queryBuilder = $this->entityManager->createQueryBuilder();
+            $queryBuilder->select('m')
+                ->from(MenuResource::$REPOSITORY,'m')
+                ->where('m.id = :menu')->setParameter('menu',$data->pageEdit['menu']);
+            $query  = $queryBuilder->getQuery();
+
+            $data->pageEdit['menu'] = is_array($query->getArrayResult()) ? $query->getArrayResult()[0] : $query->getArrayResult();
+
+
         }
 
         $data->menus = $this->entityManager->getRepository(MenuResource::$REPOSITORY)->findAll();
@@ -105,11 +115,10 @@ class PageResource extends AbstractResource{
         $objPage->setId($request->getParam("txtPageEdit"));
         $objPage->setName($request->getParam('txtName'));
         $objPage->setNameClean($request->getParam('txtNameClean'));
-        $objPage->setDescription($request->getParam('txtDescricao'));
         $objPage->setEnabled((bool)$request->getParam('chkStatus') ? 1 : 0);
 
         if($request->getParam('txtMenu')){
-            $menuEdit = $this->entityManager->getRepository($this->REPOSITORY)->findOneBy(array('id'=>$request->getParam('txtMenu')));
+            $menuEdit = $this->entityManager->getRepository(MenuResource::$REPOSITORY)->findOneBy(array('id'=>$request->getParam('txtMenu')));
             $objPage->setMenu($menuEdit);
         }
 
@@ -144,9 +153,12 @@ class PageResource extends AbstractResource{
      * @param Request $request
      * @param $args
      * @return mixed
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     function delete(Request $request, $args) {
-        // TODO: Implement delete() method.
+        $objPage = $this->entityManager->getRepository(PageResource::$REPOSITORY)->findOneBy(array('id' => $request->getParam('id')));
+        $this->entityManager->remove($objPage);
+        $this->entityManager->flush();
     }
 
     /**
