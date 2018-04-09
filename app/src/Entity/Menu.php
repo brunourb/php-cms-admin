@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -11,12 +10,12 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="menu", indexes={@ORM\Index(name="menu_menu", columns={"menu_id"})})
  * @ORM\Entity
  */
-class Menu extends AbstractEntity
+class Menu
 {
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -25,14 +24,14 @@ class Menu extends AbstractEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=50, nullable=false)
+     * @ORM\Column(name="description", type="string", length=50, precision=0, scale=0, nullable=false, unique=false)
      */
     private $description;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="enabled", type="boolean", nullable=true)
+     * @ORM\Column(name="enabled", type="boolean", precision=0, scale=0, nullable=true, unique=false)
      */
     private $enabled;
 
@@ -41,22 +40,22 @@ class Menu extends AbstractEntity
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Menu", inversedBy="menus")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="menu_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="menu_id", referencedColumnName="id", nullable=true)
      * })
      */
     private $menu;
 
     /**
-     * @var ArrayCollection|Menu[]
+     * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Menu", mappedBy="menu", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Menu", mappedBy="menu", orphanRemoval=true)
      */
     private $menus;
 
     /**
-     * @var ArrayCollection|Page[]
+     * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Page", mappedBy="menu")
+     * @ORM\OneToMany(targetEntity="App\Entity\Page", mappedBy="menu")
      */
     private $pages;
 
@@ -65,24 +64,19 @@ class Menu extends AbstractEntity
      */
     public function __construct()
     {
-        $this->menus = new ArrayCollection();
-        $this->pages = new ArrayCollection();
+        $this->menus = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->pages = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
-     * @return int
+     * Get id
+     *
+     * @return integer
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
     }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id) {
-        $this->id = $id;
-    }
-
 
     /**
      * Set description
@@ -157,30 +151,71 @@ class Menu extends AbstractEntity
     }
 
     /**
-     * @return Menu[]|ArrayCollection
+     * Add menu
+     *
+     * @param \App\Entity\Menu $menu
+     *
+     * @return Menu
      */
-    public function getMenus() {
+    public function addMenu(\App\Entity\Menu $menu)
+    {
+        $this->menus[] = $menu;
+
+        return $this;
+    }
+
+    /**
+     * Remove menu
+     *
+     * @param \App\Entity\Menu $menu
+     */
+    public function removeMenu(\App\Entity\Menu $menu)
+    {
+        $this->menus->removeElement($menu);
+    }
+
+    /**
+     * Get menus
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getMenus()
+    {
         return $this->menus;
     }
 
     /**
-     * @param Menu[]|ArrayCollection $menus
+     * Add page
+     *
+     * @param \App\Entity\Page $page
+     *
+     * @return Menu
      */
-    public function setMenus($menus) {
-        $this->menus = $menus;
+    public function addPage(\App\Entity\Page $page)
+    {
+        $this->pages[] = $page;
+
+        return $this;
     }
 
     /**
-     * @return Page[]|ArrayCollection
+     * Remove page
+     *
+     * @param \App\Entity\Page $page
      */
-    public function getPages() {
+    public function removePage(\App\Entity\Page $page)
+    {
+        $this->pages->removeElement($page);
+    }
+
+    /**
+     * Get pages
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getPages()
+    {
         return $this->pages;
     }
-
-    /**
-     * @param Page[]|ArrayCollection $pages
-     */
-    public function setPages($pages) {
-        $this->pages = $pages;
-    }
 }
+

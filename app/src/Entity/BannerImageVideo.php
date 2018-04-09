@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * BannerImageVideoResource
+ * BannerImageVideo
  *
  * @ORM\Table(name="banner_image", indexes={@ORM\Index(name="banner_image_banner", columns={"banner_id"})})
  * @ORM\Entity
@@ -15,7 +15,7 @@ class BannerImageVideo
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,42 +24,42 @@ class BannerImageVideo
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=45, nullable=false)
+     * @ORM\Column(name="name", type="string", length=45, precision=0, scale=0, nullable=false, unique=false)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="location", type="string", length=255, nullable=false)
+     * @ORM\Column(name="location", type="string", length=255, precision=0, scale=0, nullable=false, unique=false)
      */
     private $location;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="priority", type="string", length=20, nullable=true)
+     * @ORM\Column(name="priority", type="string", length=20, precision=0, scale=0, nullable=true, unique=false)
      */
     private $priority;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="type", type="string", length=100, nullable=true)
+     * @ORM\Column(name="type", type="string", length=100, precision=0, scale=0, nullable=true, unique=false)
      */
     private $type;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_init", type="date", nullable=true)
+     * @ORM\Column(name="date_init", type="date", precision=0, scale=0, nullable=true, unique=false)
      */
     private $dateInit;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_end", type="date", nullable=true)
+     * @ORM\Column(name="date_end", type="date", precision=0, scale=0, nullable=true, unique=false)
      */
     private $dateEnd;
 
@@ -68,11 +68,10 @@ class BannerImageVideo
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Banner")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="banner_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="banner_id", referencedColumnName="id", nullable=true)
      * })
      */
     private $banner;
-
 
 
     /**
@@ -253,3 +252,4 @@ class BannerImageVideo
         return $this->banner;
     }
 }
+

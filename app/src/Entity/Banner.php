@@ -15,7 +15,7 @@ class Banner
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,49 +24,49 @@ class Banner
     /**
      * @var string
      *
-     * @ORM\Column(name="name_clean", type="string", length=50, nullable=false)
+     * @ORM\Column(name="name_clean", type="string", length=50, precision=0, scale=0, nullable=false, unique=false)
      */
     private $nameClean;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=100, nullable=false)
+     * @ORM\Column(name="description", type="string", length=100, precision=0, scale=0, nullable=false, unique=false)
      */
     private $description;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="link", type="string", length=255, nullable=false)
+     * @ORM\Column(name="link", type="string", length=255, precision=0, scale=0, nullable=false, unique=false)
      */
     private $link;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="position", type="string", length=20, nullable=true)
+     * @ORM\Column(name="position", type="string", length=20, precision=0, scale=0, nullable=true, unique=false)
      */
     private $position;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_created", type="datetime", nullable=false)
+     * @ORM\Column(name="date_created", type="datetime", precision=0, scale=0, nullable=false, unique=false)
      */
-    private $dateCreated = 'CURRENT_TIMESTAMP';
+    private $dateCreated;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="interval_init", type="datetime", nullable=true)
+     * @ORM\Column(name="interval_init", type="datetime", precision=0, scale=0, nullable=true, unique=false)
      */
     private $intervalInit;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="interlval_end", type="datetime", nullable=true)
+     * @ORM\Column(name="interlval_end", type="datetime", precision=0, scale=0, nullable=true, unique=false)
      */
     private $interlvalEnd;
 
@@ -75,15 +75,15 @@ class Banner
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Page")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="page_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="page_id", referencedColumnName="id", nullable=true)
      * })
      */
     private $page;
 
     /**
-     * @var ArrayCollection|BannerImageVideo[]
+     * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="BannerImageVideo", mappedBy="banner")
+     * @ORM\OneToMany(targetEntity="App\Entity\BannerImageVideo", mappedBy="banner")
      */
     private $resource;
 
@@ -92,7 +92,7 @@ class Banner
      */
     public function __construct()
     {
-        $this->resource = new ArrayCollection();
+        $this->resource = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -298,16 +298,37 @@ class Banner
     }
 
     /**
-     * @return ArrayCollection|BannerImageVideo[]
+     * Add resource
+     *
+     * @param \App\Entity\BannerImageVideo $resource
+     *
+     * @return Banner
      */
-    public function getResource() {
-        return $this->resource;
+    public function addResource(\App\Entity\BannerImageVideo $resource)
+    {
+        $this->resource[] = $resource;
+
+        return $this;
     }
 
     /**
-     * @param ArrayCollection|BannerImageVideo[] $resource
+     * Remove resource
+     *
+     * @param \App\Entity\BannerImageVideo $resource
      */
-    public function setResource($resource) {
-        $this->resource = $resource;
+    public function removeResource(\App\Entity\BannerImageVideo $resource)
+    {
+        $this->resource->removeElement($resource);
+    }
+
+    /**
+     * Get resource
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getResource()
+    {
+        return $this->resource;
     }
 }
+

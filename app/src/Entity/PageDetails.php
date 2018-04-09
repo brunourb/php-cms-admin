@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -16,7 +15,7 @@ class PageDetails
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -25,21 +24,21 @@ class PageDetails
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=45, nullable=false)
+     * @ORM\Column(name="description", type="string", length=45, precision=0, scale=0, nullable=false, unique=false)
      */
     private $description;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="value", type="text", length=65535, nullable=true)
+     * @ORM\Column(name="value", type="text", length=65535, precision=0, scale=0, nullable=true, unique=false)
      */
     private $value;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="enabled", type="boolean", nullable=true)
+     * @ORM\Column(name="enabled", type="boolean", precision=0, scale=0, nullable=true, unique=false)
      */
     private $enabled;
 
@@ -48,15 +47,15 @@ class PageDetails
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Page")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="page_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="page_id", referencedColumnName="id", nullable=true)
      * })
      */
     private $page;
 
     /**
-     * @var ArrayCollection|Image[]
+     * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Image", mappedBy="pageDetails")
+     * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="pageDetails")
      */
     private $images;
 
@@ -65,7 +64,7 @@ class PageDetails
      */
     public function __construct()
     {
-        $this->images = new ArrayCollection();
+        $this->images = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -175,16 +174,37 @@ class PageDetails
     }
 
     /**
-     * @return Image[]|ArrayCollection
+     * Add image
+     *
+     * @param \App\Entity\Image $image
+     *
+     * @return PageDetails
      */
-    public function getImages() {
-        return $this->images;
+    public function addImage(\App\Entity\Image $image)
+    {
+        $this->images[] = $image;
+
+        return $this;
     }
 
     /**
-     * @param Image[]|ArrayCollection $images
+     * Remove image
+     *
+     * @param \App\Entity\Image $image
      */
-    public function setImages($images) {
-        $this->images = $images;
+    public function removeImage(\App\Entity\Image $image)
+    {
+        $this->images->removeElement($image);
+    }
+
+    /**
+     * Get images
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getImages()
+    {
+        return $this->images;
     }
 }
+

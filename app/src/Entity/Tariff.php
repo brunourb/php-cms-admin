@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -16,7 +15,7 @@ class Tariff
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -25,35 +24,35 @@ class Tariff
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=100, nullable=false)
+     * @ORM\Column(name="description", type="string", length=100, precision=0, scale=0, nullable=false, unique=false)
      */
     private $description;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_init", type="date", nullable=true)
+     * @ORM\Column(name="date_init", type="date", precision=0, scale=0, nullable=true, unique=false)
      */
     private $dateInit;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="date_end", type="integer", nullable=true)
+     * @ORM\Column(name="date_end", type="integer", precision=0, scale=0, nullable=true, unique=false)
      */
     private $dateEnd;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="enabled", type="boolean", nullable=true)
+     * @ORM\Column(name="enabled", type="boolean", precision=0, scale=0, nullable=true, unique=false)
      */
     private $enabled;
 
     /**
-     * @var ArrayCollection|Hotel[]
+     * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Hotel", mappedBy="tariff")
+     * @ORM\OneToMany(targetEntity="App\Entity\Hotel", mappedBy="tariff")
      */
     private $hotels;
 
@@ -62,7 +61,7 @@ class Tariff
      */
     public function __construct()
     {
-        $this->hotels = new ArrayCollection();
+        $this->hotels = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -172,16 +171,37 @@ class Tariff
     }
 
     /**
-     * @return ArrayCollection|Hotel[]
+     * Add hotel
+     *
+     * @param \App\Entity\Hotel $hotel
+     *
+     * @return Tariff
      */
-    public function getHotels() {
-        return $this->hotels;
+    public function addHotel(\App\Entity\Hotel $hotel)
+    {
+        $this->hotels[] = $hotel;
+
+        return $this;
     }
 
     /**
-     * @param ArrayCollection|Hotel[] $hotels
+     * Remove hotel
+     *
+     * @param \App\Entity\Hotel $hotel
      */
-    public function setHotels($hotels) {
-        $this->hotels = $hotels;
+    public function removeHotel(\App\Entity\Hotel $hotel)
+    {
+        $this->hotels->removeElement($hotel);
+    }
+
+    /**
+     * Get hotels
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getHotels()
+    {
+        return $this->hotels;
     }
 }
+

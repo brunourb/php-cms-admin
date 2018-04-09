@@ -15,7 +15,7 @@ class Tag
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,14 +24,14 @@ class Tag
     /**
      * @var string
      *
-     * @ORM\Column(name="tag", type="string", length=45, nullable=false)
+     * @ORM\Column(name="tag", type="string", length=45, precision=0, scale=0, nullable=false, unique=false)
      */
     private $tag;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="enabled", type="boolean", nullable=false)
+     * @ORM\Column(name="enabled", type="boolean", precision=0, scale=0, nullable=false, unique=false)
      */
     private $enabled;
 
@@ -40,16 +40,15 @@ class Tag
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Page")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="page_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="page_id", referencedColumnName="id", nullable=true)
      * })
      */
     private $page;
 
-
     /**
-     * @var ArrayCollection|TagValues[]
+     * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="TagValues", mappedBy="tag")
+     * @ORM\OneToMany(targetEntity="App\Entity\TagValues", mappedBy="tag")
      */
     private $values;
 
@@ -58,9 +57,8 @@ class Tag
      */
     public function __construct()
     {
-        $this->values = new ArrayCollection();
+        $this->values = new \Doctrine\Common\Collections\ArrayCollection();
     }
-
 
     /**
      * Get id
@@ -145,16 +143,37 @@ class Tag
     }
 
     /**
-     * @return ArrayCollection|TagValues[]
+     * Add value
+     *
+     * @param \App\Entity\TagValues $value
+     *
+     * @return Tag
      */
-    public function getValues() {
-        return $this->values;
+    public function addValue(\App\Entity\TagValues $value)
+    {
+        $this->values[] = $value;
+
+        return $this;
     }
 
     /**
-     * @param ArrayCollection|TagValues[] $values
+     * Remove value
+     *
+     * @param \App\Entity\TagValues $value
      */
-    public function setValues($values) {
-        $this->values = $values;
+    public function removeValue(\App\Entity\TagValues $value)
+    {
+        $this->values->removeElement($value);
+    }
+
+    /**
+     * Get values
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getValues()
+    {
+        return $this->values;
     }
 }
+

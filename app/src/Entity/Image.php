@@ -15,7 +15,7 @@ class Image
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,42 +24,42 @@ class Image
     /**
      * @var string
      *
-     * @ORM\Column(name="type", type="string", length=50, nullable=true)
+     * @ORM\Column(name="type", type="string", length=50, precision=0, scale=0, nullable=true, unique=false)
      */
     private $type;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=200, nullable=false)
+     * @ORM\Column(name="description", type="string", length=200, precision=0, scale=0, nullable=false, unique=false)
      */
     private $description;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="name_generate", type="string", length=255, nullable=true)
+     * @ORM\Column(name="name_generate", type="string", length=255, precision=0, scale=0, nullable=true, unique=false)
      */
     private $nameGenerate;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="code", type="string", length=50, nullable=true)
+     * @ORM\Column(name="code", type="string", length=50, precision=0, scale=0, nullable=true, unique=false)
      */
     private $code;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="location", type="string", length=255, nullable=false)
+     * @ORM\Column(name="location", type="string", length=255, precision=0, scale=0, nullable=false, unique=false)
      */
     private $location;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="enabled", type="boolean", nullable=true)
+     * @ORM\Column(name="enabled", type="boolean", precision=0, scale=0, nullable=true, unique=false)
      */
     private $enabled;
 
@@ -68,11 +68,10 @@ class Image
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\PageDetails")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="page_details_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="page_details_id", referencedColumnName="id", nullable=true)
      * })
      */
     private $pageDetails;
-
 
 
     /**
@@ -253,3 +252,4 @@ class Image
         return $this->pageDetails;
     }
 }
+

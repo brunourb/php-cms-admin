@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -16,7 +15,7 @@ class Page
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -25,21 +24,21 @@ class Page
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=100, nullable=false)
+     * @ORM\Column(name="name", type="string", length=100, precision=0, scale=0, nullable=false, unique=false)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="name_clean", type="string", length=50, nullable=true)
+     * @ORM\Column(name="name_clean", type="string", length=50, precision=0, scale=0, nullable=true, unique=false)
      */
     private $nameClean;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="enabled", type="boolean", nullable=false)
+     * @ORM\Column(name="enabled", type="boolean", precision=0, scale=0, nullable=false, unique=false)
      */
     private $enabled;
 
@@ -48,29 +47,29 @@ class Page
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Menu")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="menu_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="menu_id", referencedColumnName="id", nullable=true)
      * })
      */
     private $menu;
 
     /**
-     * @var ArrayCollection|Tag[]
+     * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Tag", mappedBy="page")
+     * @ORM\OneToMany(targetEntity="App\Entity\Tag", mappedBy="page")
      */
     private $tags;
 
     /**
-     * @var ArrayCollection|PageDetails[]
+     * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="PageDetails", mappedBy="page")
+     * @ORM\OneToMany(targetEntity="App\Entity\PageDetails", mappedBy="page")
      */
     private $details;
 
     /**
-     * @var ArrayCollection|Banner[]
+     * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Banner", mappedBy="page")
+     * @ORM\OneToMany(targetEntity="App\Entity\Banner", mappedBy="page")
      */
     private $banners;
 
@@ -79,9 +78,9 @@ class Page
      */
     public function __construct()
     {
-        $this->tags = new ArrayCollection();
-        $this->details = new ArrayCollection();
-        $this->banners = new ArrayCollection();
+        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->details = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->banners = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -92,10 +91,6 @@ class Page
     public function getId()
     {
         return $this->id;
-    }
-
-    public function setId($id){
-        $this->id = $id;
     }
 
     /**
@@ -195,45 +190,105 @@ class Page
     }
 
     /**
-     * @return Tag[]|ArrayCollection
+     * Add tag
+     *
+     * @param \App\Entity\Tag $tag
+     *
+     * @return Page
      */
-    public function getTags() {
+    public function addTag(\App\Entity\Tag $tag)
+    {
+        $this->tags[] = $tag;
+
+        return $this;
+    }
+
+    /**
+     * Remove tag
+     *
+     * @param \App\Entity\Tag $tag
+     */
+    public function removeTag(\App\Entity\Tag $tag)
+    {
+        $this->tags->removeElement($tag);
+    }
+
+    /**
+     * Get tags
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTags()
+    {
         return $this->tags;
     }
 
     /**
-     * @param Tag[]|ArrayCollection $tags
+     * Add detail
+     *
+     * @param \App\Entity\PageDetails $detail
+     *
+     * @return Page
      */
-    public function setTags($tags) {
-        $this->tags = $tags;
+    public function addDetail(\App\Entity\PageDetails $detail)
+    {
+        $this->details[] = $detail;
+
+        return $this;
     }
 
     /**
-     * @return PageDetails[]|ArrayCollection
+     * Remove detail
+     *
+     * @param \App\Entity\PageDetails $detail
      */
-    public function getDetails() {
+    public function removeDetail(\App\Entity\PageDetails $detail)
+    {
+        $this->details->removeElement($detail);
+    }
+
+    /**
+     * Get details
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getDetails()
+    {
         return $this->details;
     }
 
     /**
-     * @param PageDetails[]|ArrayCollection $details
+     * Add banner
+     *
+     * @param \App\Entity\Banner $banner
+     *
+     * @return Page
      */
-    public function setDetails($details) {
-        $this->details = $details;
+    public function addBanner(\App\Entity\Banner $banner)
+    {
+        $this->banners[] = $banner;
+
+        return $this;
     }
 
     /**
-     * @return Banner[]|ArrayCollection
+     * Remove banner
+     *
+     * @param \App\Entity\Banner $banner
      */
-    public function getBanners() {
+    public function removeBanner(\App\Entity\Banner $banner)
+    {
+        $this->banners->removeElement($banner);
+    }
+
+    /**
+     * Get banners
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBanners()
+    {
         return $this->banners;
     }
-
-    /**
-     * @param Banner[]|ArrayCollection $banners
-     */
-    public function setBanners($banners) {
-        $this->banners = $banners;
-    }
-
 }
+

@@ -15,7 +15,7 @@ class RoomValues
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,35 +24,35 @@ class RoomValues
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=100, nullable=false)
+     * @ORM\Column(name="description", type="string", length=100, precision=0, scale=0, nullable=false, unique=false)
      */
     private $description;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="value", type="decimal", precision=9, scale=2, nullable=false)
+     * @ORM\Column(name="value", type="decimal", precision=9, scale=2, nullable=false, unique=false)
      */
     private $value;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="breakfast", type="boolean", nullable=true)
+     * @ORM\Column(name="breakfast", type="boolean", precision=0, scale=0, nullable=true, unique=false)
      */
     private $breakfast;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="lunch", type="boolean", nullable=true)
+     * @ORM\Column(name="lunch", type="boolean", precision=0, scale=0, nullable=true, unique=false)
      */
     private $lunch;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="dinner", type="boolean", nullable=true)
+     * @ORM\Column(name="dinner", type="boolean", precision=0, scale=0, nullable=true, unique=false)
      */
     private $dinner;
 
@@ -61,11 +61,10 @@ class RoomValues
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Room")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="room_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="room_id", referencedColumnName="id", nullable=true)
      * })
      */
     private $room;
-
 
 
     /**
@@ -222,3 +221,4 @@ class RoomValues
         return $this->room;
     }
 }
+

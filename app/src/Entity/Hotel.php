@@ -15,7 +15,7 @@ class Hotel
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,14 +24,14 @@ class Hotel
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=100, nullable=false)
+     * @ORM\Column(name="description", type="string", length=100, precision=0, scale=0, nullable=false, unique=false)
      */
     private $description;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="enabled", type="boolean", nullable=true)
+     * @ORM\Column(name="enabled", type="boolean", precision=0, scale=0, nullable=true, unique=false)
      */
     private $enabled;
 
@@ -40,15 +40,15 @@ class Hotel
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Tariff")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="tariff_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="tariff_id", referencedColumnName="id", nullable=true)
      * })
      */
     private $tariff;
 
     /**
-     * @var ArrayCollection|Room[]
+     * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="Room", mappedBy="hotel")
+     * @ORM\OneToMany(targetEntity="App\Entity\Room", mappedBy="hotel")
      */
     private $rooms;
 
@@ -57,7 +57,7 @@ class Hotel
      */
     public function __construct()
     {
-        $this->rooms = new ArrayCollection();
+        $this->rooms = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -141,4 +141,39 @@ class Hotel
     {
         return $this->tariff;
     }
+
+    /**
+     * Add room
+     *
+     * @param \App\Entity\Room $room
+     *
+     * @return Hotel
+     */
+    public function addRoom(\App\Entity\Room $room)
+    {
+        $this->rooms[] = $room;
+
+        return $this;
+    }
+
+    /**
+     * Remove room
+     *
+     * @param \App\Entity\Room $room
+     */
+    public function removeRoom(\App\Entity\Room $room)
+    {
+        $this->rooms->removeElement($room);
+    }
+
+    /**
+     * Get rooms
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRooms()
+    {
+        return $this->rooms;
+    }
 }
+

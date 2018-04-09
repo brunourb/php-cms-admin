@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -16,7 +15,7 @@ class Room
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -25,14 +24,14 @@ class Room
     /**
      * @var integer
      *
-     * @ORM\Column(name="description", type="integer", nullable=false)
+     * @ORM\Column(name="description", type="integer", precision=0, scale=0, nullable=false, unique=false)
      */
     private $description;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="enabled", type="boolean", nullable=true)
+     * @ORM\Column(name="enabled", type="boolean", precision=0, scale=0, nullable=true, unique=false)
      */
     private $enabled;
 
@@ -41,15 +40,15 @@ class Room
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Hotel")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="hotel_id", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="hotel_id", referencedColumnName="id", nullable=true)
      * })
      */
     private $hotel;
 
     /**
-     * @var ArrayCollection|RoomValues[]
+     * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\OneToMany(targetEntity="RoomValues", mappedBy="room")
+     * @ORM\OneToMany(targetEntity="App\Entity\RoomValues", mappedBy="room")
      */
     private $roomValues;
 
@@ -58,7 +57,7 @@ class Room
      */
     public function __construct()
     {
-        $this->roomValues = new ArrayCollection();
+        $this->roomValues = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
     /**
@@ -144,16 +143,37 @@ class Room
     }
 
     /**
-     * @return RoomValues[]|ArrayCollection
+     * Add roomValue
+     *
+     * @param \App\Entity\RoomValues $roomValue
+     *
+     * @return Room
      */
-    public function getRoomValues() {
-        return $this->roomValues;
+    public function addRoomValue(\App\Entity\RoomValues $roomValue)
+    {
+        $this->roomValues[] = $roomValue;
+
+        return $this;
     }
 
     /**
-     * @param RoomValues[]|ArrayCollection $roomValues
+     * Remove roomValue
+     *
+     * @param \App\Entity\RoomValues $roomValue
      */
-    public function setRoomValues($roomValues) {
-        $this->roomValues = $roomValues;
+    public function removeRoomValue(\App\Entity\RoomValues $roomValue)
+    {
+        $this->roomValues->removeElement($roomValue);
+    }
+
+    /**
+     * Get roomValues
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getRoomValues()
+    {
+        return $this->roomValues;
     }
 }
+
