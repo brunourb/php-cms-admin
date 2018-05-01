@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Page
  *
- * @ORM\Table(name="page", indexes={@ORM\Index(name="page_menu", columns={"menu_id"})})
+ * @ORM\Table(name="page", indexes={@ORM\Index(name="page_idx_1", columns={"name"}), @ORM\Index(name="page_menu", columns={"menu_id"})})
  * @ORM\Entity
  */
 class Page
@@ -52,35 +52,12 @@ class Page
      */
     private $menu;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Tag", mappedBy="page")
-     */
-    private $tags;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\PageDetails", mappedBy="page")
+     * @param int $id
      */
-    private $details;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Banner", mappedBy="page")
-     */
-    private $banners;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->tags = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->details = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->banners = new \Doctrine\Common\Collections\ArrayCollection();
+    public function setId($id) {
+        $this->id = $id;
     }
 
     /**
@@ -92,6 +69,7 @@ class Page
     {
         return $this->id;
     }
+
 
     /**
      * Set name
@@ -187,108 +165,6 @@ class Page
     public function getMenu()
     {
         return $this->menu;
-    }
-
-    /**
-     * Add tag
-     *
-     * @param \App\Entity\Tag $tag
-     *
-     * @return Page
-     */
-    public function addTag(\App\Entity\Tag $tag)
-    {
-        $this->tags[] = $tag;
-
-        return $this;
-    }
-
-    /**
-     * Remove tag
-     *
-     * @param \App\Entity\Tag $tag
-     */
-    public function removeTag(\App\Entity\Tag $tag)
-    {
-        $this->tags->removeElement($tag);
-    }
-
-    /**
-     * Get tags
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getTags()
-    {
-        return $this->tags;
-    }
-
-    /**
-     * Add detail
-     *
-     * @param \App\Entity\PageDetails $detail
-     *
-     * @return Page
-     */
-    public function addDetail(\App\Entity\PageDetails $detail)
-    {
-        $this->details[] = $detail;
-
-        return $this;
-    }
-
-    /**
-     * Remove detail
-     *
-     * @param \App\Entity\PageDetails $detail
-     */
-    public function removeDetail(\App\Entity\PageDetails $detail)
-    {
-        $this->details->removeElement($detail);
-    }
-
-    /**
-     * Get details
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getDetails()
-    {
-        return $this->details;
-    }
-
-    /**
-     * Add banner
-     *
-     * @param \App\Entity\Banner $banner
-     *
-     * @return Page
-     */
-    public function addBanner(\App\Entity\Banner $banner)
-    {
-        $this->banners[] = $banner;
-
-        return $this;
-    }
-
-    /**
-     * Remove banner
-     *
-     * @param \App\Entity\Banner $banner
-     */
-    public function removeBanner(\App\Entity\Banner $banner)
-    {
-        $this->banners->removeElement($banner);
-    }
-
-    /**
-     * Get banners
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getBanners()
-    {
-        return $this->banners;
     }
 }
 

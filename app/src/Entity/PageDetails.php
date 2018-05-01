@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * PageDetails
  *
- * @ORM\Table(name="page_details", indexes={@ORM\Index(name="hotels_details_hotels", columns={"page_id"})})
+ * @ORM\Table(name="page_details", indexes={@ORM\Index(name="page_details_idx_1", columns={"description"}), @ORM\Index(name="hotels_details_hotels", columns={"page_id"})})
  * @ORM\Entity
  */
 class PageDetails
@@ -52,19 +52,12 @@ class PageDetails
      */
     private $page;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Image", mappedBy="pageDetails")
-     */
-    private $images;
 
     /**
-     * Constructor
+     * @param int $id
      */
-    public function __construct()
-    {
-        $this->images = new \Doctrine\Common\Collections\ArrayCollection();
+    public function setId($id) {
+        $this->id = $id;
     }
 
     /**
@@ -76,6 +69,7 @@ class PageDetails
     {
         return $this->id;
     }
+
 
     /**
      * Set description
@@ -171,40 +165,6 @@ class PageDetails
     public function getPage()
     {
         return $this->page;
-    }
-
-    /**
-     * Add image
-     *
-     * @param \App\Entity\Image $image
-     *
-     * @return PageDetails
-     */
-    public function addImage(\App\Entity\Image $image)
-    {
-        $this->images[] = $image;
-
-        return $this;
-    }
-
-    /**
-     * Remove image
-     *
-     * @param \App\Entity\Image $image
-     */
-    public function removeImage(\App\Entity\Image $image)
-    {
-        $this->images->removeElement($image);
-    }
-
-    /**
-     * Get images
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getImages()
-    {
-        return $this->images;
     }
 }
 

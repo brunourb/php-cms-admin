@@ -49,19 +49,12 @@ class Tariff
      */
     private $enabled;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Hotel", mappedBy="tariff")
-     */
-    private $hotels;
 
     /**
-     * Constructor
+     * @param int $id
      */
-    public function __construct()
-    {
-        $this->hotels = new \Doctrine\Common\Collections\ArrayCollection();
+    public function setId($id) {
+        $this->id = $id;
     }
 
     /**
@@ -73,6 +66,7 @@ class Tariff
     {
         return $this->id;
     }
+
 
     /**
      * Set description
@@ -168,40 +162,6 @@ class Tariff
     public function getEnabled()
     {
         return $this->enabled;
-    }
-
-    /**
-     * Add hotel
-     *
-     * @param \App\Entity\Hotel $hotel
-     *
-     * @return Tariff
-     */
-    public function addHotel(\App\Entity\Hotel $hotel)
-    {
-        $this->hotels[] = $hotel;
-
-        return $this;
-    }
-
-    /**
-     * Remove hotel
-     *
-     * @param \App\Entity\Hotel $hotel
-     */
-    public function removeHotel(\App\Entity\Hotel $hotel)
-    {
-        $this->hotels->removeElement($hotel);
-    }
-
-    /**
-     * Get hotels
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getHotels()
-    {
-        return $this->hotels;
     }
 }
 

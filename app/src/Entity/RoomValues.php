@@ -68,6 +68,13 @@ class RoomValues
 
 
     /**
+     * @param int $id
+     */
+    public function setId($id) {
+        $this->id = $id;
+    }
+
+    /**
      * Get id
      *
      * @return integer
@@ -76,6 +83,7 @@ class RoomValues
     {
         return $this->id;
     }
+
 
     /**
      * Set description

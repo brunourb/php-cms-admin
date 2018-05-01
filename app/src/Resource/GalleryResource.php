@@ -9,14 +9,15 @@
 namespace App\Resource;
 
 
+use App\Entity\Gallery;
 use App\Entity\PageDetails;
 use Doctrine\ORM\EntityManager;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-class PageDetailsResource extends AbstractResource {
+class GalleryResource extends AbstractResource {
 
-    public static $REPOSITORY = 'App\Entity\PageDetails';
+    public static $REPOSITORY = 'App\Entity\Gallery';
 
     /**
      * PageDetailsResource constructor.
@@ -74,28 +75,17 @@ class PageDetailsResource extends AbstractResource {
 
         if($request->getParam('id')!=null){
             $queryBuilder = $this->entityManager->createQueryBuilder();
-            $queryBuilder->select('p.id, p.description, p.value, p.enabled, IDENTITY(p.page) as page')
-                ->from(PageDetailsResource::$REPOSITORY, 'p')
-                ->where('p.id = :id')->setParameter('id',$request->getParam('id'));
+            $queryBuilder->select('g')
+                ->from(GalleryResource::$REPOSITORY, 'p')
+                ->where('g.id = :id')->setParameter('id',$request->getParam('id'));
 
             $query = $queryBuilder->getQuery();
 
-            $data->pageEdit = is_array($query->getArrayResult()) ? $query->getArrayResult()[0] : $query->getArrayResult();
-
-            $queryBuilder = $this->entityManager->createQueryBuilder();
-            $queryBuilder->select('p')
-                ->from(PageResource::$REPOSITORY,'p')
-                ->where('p.id = :page')->setParameter('page',$data->pageEdit['page']);
-            $query  = $queryBuilder->getQuery();
-
-            $data->pageEdit['page'] = is_array($query->getArrayResult()) ? $query->getArrayResult()[0] : $query->getArrayResult();
-
-
+            $data->galleryEdit = is_array($query->getArrayResult()) ? $query->getArrayResult()[0] : $query->getArrayResult();
         }
 
-        $data->pagesDetails = $this->entityManager->getRepository(PageDetailsResource::$REPOSITORY)->findAll();
-        $pages = $this->entityManager->getRepository(PageResource::$REPOSITORY)->findAll();
-        $data->pages = $pages;
+        $galleries = $this->entityManager->getRepository(GalleryResource::$REPOSITORY)->findAll();
+        $data->galleries = $galleries;
 
         return $data;
 
@@ -108,18 +98,13 @@ class PageDetailsResource extends AbstractResource {
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     function put(Request $request, $args) {
-        $objPage = new PageDetails();
-        $objPage->setId($request->getParam("txtPageDetailEdit"));
-        $objPage->setDescription($request->getParam("txtDescription"));
-        $objPage->setValue($request->getParam("txtValue"));
-        $objPage->setEnabled((bool)$request->getParam('chkStatus') ? 1 : 0);
 
-        if(intval($request->getParam('txtPage')) != 0){
-            $page = $this->entityManager->getRepository(PageResource::$REPOSITORY)->findOneBy(array('id' => $request->getParam('txtPage')));
-            $objPage->setPage($page);
-        }
+        $objGallery = new Gallery();
+        $objGallery->setId($request->getParam("txtGalleryEdit"));
+        $objGallery->setDescription($request->getParams("txtDescription"));
+        $objGallery->setEnabled((bool)$request->getParam('chkStatus') ? 1 : 0);
 
-        $this->entityManager->merge($objPage);
+        $this->entityManager->merge($objGallery);
         $this->entityManager->flush();
 
     }
@@ -131,17 +116,11 @@ class PageDetailsResource extends AbstractResource {
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     function post(Request $request, $args) {
-        $objPage = new PageDetails();
-        $objPage->setDescription($request->getParam("txtDescription"));
-        $objPage->setValue($request->getParam("txtValue"));
-        $objPage->setEnabled((bool)$request->getParam('chkStatus') ? 1 : 0);
+        $objGallery = new Gallery();
+        $objGallery->setDescription($request->getParam("txtDescription"));
+        $objGallery->setEnabled((bool)$request->getParam('chkStatus') ? 1 : 0);
 
-        if(intval($request->getParam('txtPage')) != 0){
-            $page = $this->entityManager->getRepository(PageResource::$REPOSITORY)->findOneBy(array('id' => $request->getParam('txtPage')));
-            $objPage->setPage($page);
-        }
-
-        $this->entityManager->persist($objPage);
+        $this->entityManager->persist($objGallery);
         $this->entityManager->flush();
 
         return $this->get($request,$args);
@@ -154,7 +133,7 @@ class PageDetailsResource extends AbstractResource {
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     function delete(Request $request, $args) {
-        $objPage = $this->entityManager->getRepository(PageDetailsResource::$REPOSITORY)->findOneBy(array('id' => $request->getParam('id')));
+        $objPage = $this->entityManager->getRepository(GalleryResource::$REPOSITORY)->findOneBy(array('id' => $request->getParam('id')));
         $this->entityManager->remove($objPage);
         $this->entityManager->flush();
     }

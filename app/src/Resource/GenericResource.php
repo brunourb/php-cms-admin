@@ -46,6 +46,13 @@ class GenericResource extends AbstractResource {
 
                     break;
 
+                case'galllery':
+
+                    $details = new PageDetailsResource($this->getEntityManager());
+                    return $details->service($request,$response,$args);
+
+                    break;
+
                 case 'page-details':
 
                     $details = new PageDetailsResource($this->getEntityManager());
@@ -53,9 +60,16 @@ class GenericResource extends AbstractResource {
 
                     break;
 
+                case 'gallery':
+
+                    $gallery = new GalleryResource($this->getEntityManager());
+                    return $gallery->service($request,$response,$args);
+
+                    break;
+
                 case 'img-video':
 
-                    $imgVideo = new BannerImageVideoResource($this->getEntityManager());
+                    $imgVideo = new ImageVideoResource($this->getEntityManager());
                     return $imgVideo->service($request,$response,$args);
 
                     break;

@@ -8,7 +8,7 @@ $app->group('/painel', function() use ($app) {
     $app->map(['GET', 'POST','DELETE','PUT'], '/menu', App\Action\CMSAction::class . ':page');
     $app->map(['GET', 'POST','DELETE','PUT'], '/page', App\Action\CMSAction::class . ':page');
     $app->map(['GET', 'POST','DELETE','PUT'], '/page-details', App\Action\CMSAction::class . ':page');
-    $app->get('/gallery',App\Action\CMSAction::class . ':page');
+    $app->map(['GET', 'POST','DELETE','PUT'], '/gallery', App\Action\CMSAction::class . ':page');
     $app->get('/img-video',App\Action\CMSAction::class . ':page');
     $app->get('/tag',App\Action\CMSAction::class . ':page');
     $app->get('/tag-values',App\Action\CMSAction::class . ':page');

@@ -24,7 +24,7 @@ class TagValues
     /**
      * @var string
      *
-     * @ORM\Column(name="value", type="text", length=65535, precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="value", type="string", length=255, precision=0, scale=0, nullable=false, unique=false)
      */
     private $value;
 
@@ -40,6 +40,13 @@ class TagValues
 
 
     /**
+     * @param int $id
+     */
+    public function setId($id) {
+        $this->id = $id;
+    }
+
+    /**
      * Get id
      *
      * @return integer
@@ -48,6 +55,7 @@ class TagValues
     {
         return $this->id;
     }
+
 
     /**
      * Set value

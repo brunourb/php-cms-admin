@@ -16,10 +16,10 @@
 
                     <div class="panel-body">
 
-                        <form role="form" id="formPage" enctype="multipart/form-data">
+                        <form role="form" id="formGallery" enctype="multipart/form-data">
 
                             <div class="form-group">
-                                <label for="menu">Descri&ccedil;&atilde;o</label>
+                                <label for="txtDescription">Descri&ccedil;&atilde;o</label>
                                 <input type="text" class="form-control" id="txtDescription" name="txtDescription" placeholder="Informe uma descrição">
                             </div>
 
@@ -29,7 +29,7 @@
                                 <label for="chkStatus" class="control-label">Ativar/Inativar Registro</label>
                             </div>
 
-                            <input type="hidden" id="txtPageDetailEdit" name="txtPageDetailEdit"/>
+                            <input type="hidden" id="txtGalleryEdit" name="txtGalleryEdit"/>
 
                             <button class="btn btn-success" type="submit" id="btnSalvar">Salvar</button>
 
@@ -82,13 +82,13 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for detail in data.pageDetails %}
+                    {% for gallery in data.galleries %}
                         <tr>
-                            <td>{{ detail.id }}</td>
-                            <td>{{ detail.description }}</td>
+                            <td>{{ gallery.id }}</td>
+                            <td>{{ gallery.description }}</td>
                             <td>
-                                <button class="btn btn-primary btn-xs" id="btnEditPage" data-id="{{ page.id }}"><i class="fa fa-pencil"></i></button>
-                                <button class="btn btn-danger btn-xs" id="btnUpdatePage" data-id="{{ page.id }}"><i class="fa fa-trash-o "></i></button>
+                                <button class="btn btn-primary btn-xs" id="btnEditGallery" data-id="{{ gallery.id }}"><i class="fa fa-pencil"></i></button>
+                                <button class="btn btn-danger btn-xs" id="btnUpdateGallery" data-id="{{ gallery.id }}"><i class="fa fa-trash-o "></i></button>
                             </td>
                         </tr>
                     {% endfor %}

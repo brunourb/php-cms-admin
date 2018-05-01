@@ -45,19 +45,12 @@ class Hotel
      */
     private $tariff;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Room", mappedBy="hotel")
-     */
-    private $rooms;
 
     /**
-     * Constructor
+     * @param int $id
      */
-    public function __construct()
-    {
-        $this->rooms = new \Doctrine\Common\Collections\ArrayCollection();
+    public function setId($id) {
+        $this->id = $id;
     }
 
     /**
@@ -69,6 +62,7 @@ class Hotel
     {
         return $this->id;
     }
+
 
     /**
      * Set description
@@ -140,40 +134,6 @@ class Hotel
     public function getTariff()
     {
         return $this->tariff;
-    }
-
-    /**
-     * Add room
-     *
-     * @param \App\Entity\Room $room
-     *
-     * @return Hotel
-     */
-    public function addRoom(\App\Entity\Room $room)
-    {
-        $this->rooms[] = $room;
-
-        return $this;
-    }
-
-    /**
-     * Remove room
-     *
-     * @param \App\Entity\Room $room
-     */
-    public function removeRoom(\App\Entity\Room $room)
-    {
-        $this->rooms->removeElement($room);
-    }
-
-    /**
-     * Get rooms
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getRooms()
-    {
-        return $this->rooms;
     }
 }
 

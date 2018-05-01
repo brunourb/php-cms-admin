@@ -5,12 +5,12 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Tag
+ * Gallery
  *
- * @ORM\Table(name="tag", indexes={@ORM\Index(name="tag_page", columns={"page_id"})})
+ * @ORM\Table(name="gallery")
  * @ORM\Entity
  */
-class Tag
+class Gallery
 {
     /**
      * @var integer
@@ -24,9 +24,9 @@ class Tag
     /**
      * @var string
      *
-     * @ORM\Column(name="tag", type="string", length=45, precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="description", type="string", length=100, precision=0, scale=0, nullable=false, unique=false)
      */
-    private $tag;
+    private $description;
 
     /**
      * @var boolean
@@ -34,16 +34,6 @@ class Tag
      * @ORM\Column(name="enabled", type="boolean", precision=0, scale=0, nullable=false, unique=false)
      */
     private $enabled;
-
-    /**
-     * @var \App\Entity\Page
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Page")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="page_id", referencedColumnName="id", nullable=true)
-     * })
-     */
-    private $page;
 
 
     /**
@@ -65,27 +55,27 @@ class Tag
 
 
     /**
-     * Set tag
+     * Set description
      *
-     * @param string $tag
+     * @param string $description
      *
-     * @return Tag
+     * @return Gallery
      */
-    public function setTag($tag)
+    public function setDescription($description)
     {
-        $this->tag = $tag;
+        $this->description = $description;
 
         return $this;
     }
 
     /**
-     * Get tag
+     * Get description
      *
      * @return string
      */
-    public function getTag()
+    public function getDescription()
     {
-        return $this->tag;
+        return $this->description;
     }
 
     /**
@@ -93,7 +83,7 @@ class Tag
      *
      * @param boolean $enabled
      *
-     * @return Tag
+     * @return Gallery
      */
     public function setEnabled($enabled)
     {
@@ -110,30 +100,6 @@ class Tag
     public function getEnabled()
     {
         return $this->enabled;
-    }
-
-    /**
-     * Set page
-     *
-     * @param \App\Entity\Page $page
-     *
-     * @return Tag
-     */
-    public function setPage(\App\Entity\Page $page = null)
-    {
-        $this->page = $page;
-
-        return $this;
-    }
-
-    /**
-     * Get page
-     *
-     * @return \App\Entity\Page
-     */
-    public function getPage()
-    {
-        return $this->page;
     }
 }
 

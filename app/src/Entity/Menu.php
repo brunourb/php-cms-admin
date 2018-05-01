@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Menu
  *
- * @ORM\Table(name="menu", indexes={@ORM\Index(name="menu_menu", columns={"menu_id"})})
+ * @ORM\Table(name="menu", indexes={@ORM\Index(name="menu_idx", columns={"description"}), @ORM\Index(name="menu_menu", columns={"menu_id"})})
  * @ORM\Entity
  */
 class Menu
@@ -36,36 +36,28 @@ class Menu
     private $enabled;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="data_created", type="datetime", precision=0, scale=0, nullable=false, unique=false)
+     */
+    private $dataCreated;
+
+    /**
      * @var \App\Entity\Menu
      *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Menu", inversedBy="menus")
+     * @ORM\ManyToOne(targetEntity="App\Entity\Menu")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="menu_id", referencedColumnName="id", nullable=true)
      * })
      */
     private $menu;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Menu", mappedBy="menu", orphanRemoval=true)
-     */
-    private $menus;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\Page", mappedBy="menu")
+     * @param int $id
      */
-    private $pages;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->menus = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->pages = new \Doctrine\Common\Collections\ArrayCollection();
+    public function setId($id) {
+        $this->id = $id;
     }
 
     /**
@@ -77,6 +69,7 @@ class Menu
     {
         return $this->id;
     }
+
 
     /**
      * Set description
@@ -127,6 +120,30 @@ class Menu
     }
 
     /**
+     * Set dataCreated
+     *
+     * @param \DateTime $dataCreated
+     *
+     * @return Menu
+     */
+    public function setDataCreated($dataCreated)
+    {
+        $this->dataCreated = $dataCreated;
+
+        return $this;
+    }
+
+    /**
+     * Get dataCreated
+     *
+     * @return \DateTime
+     */
+    public function getDataCreated()
+    {
+        return $this->dataCreated;
+    }
+
+    /**
      * Set menu
      *
      * @param \App\Entity\Menu $menu
@@ -148,74 +165,6 @@ class Menu
     public function getMenu()
     {
         return $this->menu;
-    }
-
-    /**
-     * Add menu
-     *
-     * @param \App\Entity\Menu $menu
-     *
-     * @return Menu
-     */
-    public function addMenu(\App\Entity\Menu $menu)
-    {
-        $this->menus[] = $menu;
-
-        return $this;
-    }
-
-    /**
-     * Remove menu
-     *
-     * @param \App\Entity\Menu $menu
-     */
-    public function removeMenu(\App\Entity\Menu $menu)
-    {
-        $this->menus->removeElement($menu);
-    }
-
-    /**
-     * Get menus
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getMenus()
-    {
-        return $this->menus;
-    }
-
-    /**
-     * Add page
-     *
-     * @param \App\Entity\Page $page
-     *
-     * @return Menu
-     */
-    public function addPage(\App\Entity\Page $page)
-    {
-        $this->pages[] = $page;
-
-        return $this;
-    }
-
-    /**
-     * Remove page
-     *
-     * @param \App\Entity\Page $page
-     */
-    public function removePage(\App\Entity\Page $page)
-    {
-        $this->pages->removeElement($page);
-    }
-
-    /**
-     * Get pages
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getPages()
-    {
-        return $this->pages;
     }
 }
 

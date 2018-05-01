@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Room
  *
- * @ORM\Table(name="room", indexes={@ORM\Index(name="room_hotel", columns={"hotel_id"})})
+ * @ORM\Table(name="room", indexes={@ORM\Index(name="room_idx_1", columns={"description"}), @ORM\Index(name="room_hotel", columns={"hotel_id"})})
  * @ORM\Entity
  */
 class Room
@@ -45,19 +45,12 @@ class Room
      */
     private $hotel;
 
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\RoomValues", mappedBy="room")
-     */
-    private $roomValues;
 
     /**
-     * Constructor
+     * @param int $id
      */
-    public function __construct()
-    {
-        $this->roomValues = new \Doctrine\Common\Collections\ArrayCollection();
+    public function setId($id) {
+        $this->id = $id;
     }
 
     /**
@@ -69,6 +62,7 @@ class Room
     {
         return $this->id;
     }
+
 
     /**
      * Set description
@@ -140,40 +134,6 @@ class Room
     public function getHotel()
     {
         return $this->hotel;
-    }
-
-    /**
-     * Add roomValue
-     *
-     * @param \App\Entity\RoomValues $roomValue
-     *
-     * @return Room
-     */
-    public function addRoomValue(\App\Entity\RoomValues $roomValue)
-    {
-        $this->roomValues[] = $roomValue;
-
-        return $this;
-    }
-
-    /**
-     * Remove roomValue
-     *
-     * @param \App\Entity\RoomValues $roomValue
-     */
-    public function removeRoomValue(\App\Entity\RoomValues $roomValue)
-    {
-        $this->roomValues->removeElement($roomValue);
-    }
-
-    /**
-     * Get roomValues
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getRoomValues()
-    {
-        return $this->roomValues;
     }
 }
 

@@ -38,9 +38,9 @@ class Banner
     /**
      * @var string
      *
-     * @ORM\Column(name="link", type="string", length=255, precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="url", type="string", length=255, precision=0, scale=0, nullable=false, unique=false)
      */
-    private $link;
+    private $url;
 
     /**
      * @var string
@@ -81,18 +81,10 @@ class Banner
     private $page;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\OneToMany(targetEntity="App\Entity\BannerImageVideo", mappedBy="banner")
+     * @param int $id
      */
-    private $resource;
-
-    /**
-     * Constructor
-     */
-    public function __construct()
-    {
-        $this->resource = new \Doctrine\Common\Collections\ArrayCollection();
+    public function setId($id) {
+        $this->id = $id;
     }
 
     /**
@@ -154,27 +146,27 @@ class Banner
     }
 
     /**
-     * Set link
+     * Set url
      *
-     * @param string $link
+     * @param string $url
      *
      * @return Banner
      */
-    public function setLink($link)
+    public function setUrl($url)
     {
-        $this->link = $link;
+        $this->url = $url;
 
         return $this;
     }
 
     /**
-     * Get link
+     * Get url
      *
      * @return string
      */
-    public function getLink()
+    public function getUrl()
     {
-        return $this->link;
+        return $this->url;
     }
 
     /**
@@ -295,40 +287,6 @@ class Banner
     public function getPage()
     {
         return $this->page;
-    }
-
-    /**
-     * Add resource
-     *
-     * @param \App\Entity\BannerImageVideo $resource
-     *
-     * @return Banner
-     */
-    public function addResource(\App\Entity\BannerImageVideo $resource)
-    {
-        $this->resource[] = $resource;
-
-        return $this;
-    }
-
-    /**
-     * Remove resource
-     *
-     * @param \App\Entity\BannerImageVideo $resource
-     */
-    public function removeResource(\App\Entity\BannerImageVideo $resource)
-    {
-        $this->resource->removeElement($resource);
-    }
-
-    /**
-     * Get resource
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getResource()
-    {
-        return $this->resource;
     }
 }
 
