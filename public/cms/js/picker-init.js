@@ -11,7 +11,7 @@ if (top.location != location) {
 $(function(){
     window.prettyPrint && prettyPrint();
     $('.default-date-picker').datepicker({
-        format: 'mm-dd-yyyy',
+        format: 'dd-mm-yyyy',
         autoclose: true
     });
     $('.dpYears').datepicker({
@@ -80,7 +80,7 @@ $(function(){
 //datetime picker start
 
 $(".form_datetime").datetimepicker({
-    format: 'yyyy-mm-dd hh:ii',
+    format: "dd/mm/yyyy hh:ii",
     autoclose: true,
     todayBtn: true,
     pickerPosition: "bottom-left"
@@ -89,7 +89,7 @@ $(".form_datetime").datetimepicker({
 
 
 $(".form_datetime-component").datetimepicker({
-    format: "dd MM yyyy - hh:ii",
+    format: "dd/mm/yyyy hh:ii",
     autoclose: true,
     todayBtn: true,
     pickerPosition: "bottom-left"
@@ -136,4 +136,3 @@ $('.colorpicker-default').colorpicker({
 $('.colorpicker-rgba').colorpicker();
 
 //colorpicker end
-

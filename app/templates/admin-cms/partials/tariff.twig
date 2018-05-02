@@ -19,19 +19,16 @@
                         <form role="form" id="formTariff" enctype="multipart/form-data">
 
                             <div class="form-group">
-                                <label class="control-label col-md-3">Vig&ecirc;ncia</label>
-                                <div class="col-md-9">
-                                    <div class="input-group input-large custom-date-range" data-date-format="dd/mm/yyyy">
-                                        <input type="text" id="txtInit" class="form-control dpd1" name="from">
-                                        <span class="input-group-addon">&agrave;</span>
-                                        <input type="text" id="txtEnd" class="form-control dpd2" name="to">
-                                    </div>
-                                    <span class="help-block">Select date range</span>
+                                <label for="txtDescription">Vig&ecirc;ncia</label>
+                                <div class="input-group input-large custom-date-range" data-date-format="dd/mm/yyyy">
+                                    <input type="text" id="txtInit" class="form-control dpd1" data-date-format="dd/mm/yyyy" name="from">
+                                    <span class="input-group-addon">&agrave;</span>
+                                    <input type="text" id="txtEnd" class="form-control dpd2" data-date-format="dd/mm/yyyy" name="to">
                                 </div>
-                            </div>s
+                            </div>
 
                             <div class="form-group">
-                                <label for="menu">Descri&ccedil;&atilde;o</label>
+                                <label for="txtDescription">Descri&ccedil;&atilde;o</label>
                                 <input type="text" class="form-control" id="txtDescription" name="txtDescription" placeholder="Informe uma descrição da tarifa">
                             </div>
 
@@ -89,8 +86,9 @@
                     <thead>
                     <tr>
                         <th width="5%">#</th>
-                        <th width="40%">DESCRI&Ccedil;&Atilde;O</th>
-                        <th width="50%">VIG&Ecirc;NCIA</th>
+                        <th width="35%">DESCRI&Ccedil;&Atilde;O</th>
+                        <th width="35%">VIG&Ecirc;NCIA</th>
+                        <th width="10%">STATUS</th>
                         <th width="5%">AÇÃO</th>
                     </tr>
                     </thead>
@@ -99,7 +97,13 @@
                         <tr>
                             <td>{{ tariff.id }}</td>
                             <td>{{ tariff.description }}</td>
-                            <td>{{ tariff.dateInit - tariff.dateEnd }}</td>
+                            <td>{{ tariff.dateInit|date("m/d/Y")}} - {{ tariff.dateEnd|date("m/d/Y")}}</td>
+
+                            {% if tariff.enabled %}
+                                <td> <i class="fa fa-circle green"></i></td>
+                            {% else %}
+                                <td> <i class="fa fa-circle red"></i></td>
+                            {% endif %}
                             <td>
                                 <button class="btn btn-primary btn-xs" id="btnEditTariff" data-id="{{ tariff.id }}"><i class="fa fa-pencil"></i></button>
                                 <button class="btn btn-danger btn-xs" id="btnUpdateTariff" data-id="{{ tariff.id }}"><i class="fa fa-trash-o "></i></button>

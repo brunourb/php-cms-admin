@@ -81,9 +81,6 @@ class MenuResource extends AbstractResource{
                 ->join(MenuResource::$REPOSITORY,'m1', Join::WITH,'m.id = m1.id')
                 ->where('m.id = :id')->setParameter('id',$request->getParam('id'));
 
-
-
-
             //$queryBuilder->select('m')->from($this->REPOSITORY,'m')->where('m.id = :id')->setParameter('id',$request->getParam('id'));
             //$menuEdit = $this->entityManager->getRepository($this->REPOSITORY)->findOneBy(array('id'=>$request->getParam('id')));
 

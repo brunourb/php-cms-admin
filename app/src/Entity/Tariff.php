@@ -36,9 +36,9 @@ class Tariff
     private $dateInit;
 
     /**
-     * @var integer
+     * @var DateTime
      *
-     * @ORM\Column(name="date_end", type="integer", nullable=true)
+     * @ORM\Column(name="date_end", type="date", nullable=true)
      */
     private $dateEnd;
 
