@@ -1,11 +1,12 @@
-|{% include 'default-script.twig' %}
+{% include 'default-script.twig' %}
+
 <script>
     $(function () {
 
-        var ENDPOINT = "/painel/gallery";
+        var ENDPOINT = "/painel/video";
         var METHOD_POST = "POST";
         var METHOD_GET = "GET";
-        var METHOD_PUT = "PUT"
+        var METHOD_PUT = "PUT";
         var METHOD_DELETE = "DELETE";
 
         $(document.body).on('click', 'button', function(e) {
@@ -16,6 +17,7 @@
                 case "btnNovoRegistro":
                     $(".modal-body input").val("");
                     $(".modal-body select").val("");
+                    $('#menuModal').modal('show');
 
                     break;
 
@@ -25,13 +27,13 @@
                         $("#chkStatus").val('true');
                     }
 
-                    if($('#txtGalleryEdit') && $('#txtGalleryEdit').val() != ""){
+                    if($('#txtVideoEdit') && $('#txtVideoEdit').val() != ""){
                         $.ajax({
                             url: ENDPOINT, //this is the submit URL
                             type: METHOD_PUT, //or POST
-                            data: $('#formGallery').serialize(),
+                            data: $('#formVideo').serialize(),
                             success: function (data) {
-                                $('#formGallery').trigger("reset");
+                                $('#formVideo').trigger("reset");
                                 toastr.success('Registro atualizado com sucesso.').success(
                                     setTimeout(function(){
                                         location.reload();
@@ -48,9 +50,9 @@
                         $.ajax({
                             url: ENDPOINT, //this is the submit URL
                             type: METHOD_POST, //or POST
-                            data: $('#formGallery').serialize(),
+                            data: $('#formVideo').serialize(),
                             success: function (data) {
-                                $('#formGallery').trigger("reset");
+                                $('#formVideo').trigger("reset");
                                 toastr.success('Registro inserido com sucesso.').success(
                                     setTimeout(function(){
                                         location.reload();
@@ -89,7 +91,7 @@
 
                     break;
 
-                case "btnEditGallery":
+                case "btnEditVideo":
                     $('#data-id').val($(this).data("id"));
 
                     $.ajax({
@@ -97,12 +99,20 @@
                         type: METHOD_GET, //or POST
                         data: { id: $('#data-id').val()},//$("#removeData").val($(event.relatedTarget).data('id')),
                         success: function (response) {
-                            $('#formGallery').trigger("reset");
+                            $('#formVideo').trigger("reset");
 
-                            var selected = response.galleryEdit;
+                            var selected = response.imgVideoEdit;
 
-                            $('#txtGalleryEdit').val(selected.id);
+                            if(selected){
+                                $("#txtGallery").select2('data', { id:selected.gallery.id, text: selected.gallery.description});
+                            }else{
+                                $("#txtGallery").select2('data', { id:"", text: ""});
+                            }
+
+                            $('#txtVideoEdit').val(selected.id);
+                            $('#txtName').val(selected.name);
                             $('#txtDescription').val(selected.description);
+                            $('#txtUrl').val(selected.url);
                             $('#chkStatus').val(selected.enabled);
 
                         },
@@ -115,7 +125,7 @@
                     break;
 
 
-                case "btnUpdateGallery":
+                case "btnUpdateVideo":
                     $('#data-id').val($(this).data("id"));
                     $('#removeData').modal('show');
                     break;

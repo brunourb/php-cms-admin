@@ -1,8 +1,10 @@
-|{% include 'default-script.twig' %}
+{% include 'default-script.twig' %}
+<!--picker initialization-->
+<script src="js/picker-init.js"></script>
 <script>
     $(function () {
 
-        var ENDPOINT = "/painel/gallery";
+        var ENDPOINT = "/painel/tariff";
         var METHOD_POST = "POST";
         var METHOD_GET = "GET";
         var METHOD_PUT = "PUT"
@@ -16,6 +18,7 @@
                 case "btnNovoRegistro":
                     $(".modal-body input").val("");
                     $(".modal-body select").val("");
+                    $('#menuModal').modal('show');
 
                     break;
 
@@ -25,13 +28,13 @@
                         $("#chkStatus").val('true');
                     }
 
-                    if($('#txtGalleryEdit') && $('#txtGalleryEdit').val() != ""){
+                    if($('#txtTariffEdit') && $('#txtTariffEdit').val() != ""){
                         $.ajax({
                             url: ENDPOINT, //this is the submit URL
                             type: METHOD_PUT, //or POST
-                            data: $('#formGallery').serialize(),
+                            data: $('#formTariff').serialize(),
                             success: function (data) {
-                                $('#formGallery').trigger("reset");
+                                $('#formTariff').trigger("reset");
                                 toastr.success('Registro atualizado com sucesso.').success(
                                     setTimeout(function(){
                                         location.reload();
@@ -48,9 +51,9 @@
                         $.ajax({
                             url: ENDPOINT, //this is the submit URL
                             type: METHOD_POST, //or POST
-                            data: $('#formGallery').serialize(),
+                            data: $('#formTariff').serialize(),
                             success: function (data) {
-                                $('#formGallery').trigger("reset");
+                                $('#formTariff').trigger("reset");
                                 toastr.success('Registro inserido com sucesso.').success(
                                     setTimeout(function(){
                                         location.reload();
@@ -68,7 +71,7 @@
                     break;
 
                 case "btnRemover":
-                    ;
+;
                     $.ajax({
                         url: ENDPOINT, //this is the submit URL
                         type: METHOD_DELETE, //or POST
@@ -89,7 +92,7 @@
 
                     break;
 
-                case "btnEditGallery":
+                case "btnEditTariff":
                     $('#data-id').val($(this).data("id"));
 
                     $.ajax({
@@ -97,12 +100,14 @@
                         type: METHOD_GET, //or POST
                         data: { id: $('#data-id').val()},//$("#removeData").val($(event.relatedTarget).data('id')),
                         success: function (response) {
-                            $('#formGallery').trigger("reset");
+                            $('#formTariff').trigger("reset");
 
-                            var selected = response.galleryEdit;
+                            var selected = response.tariffEdit;
 
-                            $('#txtGalleryEdit').val(selected.id);
+                            $('#txtTariffEdit').val(selected.id);
                             $('#txtDescription').val(selected.description);
+                            $('#txtInit').val(selected.dateInit);
+                            $('#txtEnd').val(selected.dateEnd);
                             $('#chkStatus').val(selected.enabled);
 
                         },
@@ -115,7 +120,7 @@
                     break;
 
 
-                case "btnUpdateGallery":
+                case "btnUpdateTariff":
                     $('#data-id').val($(this).data("id"));
                     $('#removeData').modal('show');
                     break;

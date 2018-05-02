@@ -76,7 +76,7 @@ class GalleryResource extends AbstractResource {
         if($request->getParam('id')!=null){
             $queryBuilder = $this->entityManager->createQueryBuilder();
             $queryBuilder->select('g')
-                ->from(GalleryResource::$REPOSITORY, 'p')
+                ->from(GalleryResource::$REPOSITORY, 'g')
                 ->where('g.id = :id')->setParameter('id',$request->getParam('id'));
 
             $query = $queryBuilder->getQuery();
@@ -101,7 +101,7 @@ class GalleryResource extends AbstractResource {
 
         $objGallery = new Gallery();
         $objGallery->setId($request->getParam("txtGalleryEdit"));
-        $objGallery->setDescription($request->getParams("txtDescription"));
+        $objGallery->setDescription($request->getParam("txtDescription"));
         $objGallery->setEnabled((bool)$request->getParam('chkStatus') ? 1 : 0);
 
         $this->entityManager->merge($objGallery);

@@ -15,7 +15,7 @@ class Tariff
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,30 +24,31 @@ class Tariff
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=100, precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="description", type="string", length=100, nullable=false)
      */
     private $description;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_init", type="date", precision=0, scale=0, nullable=true, unique=false)
+     * @ORM\Column(name="date_init", type="date", nullable=true)
      */
     private $dateInit;
 
     /**
      * @var integer
      *
-     * @ORM\Column(name="date_end", type="integer", precision=0, scale=0, nullable=true, unique=false)
+     * @ORM\Column(name="date_end", type="integer", nullable=true)
      */
     private $dateEnd;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="enabled", type="boolean", precision=0, scale=0, nullable=true, unique=false)
+     * @ORM\Column(name="enabled", type="boolean", nullable=true)
      */
     private $enabled;
+
 
 
     /**
@@ -66,7 +67,6 @@ class Tariff
     {
         return $this->id;
     }
-
 
     /**
      * Set description
@@ -164,4 +164,3 @@ class Tariff
         return $this->enabled;
     }
 }
-

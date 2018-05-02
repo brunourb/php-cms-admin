@@ -15,7 +15,7 @@ class Banner
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,49 +24,49 @@ class Banner
     /**
      * @var string
      *
-     * @ORM\Column(name="name_clean", type="string", length=50, precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="name_clean", type="string", length=50, nullable=false)
      */
     private $nameClean;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=100, precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="description", type="string", length=100, nullable=false)
      */
     private $description;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="url", type="string", length=255, precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="url", type="string", length=255, nullable=false)
      */
     private $url;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="position", type="string", length=20, precision=0, scale=0, nullable=true, unique=false)
+     * @ORM\Column(name="position", type="string", length=20, nullable=true)
      */
     private $position;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date_created", type="datetime", precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="date_created", type="datetime", nullable=false)
      */
-    private $dateCreated;
+    private $dateCreated = 'CURRENT_TIMESTAMP';
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="interval_init", type="datetime", precision=0, scale=0, nullable=true, unique=false)
+     * @ORM\Column(name="interval_init", type="datetime", nullable=true)
      */
     private $intervalInit;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="interlval_end", type="datetime", precision=0, scale=0, nullable=true, unique=false)
+     * @ORM\Column(name="interlval_end", type="datetime", nullable=true)
      */
     private $interlvalEnd;
 
@@ -75,7 +75,7 @@ class Banner
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Page")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="page_id", referencedColumnName="id", nullable=true)
+     *   @ORM\JoinColumn(name="page_id", referencedColumnName="id")
      * })
      */
     private $page;
@@ -289,4 +289,3 @@ class Banner
         return $this->page;
     }
 }
-

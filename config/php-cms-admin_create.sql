@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2018-05-01 17:51:19.793
+-- Last modification date: 2018-05-01 22:59:41.424
 
 -- tables
 -- Table: banner

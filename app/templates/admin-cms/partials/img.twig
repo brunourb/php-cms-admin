@@ -8,18 +8,18 @@
                 <header class="panel-heading">
                     NOVO REGISTRO
                     <span class="tools pull-right">
-                        <a class="fa fa-repeat box-refresh" href="javascript:;" onclick="resetForm('formImgVideo')"></a>
+                        <a class="fa fa-repeat box-refresh" href="javascript:;" onclick="resetForm('formImg')"></a>
                         <a class="t-collapse fa fa-chevron-down" href="javascript:;"></a>
                     </span>
                 </header>
                 <div class="panel-body">
 
-                    <form role="form" id="formImgVideo" enctype="multipart/form-data">
+                    <form role="form" id="formImg" enctype="multipart/form-data">
 
 
                         <div class="form-group">
-                            <label for="txtPage">Galeria</label>
-                            <select class="form-control  select2" id="txtPage" name="txtGaleria">
+                            <label for="txtGallery">Galeria</label>
+                            <select class="form-control  select2" id="txtGallery" name="txtGallery">
                                 <option value="">Selecione uma opção</option>
                                 {% for gallery in data.galleries %}
                                     <option value="{{ gallery.id }}">{{ gallery.description }}</option>
@@ -28,16 +28,13 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="txtTipo">Tipo</label>
-                            <select class="form-control select" id="txtTipo">
-                                    <option value="IMAGEM">IMAGEM</option>
-                                    <option value="VIDEO">V&Iacute;DEO</option>
-                            </select>
+                            <label for="txtName">Nome</label>
+                            <input type="text" class="form-control" id="txtName" placeholder="Informe um nome para o vídeo">
                         </div>
 
                         <div class="form-group">
-                            <label for="menu">Descri&ccedil;&atilde;o</label>
-                            <input type="text" class="form-control" id="menu" placeholder="Informe uma descrição para imagem/vídeo">
+                            <label for="txtDescription">Descri&ccedil;&atilde;o</label>
+                            <input type="text" class="form-control" id="txtDescription" placeholder="Informe uma descrição o vídeo">
                         </div>
 
                         <div class="form-group row gal-upload">
@@ -71,23 +68,23 @@
                     <thead>
                     <tr>
                         <th width="5%">&nbsp;</th>
-                        <th width="20%">MENU</th>
-                        <th width="40%">SUB-MENU</th>
-                        <th width="20%">P&Aacute;GINA</th>
+                        <th width="20%">NOME</th>
+                        <th width="20%">URL</th>
                         <th width="5%">AÇÃO</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>ADELMAN SOARES ASEVEDO FILHO</td>
-                        <td>Ginecologia/Obstetrícia</td>
-                        <td>Ginecologia/Obstetrícia</td>
-                        <td>
-                            <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
-                            <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
-                        </td>
-                    </tr>
+                    {% for video in data.videos %}
+                        <tr>
+                            <td>{{ video.id }}</td>
+                            <td>{{ video.name }}</td>
+                            <td>{{ video.url }}</td>
+                            <td>
+                                <button class="btn btn-primary btn-xs" id="btnEditVideo" data-id="{{ video.id }}"><i class="fa fa-pencil"></i></button>
+                                <button class="btn btn-danger btn-xs" id="btnUpdateVideo" data-id="{{ video.id }}"><i class="fa fa-trash-o "></i></button>
+                            </td>
+                        </tr>
+                    {% endfor %}
                     </tbody>
                 </table>
             </section>

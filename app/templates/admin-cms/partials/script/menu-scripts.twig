@@ -102,7 +102,7 @@
 
                             var selected = response.menuEdit;
 
-                            if(selected){
+                            if(selected.parent){
                                 $("#txtMenu").select2('data', { id:selected.parent.id, text: selected.parent.description});
                             }else{
                                 $("#txtMenu").select2('data', { id:"", text: ""});

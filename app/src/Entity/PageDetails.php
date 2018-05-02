@@ -15,7 +15,7 @@ class PageDetails
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,21 +24,21 @@ class PageDetails
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=45, precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="description", type="string", length=45, nullable=false)
      */
     private $description;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="value", type="text", length=65535, precision=0, scale=0, nullable=true, unique=false)
+     * @ORM\Column(name="value", type="text", length=65535, nullable=true)
      */
     private $value;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="enabled", type="boolean", precision=0, scale=0, nullable=true, unique=false)
+     * @ORM\Column(name="enabled", type="boolean", nullable=true)
      */
     private $enabled;
 
@@ -47,10 +47,11 @@ class PageDetails
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Page")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="page_id", referencedColumnName="id", nullable=true)
+     *   @ORM\JoinColumn(name="page_id", referencedColumnName="id")
      * })
      */
     private $page;
+
 
 
     /**
@@ -69,7 +70,6 @@ class PageDetails
     {
         return $this->id;
     }
-
 
     /**
      * Set description
@@ -167,4 +167,3 @@ class PageDetails
         return $this->page;
     }
 }
-

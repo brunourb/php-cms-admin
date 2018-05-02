@@ -15,7 +15,7 @@ class Hotel
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,14 +24,14 @@ class Hotel
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=100, precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="description", type="string", length=100, nullable=false)
      */
     private $description;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="enabled", type="boolean", precision=0, scale=0, nullable=true, unique=false)
+     * @ORM\Column(name="enabled", type="boolean", nullable=true)
      */
     private $enabled;
 
@@ -40,10 +40,11 @@ class Hotel
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Tariff")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="tariff_id", referencedColumnName="id", nullable=true)
+     *   @ORM\JoinColumn(name="tariff_id", referencedColumnName="id")
      * })
      */
     private $tariff;
+
 
 
     /**
@@ -62,7 +63,6 @@ class Hotel
     {
         return $this->id;
     }
-
 
     /**
      * Set description
@@ -136,4 +136,3 @@ class Hotel
         return $this->tariff;
     }
 }
-

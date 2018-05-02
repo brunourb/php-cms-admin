@@ -3968,7 +3968,7 @@ div.tagsinput , .colpick, .colpick_field, .colpick_hex_field,
 }
 
 .tab-dark {
-    background: #32323a;
+    background: #FFFFFF;
     border-bottom: none;
 }
 
@@ -3993,12 +3993,12 @@ div.tagsinput , .colpick, .colpick_field, .colpick_hex_field,
 }
 
 .panel-heading .nav > li > a {
-    color: #fff;
+    color: #007ECB;
 }
 
 .panel-heading .nav > li.active > a, .panel-heading .nav > li > a:hover {
-    color: #32323a;
-    background: #fff;
+    color: #fff;
+    background: #007ECB;
 }
 
 .panel-heading {

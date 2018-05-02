@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * ImageVideo
  *
- * @ORM\Table(name="image_video", indexes={@ORM\Index(name="image_video_idx_1", columns={"description", "name_generate", "name"}), @ORM\Index(name="image_video_banner", columns={"banner_id"}), @ORM\Index(name="image_video_gallery", columns={"gallery_id"}), @ORM\Index(name="image_video_page_details", columns={"page_details_id"})})
+ * @ORM\Table(name="image_video", indexes={@ORM\Index(name="image_video_idx_1", columns={"description", "name"}), @ORM\Index(name="image_video_gallery", columns={"gallery_id"})})
  * @ORM\Entity
  */
 class ImageVideo
@@ -15,7 +15,7 @@ class ImageVideo
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,74 +24,48 @@ class ImageVideo
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=255, precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="name", type="string", length=255, nullable=false)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=255, precision=0, scale=0, nullable=true, unique=false)
+     * @ORM\Column(name="description", type="string", length=255, nullable=true)
      */
     private $description;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="name_generate", type="string", length=255, precision=0, scale=0, nullable=true, unique=false)
-     */
-    private $nameGenerate;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="type", type="string", precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="type", type="string", nullable=false)
      */
     private $type;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="enabled", type="boolean", precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="enabled", type="boolean", nullable=false)
      */
     private $enabled;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="url", type="string", length=255, precision=0, scale=0, nullable=true, unique=false)
+     * @ORM\Column(name="url", type="string", length=255, nullable=true)
      */
     private $url;
-
-    /**
-     * @var \App\Entity\Banner
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Banner")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="banner_id", referencedColumnName="id", nullable=true)
-     * })
-     */
-    private $banner;
 
     /**
      * @var \App\Entity\Gallery
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Gallery")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="gallery_id", referencedColumnName="id", nullable=true)
+     *   @ORM\JoinColumn(name="gallery_id", referencedColumnName="id")
      * })
      */
     private $gallery;
 
-    /**
-     * @var \App\Entity\PageDetails
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\PageDetails")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="page_details_id", referencedColumnName="id", nullable=true)
-     * })
-     */
-    private $pageDetails;
 
 
     /**
@@ -110,7 +84,6 @@ class ImageVideo
     {
         return $this->id;
     }
-
 
     /**
      * Set name
@@ -158,30 +131,6 @@ class ImageVideo
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Set nameGenerate
-     *
-     * @param string $nameGenerate
-     *
-     * @return ImageVideo
-     */
-    public function setNameGenerate($nameGenerate)
-    {
-        $this->nameGenerate = $nameGenerate;
-
-        return $this;
-    }
-
-    /**
-     * Get nameGenerate
-     *
-     * @return string
-     */
-    public function getNameGenerate()
-    {
-        return $this->nameGenerate;
     }
 
     /**
@@ -257,30 +206,6 @@ class ImageVideo
     }
 
     /**
-     * Set banner
-     *
-     * @param \App\Entity\Banner $banner
-     *
-     * @return ImageVideo
-     */
-    public function setBanner(\App\Entity\Banner $banner = null)
-    {
-        $this->banner = $banner;
-
-        return $this;
-    }
-
-    /**
-     * Get banner
-     *
-     * @return \App\Entity\Banner
-     */
-    public function getBanner()
-    {
-        return $this->banner;
-    }
-
-    /**
      * Set gallery
      *
      * @param \App\Entity\Gallery $gallery
@@ -303,29 +228,4 @@ class ImageVideo
     {
         return $this->gallery;
     }
-
-    /**
-     * Set pageDetails
-     *
-     * @param \App\Entity\PageDetails $pageDetails
-     *
-     * @return ImageVideo
-     */
-    public function setPageDetails(\App\Entity\PageDetails $pageDetails = null)
-    {
-        $this->pageDetails = $pageDetails;
-
-        return $this;
-    }
-
-    /**
-     * Get pageDetails
-     *
-     * @return \App\Entity\PageDetails
-     */
-    public function getPageDetails()
-    {
-        return $this->pageDetails;
-    }
 }
-

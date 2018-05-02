@@ -98,8 +98,6 @@ class MenuResource extends AbstractResource{
             $query  = $queryBuilder->getQuery();
 
             $data->menuEdit['parent'] = is_array($query->getArrayResult()) ? $query->getArrayResult()[0] : $query->getArrayResult();
-
-            //$data->menuEdit = $menuEdit->toArray();
         }
 
         $menus = $this->entityManager->getRepository(MenuResource::$REPOSITORY)->findAll();

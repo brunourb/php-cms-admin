@@ -15,7 +15,7 @@ class Tag
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,14 +24,14 @@ class Tag
     /**
      * @var string
      *
-     * @ORM\Column(name="tag", type="string", length=45, precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="tag", type="string", length=45, nullable=false)
      */
     private $tag;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="enabled", type="boolean", precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="enabled", type="boolean", nullable=false)
      */
     private $enabled;
 
@@ -40,10 +40,11 @@ class Tag
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Page")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="page_id", referencedColumnName="id", nullable=true)
+     *   @ORM\JoinColumn(name="page_id", referencedColumnName="id")
      * })
      */
     private $page;
+
 
 
     /**
@@ -62,7 +63,6 @@ class Tag
     {
         return $this->id;
     }
-
 
     /**
      * Set tag
@@ -136,4 +136,3 @@ class Tag
         return $this->page;
     }
 }
-

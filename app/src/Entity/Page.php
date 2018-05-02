@@ -15,7 +15,7 @@ class Page
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,21 +24,21 @@ class Page
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=100, precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="name", type="string", length=100, nullable=false)
      */
     private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="name_clean", type="string", length=50, precision=0, scale=0, nullable=true, unique=false)
+     * @ORM\Column(name="name_clean", type="string", length=50, nullable=true)
      */
     private $nameClean;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="enabled", type="boolean", precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="enabled", type="boolean", nullable=false)
      */
     private $enabled;
 
@@ -47,10 +47,11 @@ class Page
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Menu")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="menu_id", referencedColumnName="id", nullable=true)
+     *   @ORM\JoinColumn(name="menu_id", referencedColumnName="id")
      * })
      */
     private $menu;
+
 
 
     /**
@@ -69,7 +70,6 @@ class Page
     {
         return $this->id;
     }
-
 
     /**
      * Set name
@@ -167,4 +167,3 @@ class Page
         return $this->menu;
     }
 }
-

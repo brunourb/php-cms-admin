@@ -15,7 +15,7 @@ class Menu
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,21 +24,21 @@ class Menu
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=50, precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="description", type="string", length=50, nullable=false)
      */
     private $description;
 
     /**
      * @var boolean
      *
-     * @ORM\Column(name="enabled", type="boolean", precision=0, scale=0, nullable=true, unique=false)
+     * @ORM\Column(name="enabled", type="boolean", nullable=true)
      */
     private $enabled;
 
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="data_created", type="datetime", precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="data_created", type="datetime", nullable=false)
      */
     private $dataCreated;
 
@@ -47,10 +47,11 @@ class Menu
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Menu")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="menu_id", referencedColumnName="id", nullable=true)
+     *   @ORM\JoinColumn(name="menu_id", referencedColumnName="id")
      * })
      */
     private $menu;
+
 
 
     /**
@@ -69,7 +70,6 @@ class Menu
     {
         return $this->id;
     }
-
 
     /**
      * Set description
@@ -167,4 +167,3 @@ class Menu
         return $this->menu;
     }
 }
-

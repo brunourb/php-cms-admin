@@ -10,6 +10,7 @@ namespace App\Resource;
 
 
 use App\Entity\BannerImageVideo;
+use App\Entity\Gallery;
 use App\Entity\ImageVideo;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
@@ -76,16 +77,27 @@ class ImageVideoResource extends AbstractResource {
 
         if($request->getParam('id')!=null){
             $queryBuilder = $this->entityManager->createQueryBuilder();
-            $queryBuilder->select('iv')
+            $queryBuilder->select('iv.id,iv.name,iv.description,iv.type,iv.enabled,iv.url,IDENTITY(iv.gallery) as gallery')
                 ->from(ImageVideoResource::$REPOSITORY, 'iv')
-                ->where('iv.id = :id')->setParameter('id',$request->getParam('id'));
+                ->where('iv.id = :id')->setParameter('id',$request->getParam('id'))
+                ->andWhere('iv.type = :type')->setParameter('type',explode("/",$request->getUri()->getPath())[2]);
 
             $query = $queryBuilder->getQuery();
 
             $data->imgVideoEdit = is_array($query->getArrayResult()) ? $query->getArrayResult()[0] : $query->getArrayResult();
+
+            $queryBuilder = $this->entityManager->createQueryBuilder();
+            $queryBuilder->select('g')
+                ->from(GalleryResource::$REPOSITORY,'g')
+                ->where('g.id = :gallery')->setParameter('gallery',$data->imgVideoEdit['gallery']);
+            $query  = $queryBuilder->getQuery();
+
+            $data->imgVideoEdit['gallery'] = is_array($query->getArrayResult()) ? $query->getArrayResult()[0] : $query->getArrayResult();
         }
 
         $galleries = $this->entityManager->getRepository(GalleryResource::$REPOSITORY)->findAll();
+        $imgVideos = $this->entityManager->getRepository(ImageVideoResource::$REPOSITORY)->findAll();
+        $data->imgVideos = $imgVideos;
         $data->galleries = $galleries;
 
         return $data;
@@ -101,13 +113,19 @@ class ImageVideoResource extends AbstractResource {
     function put(Request $request, $args) {
 
         $objImageVideo = new ImageVideo();
-        $objImageVideo->setId($request->getParam("txtImageVideoEdit"));
+        $objImageVideo->setId($request->getParam("txtVideoEdit"));
         $objImageVideo->setName($request->getParam("txtName"));
         $objImageVideo->setDescription($request->getParam("txtDescription"));
-        $objImageVideo->setNameGenerate($request->getParam("txtNameGenerate"));
-        $objImageVideo->setType($request->getParam("txtType"));
+        $objImageVideo->setType(explode("/",$request->getUri()->getPath())[2]);
         $objImageVideo->setEnabled((bool)$request->getParam('chkStatus') ? 1 : 0);
-        $objImageVideo->setUrl($request->getParam("txtUrl"));
+        $objImageVideo->setUrl(count(explode("v=",$request->getParam("txtUrl")))>1 ? explode("v=",$request->getParam("txtUrl"))[1] : $request->getParam("txtUrl") );
+
+        if(intval($request->getParam('txtGallery')) != 0){
+            $objGallery = $this->entityManager->getRepository(GalleryResource::$REPOSITORY)->findOneBy(array('id' => $request->getParam('txtGallery')));
+            $objImageVideo->setGallery($objGallery);
+        }else{
+            throw new \Exception("Galeria não informada");
+        }
 
         $this->entityManager->merge($objImageVideo);
         $this->entityManager->flush();
@@ -119,16 +137,23 @@ class ImageVideoResource extends AbstractResource {
      * @param $args
      * @return mixed
      * @throws OptimisticLockException
+     * @throws \Exception
      */
     function post(Request $request, $args) {
 
         $objImageVideo = new ImageVideo();
         $objImageVideo->setName($request->getParam("txtName"));
         $objImageVideo->setDescription($request->getParam("txtDescription"));
-        $objImageVideo->setNameGenerate($request->getParam("txtNameGenerate"));
-        $objImageVideo->setType($request->getParam("txtType"));
+        $objImageVideo->setType(explode("/",$request->getUri()->getPath())[2]);
         $objImageVideo->setEnabled((bool)$request->getParam('chkStatus') ? 1 : 0);
-        $objImageVideo->setUrl($request->getParam("txtUrl"));
+        $objImageVideo->setUrl(count(explode("v=",$request->getParam("txtUrl")))>1 ? explode("v=",$request->getParam("txtUrl"))[1] : $request->getParam("txtUrl") );
+
+        if(intval($request->getParam('txtGallery')) != 0){
+            $objGallery = $this->entityManager->getRepository(GalleryResource::$REPOSITORY)->findOneBy(array('id' => $request->getParam('txtGallery')));
+            $objImageVideo->setGallery($objGallery);
+        }else{
+            throw new \Exception("Galeria não informada");
+        }
 
         $this->entityManager->persist($objImageVideo);
         $this->entityManager->flush();
@@ -144,7 +169,7 @@ class ImageVideoResource extends AbstractResource {
      * @throws OptimisticLockException
      */
     function delete(Request $request, $args) {
-        $objImgVideo = $this->entityManager->getRepository(ImageVideoResource::$REPOSITORY)->findBy(array('id' => $request->getParam('id')));
+        $objImgVideo = $this->entityManager->getRepository(ImageVideoResource::$REPOSITORY)->findOneBy(array('id' => $request->getParam('id')));
         $this->entityManager->remove($objImgVideo);
         $this->entityManager->flush();
 

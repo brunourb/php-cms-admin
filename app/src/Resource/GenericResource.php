@@ -67,7 +67,8 @@ class GenericResource extends AbstractResource {
 
                     break;
 
-                case 'img-video':
+                case 'img':
+                case 'video':
 
                     $imgVideo = new ImageVideoResource($this->getEntityManager());
                     return $imgVideo->service($request,$response,$args);

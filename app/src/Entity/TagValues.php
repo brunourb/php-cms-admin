@@ -15,7 +15,7 @@ class TagValues
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer", precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -24,7 +24,7 @@ class TagValues
     /**
      * @var string
      *
-     * @ORM\Column(name="value", type="string", length=255, precision=0, scale=0, nullable=false, unique=false)
+     * @ORM\Column(name="value", type="string", length=255, nullable=false)
      */
     private $value;
 
@@ -33,10 +33,11 @@ class TagValues
      *
      * @ORM\ManyToOne(targetEntity="App\Entity\Tag")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="tag_id", referencedColumnName="id", nullable=true)
+     *   @ORM\JoinColumn(name="tag_id", referencedColumnName="id")
      * })
      */
     private $tag;
+
 
 
     /**
@@ -55,7 +56,6 @@ class TagValues
     {
         return $this->id;
     }
-
 
     /**
      * Set value
@@ -105,4 +105,3 @@ class TagValues
         return $this->tag;
     }
 }
-
