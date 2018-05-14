@@ -2,6 +2,7 @@
 namespace App\Action;
 
 use App\Resource\GenericResource;
+use App\Resource\ImageVideoResource;
 use function Couchbase\defaultDecoder;
 use Doctrine\ORM\EntityManager;
 use Slim\Views\Twig;
@@ -77,33 +78,9 @@ final class CMSAction extends DefaultAction
     /**
      * @param Request $request
      * @param Response $response
-     * @return Response|static
+     * @return ImageVideoResource|Response
      */
-    public function upload(Request $request, Response $response) {
-
-        $errors = [];
-
-        $files = $request->getUploadedFiles();
-
-        foreach ($files as $data) {
-            try {
-                if (empty($data->file)) {
-                    throw new Exception('Expected a newfile');
-                }
-
-                if ($data->getError() === UPLOAD_ERR_OK) {
-                    $uploadFileName = $data->getClientFilename();
-                    $token = md5(uniqid(rand(), true));
-                    $data->moveTo("/tmp/$token.".pathinfo($data->getClientFilename(), PATHINFO_EXTENSION));
-                }
-            } catch (\Exception $e) {
-                array_push($errors, 'Failed to upload '. $data->getClientFilename());
-            }
-        }
-        return $response->withJson(['errors' => $errors], 200, JSON_PRETTY_PRINT);
-
-
-
-        return $response;
+    public function upload(Request $request, Response $response){
+        return $this->genericResource->upload($request,$response);
     }
 }

@@ -11,16 +11,15 @@ namespace App\Resource;
 
 use App\Entity\BannerImageVideo;
 use App\Entity\Content;
-use App\Entity\Gallery;
 use App\Entity\ImageVideo;
 use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\OptimisticLockException;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
-class ImageVideoResource extends AbstractResource {
+class ContentResource extends AbstractResource {
 
-    public static $REPOSITORY = 'App\Entity\ImageVideo';
+    public static $REPOSITORY = 'App\Entity\Content';
 
     /**
      * PageDetailsResource constructor.
@@ -76,31 +75,21 @@ class ImageVideoResource extends AbstractResource {
 
         $data = new \stdClass();
 
-        if($request->getParam('id')!=null){
+        $imgVideo = explode("/",$request->getUri()->getPath())[3];
+
+        if(isset($imgVideo)){
+
             $queryBuilder = $this->entityManager->createQueryBuilder();
-            $queryBuilder->select('iv.id,iv.name,iv.description,iv.type,iv.enabled,iv.url,IDENTITY(iv.gallery) as gallery')
-                ->from(ImageVideoResource::$REPOSITORY, 'iv')
-                ->where('iv.id = :id')->setParameter('id',$request->getParam('id'))
-                ->andWhere('iv.type = :type')->setParameter('type',explode("/",$request->getUri()->getPath())[2]);
+            $queryBuilder->select(array('c','img'))
+                ->from(ContentResource::$REPOSITORY, 'c')
+                ->innerJoin('c.imageVideo','img')
+                ->where('c.imageVideo = :id')->setParameter('id',$imgVideo);
 
             $query = $queryBuilder->getQuery();
 
-            $data->imgVideoEdit = is_array($query->getArrayResult()) ? $query->getArrayResult()[0] : $query->getArrayResult();
-
-            $queryBuilder = $this->entityManager->createQueryBuilder();
-            $queryBuilder->select('g')
-                ->from(GalleryResource::$REPOSITORY,'g')
-                ->where('g.id = :gallery')->setParameter('gallery',$data->imgVideoEdit['gallery']);
-            $query  = $queryBuilder->getQuery();
-
-            $data->imgVideoEdit['gallery'] = is_array($query->getArrayResult()) ? $query->getArrayResult()[0] : $query->getArrayResult();
+            $data->contentEdit = $query->getArrayResult();
         }
 
-        $galleries = $this->entityManager->getRepository(GalleryResource::$REPOSITORY)->findAll();
-        $type = explode("/",$request->getUri()->getPath())[2];
-        $imgVideos = $this->entityManager->getRepository(ImageVideoResource::$REPOSITORY)->findBy(array('type' => $type));
-        $data->imgVideos = $imgVideos;
-        $data->galleries = $galleries;
 
         return $data;
 
@@ -187,5 +176,98 @@ class ImageVideoResource extends AbstractResource {
      */
     function path(Request $request, $args) {
         $this->put($request,$args);
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response|static
+     */
+    public function upload(Request $request, Response $response) {
+
+        $errors = [];
+
+        $files = $request->getUploadedFiles();
+
+        foreach ($files as $data) {
+            try {
+                if (empty($data->file)) {
+                    throw new Exception('Expected a newfile');
+                }
+
+                if ($data->getError() === UPLOAD_ERR_OK) {
+                    $uploadFileName = $data->getClientFilename();
+                    $token = md5(uniqid(rand(), true));
+
+                    $idGaleria = explode("/",$request->getParam("pathName"))[3];
+                    $diretorioUpload = $_SERVER['DOCUMENT_ROOT']."/website/assets/img/img-gallery/$idGaleria";
+
+                    if(!is_dir($diretorioUpload)){
+                        mkdir($diretorioUpload,0775);
+                    }
+
+                    $arquivo = sprintf("%s/%s.%s",$diretorioUpload,$token,pathinfo($data->getClientFilename(), PATHINFO_EXTENSION));
+
+                    $content = new Content();
+                    $content->setNameGenerate(sprintf("%s.%s",$token,pathinfo($data->getClientFilename(), PATHINFO_EXTENSION)));
+                    $content->setDescription($uploadFileName);
+
+                    $imgVideo = $this->entityManager->getRepository(ImageVideoResource::$REPOSITORY)->findOneBy(array("id"=>$idGaleria));
+                    $content->setImageVideo($imgVideo);
+
+                    $this->entityManager->persist($content);
+                    $this->entityManager->flush();
+
+                    $data->moveTo($arquivo);
+                    $this->createThumbnail($diretorioUpload,$token);
+
+                }
+            } catch (\Exception $e) {
+                array_push($errors, 'Failed to upload '. $data->getClientFilename());
+                return $response->withJson(['errors' => $errors], 500, JSON_PRETTY_PRINT);
+            }
+        }
+
+        return $response;
+    }
+
+    /**
+     * @param $image
+     */
+    public function createThumbnail($gallery,  $filename){
+
+        // Set a maximum height and width
+        $width = 200;
+        $height = 200;
+
+        // Get new dimensions
+        list($width_orig, $height_orig) = getimagesize($gallery.'/'.$filename);
+
+        $ratio_orig = $width_orig/$height_orig;
+
+        if ($width/$height > $ratio_orig) {
+            $width = $height*$ratio_orig;
+        } else {
+            $height = $width/$ratio_orig;
+        }
+
+        // Resample
+        $image_p = imagecreatetruecolor($width, $height);
+        $image = null;
+
+        if(preg_match('/[.](jpg)$/', $gallery.'/'.$filename)) {
+            $image = imagecreatefromjpeg($gallery.'/'.$filename);
+        } else if (preg_match('/[.](gif)$/', $filename)) {
+            $image = imagecreatefromgif($gallery.'/'.$filename);
+        } else if (preg_match('/[.](png)$/', $gallery.'/'.$filename)) {
+            $image = imagecreatefrompng($gallery.'/'.$filename);
+        }
+
+
+        imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
+
+        // Output
+        imagejpeg($image_p, $gallery.'/thumb_'.$filename, 100);
+
     }
 }

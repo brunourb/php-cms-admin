@@ -29,27 +29,28 @@
 
                         <div class="form-group">
                             <label for="txtName">Nome</label>
-                            <input type="text" class="form-control" id="txtName" placeholder="Informe um nome para o vídeo">
+                            <input type="text" class="form-control" id="txtName" name="txtName" placeholder="Informe um nome para o vídeo">
                         </div>
 
                         <div class="form-group">
                             <label for="txtDescription">Descri&ccedil;&atilde;o</label>
-                            <input type="text" class="form-control" id="txtDescription" placeholder="Informe uma descrição o vídeo">
-                        </div>
-
-                        <div class="form-group row gal-upload">
-                            <label class="col-lg-12 control-label">Upload Image</label>
-                            <div class="col-lg-12">
-                                <input id="file-4" class="file" type="file" multiple=true>
-                            </div>
+                            <input type="text" class="form-control" id="txtDescription" name="txtDescription" placeholder="Informe uma descrição o vídeo">
                         </div>
 
                         <div class="form-group">
-                            <input id="txtStatus" type="checkbox" class="form-control js-switch-blue" checked/>
-                            <label for="txtStatus" class="control-label">Ativar/Inativar Registro</label>
+                            <label for="txtUrl">URL</label>
+                            <input type="text" class="form-control" id="txtUrl" name="txtUrl" placeholder="Informe a url (link) do vídeo">
                         </div>
 
-                        <button type="submit" class="btn btn-info">Salvar</button>
+                        <div class="form-group">
+                            <input id="chkStatus" name="chkStatus" type="checkbox" class="form-control js-switch-blue" checked/>
+                            <label for="chkStatus" class="control-label">Ativar/Inativar Registro</label>
+                        </div>
+
+
+                        <input type="hidden" id="txtImgEdit" name="txtImgEdit"/>
+
+                        <button class="btn btn-success" type="submit" id="btnSalvar">Salvar</button>
                     </form>
 
                 </div>
@@ -68,26 +69,52 @@
                     <thead>
                     <tr>
                         <th width="5%">&nbsp;</th>
+                        <th width="20%">GALERIA</th>
                         <th width="20%">NOME</th>
-                        <th width="20%">URL</th>
                         <th width="5%">AÇÃO</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for video in data.videos %}
+                    {% for img in data.imgVideos %}
                         <tr>
-                            <td>{{ video.id }}</td>
-                            <td>{{ video.name }}</td>
-                            <td>{{ video.url }}</td>
+                            <td>{{ img.id }}</td>
+                            <td>{{ img.gallery.description }}</td>
+                            <td>{{ img.name }}</td>
                             <td>
-                                <button class="btn btn-primary btn-xs" id="btnEditVideo" data-id="{{ video.id }}"><i class="fa fa-pencil"></i></button>
-                                <button class="btn btn-danger btn-xs" id="btnUpdateVideo" data-id="{{ video.id }}"><i class="fa fa-trash-o "></i></button>
+                                <a href="/painel/img-gallery/{{ img.id }}" class="btn btn-primary btn-xs"><i class="fa-cloud-upload"></i></a>
+                                <button class="btn btn-primary btn-xs" id="btnEditImg" data-id="{{ img.id }}"><i class="fa fa-pencil"></i></button>
+                                <button class="btn btn-danger btn-xs" id="btnUpdateImg" data-id="{{ img.id }}"><i class="fa fa-trash-o "></i></button>
                             </td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
             </section>
+
+            <!-- Modal -->
+            <div class="modal fade" id="removeData" data-toggle="modal" tabindex="-1" role="dialog" aria-labelledby="removeData"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
+                            </button>
+                            <h4 class="modal-title">Cadastro::Video</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>O registro será deletado.</p>
+                            <p>Confirma operação?</p>
+                            <input type="hidden" id="data-id"/>
+                        </div>
+                        <div class="modal-footer">
+                            <button data-dismiss="modal" class="btn btn-send">Cancelar</button>
+                            <button class="btn btn-danger" id="btnRemover">Remover</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- modal -->
+
         </div>
     </div>
 

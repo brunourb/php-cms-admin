@@ -1651,7 +1651,7 @@
         elErrorContainer: null,
         slugCallback: null,
         dropZoneEnabled: true,
-        dropZoneTitle: 'Drag & drop files here &hellip;',
+        dropZoneTitle: 'Arraste e solte arquivos aqui &hellip;',
         dropZoneTitleClass: 'file-drop-zone-title',
         fileActionSettings: {},
         otherActionButtons: '',

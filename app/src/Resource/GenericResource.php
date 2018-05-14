@@ -75,6 +75,11 @@ class GenericResource extends AbstractResource {
 
                     break;
 
+                case 'img-gallery':
+
+                    $content = new ContentResource($this->getEntityManager());
+                    return $content->service($request,$response,$args);
+
                 case 'tag':
 
                     $tagResource = new TagResource($this->getEntityManager());
@@ -180,6 +185,16 @@ class GenericResource extends AbstractResource {
 
     public function service(Request $request, Response $response, $args) {
         // TODO: Implement service() method.
+    }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return ImageVideoResource|Response
+     */
+    public function upload(Request $request, Response $response){
+        $imgVideo = new ContentResource($this->getEntityManager());
+        return $imgVideo->upload($request,$response);
     }
 
     /**

@@ -23,20 +23,28 @@ $("#file-1").fileinput({
  });
  */
 $("#file-3").fileinput({
+    uploadUrl: '/painel/upload',
+    deleteUrl: "/painel/upload",
     showUpload: false,
     showCaption: false,
-    browseClass: "btn btn-primary btn-lg",
-    fileType: "any"
+   // browseClass: "btn btn-primary btn-lg",
+    allowedFileExtensions : ['jpg', 'png','gif'],
+    overwriteInitial: false,
+    maxFileSize: 1000,
+    maxFilesNum: 10
 });
+
 $("#file-4").fileinput({
     uploadUrl: '/painel/upload',
     allowedFileExtensions : ['jpg', 'png','gif'],
     overwriteInitial: false,
     maxFileSize: 1000,
     maxFilesNum: 10,
-    uploadExtraData: [
-        {kvId: '10'}
-    ],
+    uploadExtraData:function() {
+        return {
+            pathName: window.location.pathname
+        };
+    }
 });
 $(".btn-warning").on('click', function() {
     if ($('#file-4').attr('disabled')) {
@@ -55,16 +63,16 @@ $(".btn-info").on('click', function() {
  $('#file-4').on('filebrowse', function() {
  alert('File browse clicked for #file-4');
  });
- */
+
 $(document).ready(function() {
     $("#test-upload").fileinput({
         'showPreview' : false,
         'allowedFileExtensions' : ['jpg', 'png','gif'],
         'elErrorContainer': '#errorBlock'
     });
-    /*
+
      $("#test-upload").on('fileloaded', function(event, file, previewId, index) {
      alert('i = ' + index + ', id = ' + previewId + ', file = ' + file.name);
      });
-     */
 });
+*/
