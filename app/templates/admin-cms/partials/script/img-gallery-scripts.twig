@@ -7,7 +7,7 @@
 <script>
     $(function () {
 
-        var ENDPOINT = "/painel/img";
+        var ENDPOINT = "/painel/img-gallery";
         var METHOD_POST = "POST";
         var METHOD_GET = "GET";
         var METHOD_PUT = "PUT";
@@ -27,11 +27,7 @@
 
                 case "btnSalvar":
 
-                    if($("#chkStatus").is(':checked')){
-                        $("#chkStatus").val('true');
-                    }
-
-                    if($('#txtImgEdit') && $('#txtImgEdit').val() != ""){
+                    if($('#txtContentEdit') && $('#txtContentEdit').val() != ""){
                         $.ajax({
                             url: ENDPOINT, //this is the submit URL
                             type: METHOD_PUT, //or POST
@@ -101,23 +97,17 @@
                     $.ajax({
                         url: ENDPOINT, //this is the submit URL
                         type: METHOD_GET, //or POST
-                        data: { id: $('#data-id').val()},//$("#removeData").val($(event.relatedTarget).data('id')),
+                        data: { id: $('#data-id').val(), gallery: window.location.pathname.split( '/' )[3]},//$("#removeData").val($(event.relatedTarget).data('id')),
                         success: function (response) {
-                            $('#formVideo').trigger("reset");
+                            $('#formImg').trigger("reset");
 
-                            var selected = response.imgVideoEdit;
+                            var selected = response.contentEdit;
 
-                            if(selected){
-                                $("#txtGallery").select2('data', { id:selected.gallery.id, text: selected.gallery.description});
-                            }else{
-                                $("#txtGallery").select2('data', { id:"", text: ""});
-                            }
-
-                            $('#txtImgEdit').val(selected.id);
-                            $('#txtName').val(selected.name);
+                            $('#txtContentEdit').val(selected.id);
                             $('#txtDescription').val(selected.description);
+                            $('#txtTitle').val(selected.title);
+                            $('#txtCaption').val(selected.caption);
                             $('#txtUrl').val(selected.url);
-                            $('#chkStatus').val(selected.enabled);
 
                         },
                         error: function (request, status, error) {
@@ -139,4 +129,9 @@
         });
 
     });
+
+function editContent(id){
+    alert('sssss');
+}
+
 </script>

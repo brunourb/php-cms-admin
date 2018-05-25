@@ -133,7 +133,7 @@ class Tariff
     /**
      * Get dateEnd
      *
-     * @return integer
+     * @return DateTime
      */
     public function getDateEnd()
     {

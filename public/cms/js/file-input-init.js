@@ -46,6 +46,7 @@ $("#file-4").fileinput({
         };
     }
 });
+/*
 $(".btn-warning").on('click', function() {
     if ($('#file-4').attr('disabled')) {
         $('#file-4').fileinput('enable');

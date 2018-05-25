@@ -1,9 +1,9 @@
 {% include 'default-script.twig' %}
-
+<!--picker initialization-->
 <script>
     $(function () {
 
-        var ENDPOINT = "/painel/menu";
+        var ENDPOINT = "/painel/hotel";
         var METHOD_POST = "POST";
         var METHOD_GET = "GET";
         var METHOD_PUT = "PUT"
@@ -27,13 +27,13 @@
                         $("#chkStatus").val('true');
                     }
 
-                    if($('#txtMenuEdit') && $('#txtMenuEdit').val() != ""){
+                    if($('#txtHotelEdit') && $('#txtHotelEdit').val() != ""){
                         $.ajax({
                             url: ENDPOINT, //this is the submit URL
                             type: METHOD_PUT, //or POST
-                            data: $('#formMenu').serialize(),
+                            data: $('#formHotel').serialize(),
                             success: function (data) {
-                                $('#formMenu').trigger("reset");
+                                $('#formHotel').trigger("reset");
                                 toastr.success('Registro atualizado com sucesso.').success(
                                     setTimeout(function(){
                                         location.reload();
@@ -50,9 +50,9 @@
                         $.ajax({
                             url: ENDPOINT, //this is the submit URL
                             type: METHOD_POST, //or POST
-                            data: $('#formMenu').serialize(),
+                            data: $('#formHotel').serialize(),
                             success: function (data) {
-                                $('#formMenu').trigger("reset");
+                                $('#formHotel').trigger("reset");
                                 toastr.success('Registro inserido com sucesso.').success(
                                     setTimeout(function(){
                                         location.reload();
@@ -70,7 +70,7 @@
                     break;
 
                 case "btnRemover":
-                    ;
+;
                     $.ajax({
                         url: ENDPOINT, //this is the submit URL
                         type: METHOD_DELETE, //or POST
@@ -91,7 +91,7 @@
 
                     break;
 
-                case "btnEditMenu":
+                case "btnEditHotel":
                     $('#data-id').val($(this).data("id"));
 
                     $.ajax({
@@ -99,18 +99,19 @@
                         type: METHOD_GET, //or POST
                         data: { id: $('#data-id').val()},//$("#removeData").val($(event.relatedTarget).data('id')),
                         success: function (response) {
-                            $('#formMenu').trigger("reset");
+                            $('#formHotel').trigger("reset");
 
-                            var selected = response.menuEdit;
+                            var selected = response.hotelEdit;
 
-                            if(selected.parent){
-                                $("#txtMenu").select2('data', { id:selected.parent.id, text: selected.parent.description});
+                            $('#txtHotelEdit').val(selected.id);
+
+                            if(selected.tariff){
+                                $("#txtTariff").select2('data', { id:selected.tariff.id, text: selected.tariff.description + " - (" +new Date(selected.tariff.dateInit.date).toLocaleDateString()+ " a "+new Date(selected.tariff.dateInit.date).toLocaleDateString()+")" });
                             }else{
-                                $("#txtMenu").select2('data', { id:"", text: ""});
+                                $("#txtTariff").select2('data', { id:"", text: ""});
                             }
 
-                            $('#txtMenuEdit').val(selected.id);
-                            $('#txtDescricao').val(selected.description);
+                            $('#txtDescription').val(selected.description);
                             $('#chkStatus').val(selected.enabled);
 
                         },
@@ -123,7 +124,7 @@
                     break;
 
 
-                case "btnUpdateMenu":
+                case "btnUpdateHotel":
                     $('#data-id').val($(this).data("id"));
                     $('#removeData').modal('show');
                     break;

@@ -77,8 +77,18 @@ class ContentResource extends AbstractResource {
 
         $imgVideo = explode("/",$request->getUri()->getPath())[3];
 
-        if(isset($imgVideo)){
+        if($request->getParam('id')){
+            //TODO remove duplicate code
+            $queryBuilder = $this->entityManager->createQueryBuilder();
+            $queryBuilder->select(array('c'))
+                ->from(ContentResource::$REPOSITORY, 'c')
+                ->where('c.id = :id')->setParameter('id',$request->getParam('id'));
 
+            $query = $queryBuilder->getQuery();
+
+            $data->contentEdit = is_array($query->getArrayResult()) ? $query->getArrayResult()[0] : $query->getArrayResult();
+        }
+        elseif(isset($imgVideo)){
             $queryBuilder = $this->entityManager->createQueryBuilder();
             $queryBuilder->select(array('c','img'))
                 ->from(ContentResource::$REPOSITORY, 'c')
@@ -89,7 +99,6 @@ class ContentResource extends AbstractResource {
 
             $data->contentEdit = $query->getArrayResult();
         }
-
 
         return $data;
 
@@ -103,22 +112,25 @@ class ContentResource extends AbstractResource {
      */
     function put(Request $request, $args) {
 
-        $objImageVideo = new ImageVideo();
-        $objImageVideo->setId($request->getParam("txtVideoEdit"));
-        $objImageVideo->setName($request->getParam("txtName"));
-        $objImageVideo->setDescription($request->getParam("txtDescription"));
-        $objImageVideo->setType(explode("/",$request->getUri()->getPath())[2]);
-        $objImageVideo->setEnabled((bool)$request->getParam('chkStatus') ? 1 : 0);
-        $objImageVideo->setUrl(count(explode("v=",$request->getParam("txtUrl")))>1 ? explode("v=",$request->getParam("txtUrl"))[1] : $request->getParam("txtUrl") );
+        $objContent = $this->entityManager->getRepository(ContentResource::$REPOSITORY)->findOneBy(array('id' => $request->getParam('txtContentEdit')));
 
-        if(intval($request->getParam('txtGallery')) != 0){
-            $objGallery = $this->entityManager->getRepository(GalleryResource::$REPOSITORY)->findOneBy(array('id' => $request->getParam('txtGallery')));
-            $objImageVideo->setGallery($objGallery);
-        }else{
-            throw new \Exception("Galeria não informada");
+        if($request->getParam("txtDescription")!=null){
+            $objContent->setDescription($request->getParam("txtDescription"));
         }
 
-        $this->entityManager->merge($objImageVideo);
+        if($request->getParam("txtTitle")!=null){
+            $objContent->setTitle($request->getParam("txtTitle"));
+        }
+
+        if($request->getParam("txtCaption")!=null){
+            $objContent->setCaption($request->getParam("txtCaption"));
+        }
+
+        if($request->getParam("txtUrl")!=null){
+            $objContent->setUrl($request->getParam("txtUrl"));
+        }
+
+        $this->entityManager->merge($objContent);
         $this->entityManager->flush();
 
     }
@@ -162,8 +174,8 @@ class ContentResource extends AbstractResource {
      * @throws OptimisticLockException
      */
     function delete(Request $request, $args) {
-        $objImgVideo = $this->entityManager->getRepository(ImageVideoResource::$REPOSITORY)->findOneBy(array('id' => $request->getParam('id')));
-        $this->entityManager->remove($objImgVideo);
+        $obj = $this->entityManager->getRepository(ContentResource::$REPOSITORY)->findOneBy(array('id' => $request->getParam('id')));
+        $this->entityManager->remove($obj);
         $this->entityManager->flush();
 
     }
@@ -201,9 +213,11 @@ class ContentResource extends AbstractResource {
 
                     $idGaleria = explode("/",$request->getParam("pathName"))[3];
                     $diretorioUpload = $_SERVER['DOCUMENT_ROOT']."/website/assets/img/img-gallery/$idGaleria";
+                    $diretorioUploadThumb = $diretorioUpload.'/thumb';
 
                     if(!is_dir($diretorioUpload)){
                         mkdir($diretorioUpload,0775);
+                        mkdir($diretorioUploadThumb,0775);
                     }
 
                     $arquivo = sprintf("%s/%s.%s",$diretorioUpload,$token,pathinfo($data->getClientFilename(), PATHINFO_EXTENSION));
@@ -219,7 +233,7 @@ class ContentResource extends AbstractResource {
                     $this->entityManager->flush();
 
                     $data->moveTo($arquivo);
-                    $this->createThumbnail($diretorioUpload,$token);
+                    $this->createThumbnail($diretorioUploadThumb,$arquivo,$token,pathinfo($data->getClientFilename(), PATHINFO_EXTENSION));
 
                 }
             } catch (\Exception $e) {
@@ -232,16 +246,19 @@ class ContentResource extends AbstractResource {
     }
 
     /**
-     * @param $image
+     * @param $gallery
+     * @param $filename
+     * @param $token
+     * @param $ext
      */
-    public function createThumbnail($gallery,  $filename){
+    public function createThumbnail($gallery, $filename, $token, $ext){
 
         // Set a maximum height and width
         $width = 200;
         $height = 200;
 
         // Get new dimensions
-        list($width_orig, $height_orig) = getimagesize($gallery.'/'.$filename);
+        list($width_orig, $height_orig) = getimagesize($filename);
 
         $ratio_orig = $width_orig/$height_orig;
 
@@ -255,19 +272,20 @@ class ContentResource extends AbstractResource {
         $image_p = imagecreatetruecolor($width, $height);
         $image = null;
 
-        if(preg_match('/[.](jpg)$/', $gallery.'/'.$filename)) {
-            $image = imagecreatefromjpeg($gallery.'/'.$filename);
+        if(preg_match('/[.](jpg)$/', $filename)) {
+            $image = imagecreatefromjpeg($filename);
         } else if (preg_match('/[.](gif)$/', $filename)) {
-            $image = imagecreatefromgif($gallery.'/'.$filename);
-        } else if (preg_match('/[.](png)$/', $gallery.'/'.$filename)) {
-            $image = imagecreatefrompng($gallery.'/'.$filename);
+            $image = imagecreatefromgif($filename);
+        } else if (preg_match('/[.](png)$/', $filename)) {
+            $image = imagecreatefrompng($filename);
         }
 
 
         imagecopyresampled($image_p, $image, 0, 0, 0, 0, $width, $height, $width_orig, $height_orig);
 
         // Output
-        imagejpeg($image_p, $gallery.'/thumb_'.$filename, 100);
+        $imageThumb = sprintf('%s/thumb_%s.%s',$gallery,$token,$ext);
+        imagejpeg($image_p, $imageThumb, 100);
 
     }
 }

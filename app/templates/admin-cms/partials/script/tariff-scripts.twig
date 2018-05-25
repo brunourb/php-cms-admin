@@ -105,8 +105,8 @@
 
                             $('#txtTariffEdit').val(selected.id);
                             $('#txtDescription').val(selected.description);
-                            $('#txtInit').val(selected.dateInit);
-                            $('#txtEnd').val(selected.dateEnd);
+                            $('#txtInit').val(new Date(selected.dateInit.date).toLocaleDateString());
+                            $('#txtEnd').val(new Date(selected.dateEnd.date).toLocaleDateString());
                             $('#chkStatus').val(selected.enabled);
 
                         },

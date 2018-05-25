@@ -74,10 +74,20 @@ class TariffResource extends AbstractResource{
         $data = new \stdClass();
 
         if($request->getParam('id')!=null){
-            $data->tariffEdit = $this->entityManager->getRepository(TariffResource::$REPOSITORY)->findOneBy(array('id'=>$request->getParam('id')));
+            $queryBuilder = $this->entityManager->createQueryBuilder();
+            $queryBuilder->select('t')
+                ->from(TariffResource::$REPOSITORY,'t')
+                ->where('t.id = :id')->setParameter('id',$request->getParam('id'));
+
+            $query = $queryBuilder->getQuery();
+            $data->tariffEdit = is_array($query->getArrayResult()) ? $query->getArrayResult()[0] : $query->getArrayResult();
         }
 
-        $tariffs = $this->entityManager->getRepository(TariffResource::$REPOSITORY)->findAll();
+
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('t')->from(TariffResource::$REPOSITORY,'t');
+        $query = $queryBuilder->getQuery();
+        $tariffs = $query->getArrayResult();
         $data->tariffs = $tariffs;
 
         return $data;
@@ -94,8 +104,8 @@ class TariffResource extends AbstractResource{
         $objTariff = new Tariff();
         $objTariff->setId($request->getParam("txtTariffEdit"));
         $objTariff->setDescription($request->getParam("txtDescription"));
-        $objTariff->setDateInit($request->getParam("txtDateInit"));
-        $objTariff->setDateEnd($request->getParam("txtDateEnd"));
+        $objTariff->setDateInit(DateTime::createFromFormat('Y-m-d',$this->convert2Date($request->getParam("from"))));
+        $objTariff->setDateEnd(DateTime::createFromFormat('Y-m-d',$this->convert2Date($request->getParam("to"))));
         $objTariff->setEnabled((bool)$request->getParam('chkStatus') ? 1 : 0);
 
         $this->entityManager->merge($objTariff);
@@ -111,8 +121,8 @@ class TariffResource extends AbstractResource{
     function post(Request $request, $args) {
         $objTariff = new Tariff();
         $objTariff->setDescription($request->getParam("txtDescription"));
-        $objTariff->setDateInit(new DateTime(date('Y-d-m',strtotime($request->getParam('from')))));
-        $objTariff->setDateEnd(new DateTime(date('Y-d-m',strtotime($request->getParam('to')))));
+        $objTariff->setDateInit(DateTime::createFromFormat('Y-m-d',$this->convert2Date($request->getParam("from"))));
+        $objTariff->setDateEnd(DateTime::createFromFormat('Y-m-d',$this->convert2Date($request->getParam("to"))));
         $objTariff->setEnabled((bool)$request->getParam('chkStatus') ? 1 : 0);
 
         $this->entityManager->persist($objTariff);
@@ -138,5 +148,10 @@ class TariffResource extends AbstractResource{
      */
     function path(Request $request, $args) {
         // TODO: Implement path() method.
+    }
+
+    private function convert2Date($date){
+        $data = explode("/",$date);
+        return sprintf('%s-%s-%s',$data[2],$data[1],$data[0]);
     }
 }
