@@ -74,27 +74,32 @@ class PageDetailsResource extends AbstractResource {
 
         if($request->getParam('id')!=null){
             $queryBuilder = $this->entityManager->createQueryBuilder();
-            $queryBuilder->select('p.id, p.description, p.value, p.enabled, IDENTITY(p.page) as page')
-                ->from(PageDetailsResource::$REPOSITORY, 'p')
-                ->where('p.id = :id')->setParameter('id',$request->getParam('id'));
+            $queryBuilder->select('m,p,pd')
+                ->from(PageDetailsResource::$REPOSITORY, 'pd')
+                ->join('pd.page','p')
+                ->join('p.menu','m')
+                ->where('pd.id = :id')->setParameter('id',$request->getParam('id'));
 
             $query = $queryBuilder->getQuery();
 
             $data->pageEdit = is_array($query->getArrayResult()) ? $query->getArrayResult()[0] : $query->getArrayResult();
-
-            $queryBuilder = $this->entityManager->createQueryBuilder();
-            $queryBuilder->select('p')
-                ->from(PageResource::$REPOSITORY,'p')
-                ->where('p.id = :page')->setParameter('page',$data->pageEdit['page']);
-            $query  = $queryBuilder->getQuery();
-
-            $data->pageEdit['page'] = is_array($query->getArrayResult()) ? $query->getArrayResult()[0] : $query->getArrayResult();
-
-
         }
 
-        $data->pagesDetails = $this->entityManager->getRepository(PageDetailsResource::$REPOSITORY)->findAll();
-        $pages = $this->entityManager->getRepository(PageResource::$REPOSITORY)->findAll();
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('m,p,pd')
+            ->from(PageDetailsResource::$REPOSITORY, 'pd')
+            ->join('pd.page','p')
+            ->join('p.menu','m');
+
+        $data->pagesDetails = $queryBuilder->getQuery()->getArrayResult();
+
+
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('m,p')
+            ->from(PageResource::$REPOSITORY, 'p')
+            ->join('p.menu','m');
+        $pages = $queryBuilder->getQuery()->getArrayResult();
+
         $data->pages = $pages;
 
         return $data;

@@ -16,25 +16,34 @@
 
                     <div class="panel-body">
 
-                        <form role="form" id="formPage" enctype="multipart/form-data">
+                        <form role="form" id="formTag" name="formTag" enctype="multipart/form-data">
 
                             <div class="form-group">
-                                <label for="menu">TAG</label>
+                                <label for="txtPage">P&aacute;gina</label>
+                                <select class="form-control  select2" id="txtPage" name="txtPage">
+                                    <option value="">Selecione uma opção</option>
+                                    {% for page in data.pages %}
+                                        <option value="{{ page.id }}"> > {{ page.nameClean }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+
+                            <div class="form-group">
+                                <label for="txtTag">TAG</label>
                                 <input type="text" class="form-control" id="txtTag" name="txtTag" placeholder="Informe uma TAG">
                             </div>
 
                             <div class="form-group">
                                 <label class="control-label">Valores</label>
-                                <input type="text" class="tags tags-input" data-type="tags" value="foo,bar,baz,roffle"/>
+                                <input type="text" name="txtTagValues" id="txtTagValues" class="tags tags-input" data-role="tagsinput" data-type="tags"/>
                             </div>
 
                             <div class="form-group">
-                                <input id="chkStatus" type="checkbox" name="chkStatus" class="form-control js-switch-blue"
-                                       checked/>
+                                <input id="chkStatus" type="checkbox" name="chkStatus" class="form-control js-switch-blue" checked/>
                                 <label for="chkStatus" class="control-label">Ativar/Inativar Registro</label>
                             </div>
 
-                            <input type="hidden" id="txtPageDetailEdit" name="txtPageDetailEdit"/>
+                            <input type="hidden" id="txtTagEdit" name="txtTagEdit"/>
 
                             <button class="btn btn-success" type="submit" id="btnSalvar">Salvar</button>
 
@@ -52,7 +61,7 @@
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;
                                 </button>
-                                <h4 class="modal-title">Cadastro::Page</h4>
+                                <h4 class="modal-title">Cadastro</h4>
                             </div>
                             <div class="modal-body">
                                 <p>O registro será deletado.</p>
@@ -74,7 +83,7 @@
                 <header class="panel-heading ">
                     Lista de registros
                     <span class="tools pull-right">
-                                    <a class="fa fa-repeat box-refresh" href="javascript:;" onclick="resetForm('formPage')"></a>
+                                    <a class="fa fa-repeat box-refresh" href="javascript:;" onclick="resetForm('formTag')"></a>
                                     <a class="t-collapse fa fa-chevron-down" href="javascript:;"></a>
                                 </span>
                 </header>
@@ -82,18 +91,20 @@
                     <thead>
                     <tr>
                         <th width="5%">#</th>
-                        <th width="35%">DESCRI&Ccedil;&Atilde;O</th>
+                        <th width="35%">P&Aacute;GINA</th>
+                        <th width="35%">TAG</th>
                         <th width="5%">AÇÃO</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {% for detail in data.pageDetails %}
+                    {% for tag in data.tags %}
                         <tr>
-                            <td>{{ detail.id }}</td>
-                            <td>{{ detail.description }}</td>
+                            <td>{{ tag.id }}</td>
+                            <td>{{ tag.page.nameClean }}</td>
+                            <td>{{ tag.tag }}</td>
                             <td>
-                                <button class="btn btn-primary btn-xs" id="btnEditPage" data-id="{{ page.id }}"><i class="fa fa-pencil"></i></button>
-                                <button class="btn btn-danger btn-xs" id="btnUpdatePage" data-id="{{ page.id }}"><i class="fa fa-trash-o "></i></button>
+                                <button class="btn btn-primary btn-xs" id="btnEditTag" data-id="{{ tag.id }}"><i class="fa fa-pencil"></i></button>
+                                <button class="btn btn-danger btn-xs" id="btnUpdateTag" data-id="{{ tag.id }}"><i class="fa fa-trash-o "></i></button>
                             </td>
                         </tr>
                     {% endfor %}

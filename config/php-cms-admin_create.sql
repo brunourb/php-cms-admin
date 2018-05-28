@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2018-05-01 22:59:41.424
+-- Last modification date: 2018-05-28 03:03:34.129
 
 -- tables
 -- Table: banner
@@ -44,7 +44,6 @@ CREATE TABLE hotel (
     id int NOT NULL AUTO_INCREMENT,
     description varchar(100) NOT NULL,
     enabled tinyint(1) NULL,
-    tariff_id int NOT NULL,
     CONSTRAINT hotel_pk PRIMARY KEY (id)
 );
 
@@ -109,18 +108,6 @@ CREATE TABLE room (
 
 CREATE INDEX room_idx_1 ON room (description);
 
--- Table: room_values
-CREATE TABLE room_values (
-    id int NOT NULL AUTO_INCREMENT,
-    description varchar(100) NOT NULL,
-    value decimal(9,2) NOT NULL,
-    breakfast tinyint(1) NULL,
-    lunch tinyint(1) NULL,
-    dinner tinyint(1) NULL,
-    room_id int NOT NULL,
-    CONSTRAINT room_values_pk PRIMARY KEY (id)
-);
-
 -- Table: tag
 CREATE TABLE tag (
     id int NOT NULL AUTO_INCREMENT,
@@ -146,6 +133,20 @@ CREATE TABLE tariff (
     date_end int NULL,
     enabled tinyint(1) NULL,
     CONSTRAINT tariff_pk PRIMARY KEY (id)
+);
+
+-- Table: tariff_values
+CREATE TABLE tariff_values (
+    id int NOT NULL AUTO_INCREMENT,
+    kind_of_host enum('SGLDBL', 'ADC','CHD') NOT NULL,
+    kind_of_room enum('APTO', 'SUITE') NOT NULL,
+    value decimal(9,2) NOT NULL,
+    breakfast tinyint(1) NULL,
+    lunch tinyint(1) NULL,
+    dinner tinyint(1) NULL,
+    tariff_id int NOT NULL,
+    hotel_id int NOT NULL,
+    CONSTRAINT tariff_values_pk PRIMARY KEY (id)
 );
 
 -- foreign keys
@@ -189,9 +190,9 @@ ALTER TABLE page ADD CONSTRAINT page_menu FOREIGN KEY page_menu (menu_id)
 ALTER TABLE room ADD CONSTRAINT room_hotel FOREIGN KEY room_hotel (hotel_id)
     REFERENCES hotel (id);
 
--- Reference: room_values_room (table: room_values)
-ALTER TABLE room_values ADD CONSTRAINT room_values_room FOREIGN KEY room_values_room (room_id)
-    REFERENCES room (id);
+-- Reference: room_values_tariff (table: tariff_values)
+ALTER TABLE tariff_values ADD CONSTRAINT room_values_tariff FOREIGN KEY room_values_tariff (tariff_id)
+    REFERENCES tariff (id);
 
 -- Reference: tag_page (table: tag)
 ALTER TABLE tag ADD CONSTRAINT tag_page FOREIGN KEY tag_page (page_id)
@@ -201,9 +202,9 @@ ALTER TABLE tag ADD CONSTRAINT tag_page FOREIGN KEY tag_page (page_id)
 ALTER TABLE tag_values ADD CONSTRAINT tag_values_tag FOREIGN KEY tag_values_tag (tag_id)
     REFERENCES tag (id);
 
--- Reference: tariff_values_tariff (table: hotel)
-ALTER TABLE hotel ADD CONSTRAINT tariff_values_tariff FOREIGN KEY tariff_values_tariff (tariff_id)
-    REFERENCES tariff (id);
+-- Reference: tariff_values_hotel (table: tariff_values)
+ALTER TABLE tariff_values ADD CONSTRAINT tariff_values_hotel FOREIGN KEY tariff_values_hotel (hotel_id)
+    REFERENCES hotel (id);
 
 -- End of file.
 

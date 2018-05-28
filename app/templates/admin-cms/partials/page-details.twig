@@ -22,7 +22,7 @@
                                 <select class="form-control  select2" id="txtPage" name="txtPage">
                                     <option value="">Selecione uma opção</option>
                                     {% for page in data.pages %}
-                                        <option value="{{ page.id }}" {{ selected }}>{{ page.nameClean }}</option>
+                                        <option value="{{ page.id }}">Menu: {{ page.menu.description }} > {{ page.nameClean }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -91,8 +91,9 @@
                     <thead>
                     <tr>
                         <th width="5%">#</th>
-                        <th width="35%">DESCRI&Ccedil;&Atilde;O</th>
+                        <th width="20%">MENU</th>
                         <th width="35%">P&Aacute;GINA</th>
+                        <th width="35%">DETALHE DA P&Aacute;GINA</th>
                         <th width="5%">AÇÃO</th>
                     </tr>
                     </thead>
@@ -100,6 +101,7 @@
                     {% for detail in data.pagesDetails %}
                         <tr>
                             <td>{{ detail.id }}</td>
+                            <td>{{ detail.page.menu.description }}</td>
                             <td>{{ detail.page.nameClean }}</td>
                             <td>{{ detail.description }}</td>
                             <td>

@@ -76,28 +76,22 @@ class MenuResource extends AbstractResource{
         if($request->getParam('id')!=null){
 
             $queryBuilder = $this->entityManager->createQueryBuilder();
-            $queryBuilder->select("m.id,m.description,m.enabled, IDENTITY(m.menu) as parent")
+            $queryBuilder->select("m,m1")
                 ->from(MenuResource::$REPOSITORY, 'm')
-                ->join(MenuResource::$REPOSITORY,'m1', Join::WITH,'m.id = m1.id')
+                ->leftJoin('m.menu','m1')
                 ->where('m.id = :id')->setParameter('id',$request->getParam('id'));
-
-            //$queryBuilder->select('m')->from($this->REPOSITORY,'m')->where('m.id = :id')->setParameter('id',$request->getParam('id'));
-            //$menuEdit = $this->entityManager->getRepository($this->REPOSITORY)->findOneBy(array('id'=>$request->getParam('id')));
 
             $query = $queryBuilder->getQuery();
 
             $data->menuEdit = is_array($query->getArrayResult()) ? $query->getArrayResult()[0] : $query->getArrayResult();
-
-            $queryBuilder = $this->entityManager->createQueryBuilder();
-            $queryBuilder->select('m')
-                ->from(MenuResource::$REPOSITORY,'m')
-                ->where('m.id = :parent')->setParameter('parent',$data->menuEdit['parent']);
-            $query  = $queryBuilder->getQuery();
-
-            $data->menuEdit['parent'] = is_array($query->getArrayResult()) ? $query->getArrayResult()[0] : $query->getArrayResult();
         }
 
-        $menus = $this->entityManager->getRepository(MenuResource::$REPOSITORY)->findAll();
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select("m,m1")
+            ->from(MenuResource::$REPOSITORY, 'm')
+            ->leftJoin('m.menu','m1');
+
+        $menus = $queryBuilder->getQuery()->getArrayResult();
         $data->menus = $menus;
         return $data;
     }

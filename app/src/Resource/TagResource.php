@@ -75,20 +75,36 @@ class TagResource extends AbstractResource {
     function get(Request $request, $args) {
         $data = new \stdClass();
 
-        if($request->getParam('id')!=null){
+        $queryBuilder = $this->entityManager->createQueryBuilder();
 
-            $queryBuilder = $this->entityManager->createQueryBuilder();
-            $queryBuilder->select('t')
-                ->from(TagResource::$REPOSITORY, 't')
+        if($request->getParam('id')!=null){
+            $queryBuilder->select('t','p')
+                ->from(TagResource::$TAG_REPOSITORY, 't')
                 ->join('t.page','p')
                 ->where('t.id = :id')->setParameter('id',$request->getParam('id'));
 
             $query = $queryBuilder->getQuery();
 
             $data->tagEdit = is_array($query->getArrayResult()) ? $query->getArrayResult()[0] : $query->getArrayResult();
+
+            $queryBuilder = $this->entityManager->createQueryBuilder();
+            $queryBuilder->select('tv')
+                ->from(TagResource::$TAG_VALUE_REPOSITORY, 'tv')
+                ->where('tv.tag = :tag')->setParameter('tag',$request->getParam('id'));
+
+
+            $data->tagEdit['values'] = $queryBuilder->getQuery()->getArrayResult();
         }
 
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('t','p')
+            ->from(TagResource::$TAG_REPOSITORY, 't')
+            ->join('t.page','p');
+        $tags = $queryBuilder->getQuery()->getArrayResult();
+
         $pages = $this->entityManager->getRepository(PageResource::$REPOSITORY)->findAll();
+
+        $data->tags = $tags;
         $data->pages = $pages;
         return $data;
     }
@@ -132,14 +148,16 @@ class TagResource extends AbstractResource {
         $objPage =  $this->entityManager->getRepository(PageResource::$REPOSITORY)->findOneBy(array('id' => $request->getParam('txtPage')));
         $objTag->setPage($objPage);
 
-        $this->entityManager->merge($objTag);
+        $this->entityManager->persist($objTag);
         $this->entityManager->flush();
+        $values = explode(",",$request->getParam("txtTagValues"));
 
-        $objTagValues =  new TagValues();
-        $objTagValues->setTag($objTag);
-        $objTagValues->setValue($request->getParam("txtTagValues"));
-
-        $this->entityManager->merge($objTagValues);
+        foreach($values as $value){
+            $objTagValues =  new TagValues();
+            $objTagValues->setTag($objTag);
+            $objTagValues->setValue($value);
+            $this->entityManager->persist($objTagValues);
+        }
         $this->entityManager->flush();
     }
 

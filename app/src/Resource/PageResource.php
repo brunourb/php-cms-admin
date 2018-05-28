@@ -77,23 +77,14 @@ class PageResource extends AbstractResource{
 
         if($request->getParam('id')!=null){
             $queryBuilder = $this->entityManager->createQueryBuilder();
-            $queryBuilder->select("p.id,p.name,p.nameClean, IDENTITY(p.menu) as menu, p.enabled")
+            $queryBuilder->select("p,m")
                 ->from(PageResource::$REPOSITORY, 'p')
+                ->leftJoin('p.menu','m')
                 ->where('p.id = :id')->setParameter('id',$request->getParam('id'));
 
             $query = $queryBuilder->getQuery();
 
             $data->pageEdit = is_array($query->getArrayResult()) ? $query->getArrayResult()[0] : $query->getArrayResult();
-
-            $queryBuilder = $this->entityManager->createQueryBuilder();
-            $queryBuilder->select('m')
-                ->from(MenuResource::$REPOSITORY,'m')
-                ->where('m.id = :menu')->setParameter('menu',$data->pageEdit['menu']);
-            $query  = $queryBuilder->getQuery();
-
-            $data->pageEdit['menu'] = is_array($query->getArrayResult()) ? $query->getArrayResult()[0] : $query->getArrayResult();
-
-
         }
 
         $data->menus = $this->entityManager->getRepository(MenuResource::$REPOSITORY)->findAll();

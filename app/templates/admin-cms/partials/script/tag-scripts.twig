@@ -3,7 +3,7 @@
 <script>
     $(function () {
 
-        var ENDPOINT = "/painel/menu";
+        var ENDPOINT = "/painel/tag";
         var METHOD_POST = "POST";
         var METHOD_GET = "GET";
         var METHOD_PUT = "PUT"
@@ -27,13 +27,13 @@
                         $("#chkStatus").val('true');
                     }
 
-                    if($('#txtMenuEdit') && $('#txtMenuEdit').val() != ""){
+                    if($('#txtTagEdit') && $('#txtTagEdit').val() != ""){
                         $.ajax({
                             url: ENDPOINT, //this is the submit URL
                             type: METHOD_PUT, //or POST
-                            data: $('#formMenu').serialize(),
+                            data: $('#formTag').serialize(),
                             success: function (data) {
-                                $('#formMenu').trigger("reset");
+                                $('#formTag').trigger("reset");
                                 toastr.success('Registro atualizado com sucesso.').success(
                                     setTimeout(function(){
                                         location.reload();
@@ -50,9 +50,9 @@
                         $.ajax({
                             url: ENDPOINT, //this is the submit URL
                             type: METHOD_POST, //or POST
-                            data: $('#formMenu').serialize(),
+                            data: $('#formTag').serialize(),
                             success: function (data) {
-                                $('#formMenu').trigger("reset");
+                                $('#formTag').trigger("reset");
                                 toastr.success('Registro inserido com sucesso.').success(
                                     setTimeout(function(){
                                         location.reload();
@@ -91,7 +91,7 @@
 
                     break;
 
-                case "btnEditMenu":
+                case "btnEditTag":
                     $('#data-id').val($(this).data("id"));
 
                     $.ajax({
@@ -99,19 +99,23 @@
                         type: METHOD_GET, //or POST
                         data: { id: $('#data-id').val()},//$("#removeData").val($(event.relatedTarget).data('id')),
                         success: function (response) {
-                            $('#formMenu').trigger("reset");
+                            $('#formTag').trigger("reset");
 
-                            var selected = response.menuEdit;
+                            var selected = response.tagEdit;
 
-                            if(selected.parent){
-                                $("#txtMenu").select2('data', { id:selected.parent.id, text: selected.parent.description});
+                            if(selected){
+                                $("#txtPage").select2('data', { id:selected.page.id, text: ' > ' +selected.page.nameClean});
                             }else{
-                                $("#txtMenu").select2('data', { id:"", text: ""});
+                                $("#txtPage").select2('data', { id:"", text: ""});
                             }
 
-                            $('#txtMenuEdit').val(selected.id);
-                            $('#txtDescricao').val(selected.description);
+                            $('#txtTag').val(selected.tag);
+
+                            $("#txtTagValues").importTags('');
+                            selected.values.forEach(item=> $("#txtTagValues").addTag(item.value));
                             $('#chkStatus').val(selected.enabled);
+
+                            $('#txtTagEdit').val(selected.id);
 
                         },
                         error: function (request, status, error) {
@@ -123,7 +127,7 @@
                     break;
 
 
-                case "btnUpdateMenu":
+                case "btnUpdateTag":
                     $('#data-id').val($(this).data("id"));
                     $('#removeData').modal('show');
                     break;

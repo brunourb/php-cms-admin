@@ -16,6 +16,9 @@ use Slim\Http\Response;
 class RoomResource extends AbstractResource{
 
 
+    public static $ROOM_REPOSITORY = 'App\Entity\Room';
+    public static $ROOM_VALUES_REPOSITORY = 'App\Entity\RoomValues';
+
     /**
      * RoomResource constructor.
      * @param EntityManager $entityManager
@@ -28,9 +31,38 @@ class RoomResource extends AbstractResource{
      * @param Request $request
      * @param Response $response
      * @param $args
+     * @return mixed|string
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function service(Request $request, Response $response, $args) {
-        // TODO: Implement service() method.
+
+        switch ($request->getMethod()){
+
+            case HTTP_POST:
+                return $this->post($request,$args);
+                break;
+
+            case HTTP_GET:
+                return $this->get($request,$args);
+                break;
+
+            case HTTP_PUT:
+                return $this->put($request,$args);
+                break;
+
+            case HTTP_DELETE:
+                return $this->delete($request,$args);
+                break;
+
+            case HTTP_PATCH:
+                return $this->path($request,$args);
+                break;
+
+            default:
+                return "erro";
+
+                break;
+        }
     }
 
     /**
@@ -39,7 +71,36 @@ class RoomResource extends AbstractResource{
      * @return mixed
      */
     function get(Request $request, $args) {
-        // TODO: Implement get() method.
+        $data = new \stdClass();
+
+        if($request->getParam('id')!=null){
+
+            $queryBuilder = $this->entityManager->createQueryBuilder();
+            $queryBuilder->select(array('r','h'))
+                ->from(RoomResource::$ROOM_REPOSITORY, 'r')
+                ->join('r.hotel','h')
+                ->where('r.id = :id')->setParameter('id',$request->getParam('id'));
+
+            $query = $queryBuilder->getQuery();
+
+            $data->roomEdit = is_array($query->getArrayResult()) ? $query->getArrayResult()[0] : $query->getArrayResult();
+        }
+
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select(array('r','h'))
+            ->from(RoomResource::$ROOM_REPOSITORY, 'r')
+            ->join('r.hotel','h');
+
+        $rooms = $queryBuilder->getQuery()->getArrayResult();
+        $data->rooms = $rooms;
+
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('t')
+            ->from(TariffResource::$REPOSITORY,'t');
+        $tariffs = $queryBuilder->getQuery()->getArrayResult();
+
+        $data->tariffs = $tariffs;
+        return $data;
     }
 
     /**

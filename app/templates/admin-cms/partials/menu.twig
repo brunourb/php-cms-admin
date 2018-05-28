@@ -22,7 +22,7 @@
                                 <select class="form-control  select2" id="txtMenu" name="txtMenu">
                                     <option value="">Selecione uma opção</option>
                                     {% for menu in data.menus %}
-                                        <option value="{{ menu.id }}" {{ selected }}>{{ menu.description }}</option>
+                                        <option value="{{ menu.id }}">{{ menu.menu.description }} > {{menu.description }}</option>
                                     {% endfor %}
                                 </select>
                             </div>

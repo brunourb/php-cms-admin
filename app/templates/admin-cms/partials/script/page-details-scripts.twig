@@ -107,7 +107,7 @@
                             var selected = response.pageEdit;
 
                             if(selected){
-                                $("#txtPage").select2('data', { id:selected.page.id, text: selected.page.nameClean});
+                                $("#txtPage").select2('data', { id:selected.page.id, text: selected.page.menu.description + ' > ' +selected.page.nameClean});
                             }else{
                                 $("#txtPage").select2('data', { id:"", text: ""});
                             }
