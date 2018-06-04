@@ -111,6 +111,12 @@
                                 $("#txtTariff").select2('data', { id:"", text: ""});
                             }
 
+                            if(selected.hotels){
+                                $("#txtHotel").select2('data', { id:selected.hotel.id, text: selected.hotel.description});
+                            }else{
+                                $("#txtHotel").select2('data', { id:"", text: ""});
+                            }
+
                             $('#txtDescription').val(selected.description);
                             $('#chkStatus').val(selected.enabled);
 

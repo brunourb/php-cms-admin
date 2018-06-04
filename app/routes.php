@@ -11,6 +11,7 @@ $app->group('/painel', function() use ($app) {
     $app->map(['GET', 'POST','DELETE','PUT'], '/gallery', App\Action\CMSAction::class . ':page');
     $app->map(['GET', 'POST','DELETE','PUT'], '/img', App\Action\CMSAction::class . ':page');
     $app->map(['GET', 'POST','DELETE','PUT'], '/img-gallery/{id:[0-9]+}', App\Action\CMSAction::class . ':page');
+    $app->map(['GET', 'POST','DELETE','PUT'], '/content', App\Action\CMSAction::class . ':content');
     $app->map(['GET', 'POST','DELETE','PUT'], '/video', App\Action\CMSAction::class . ':page');
     $app->map(['GET', 'POST','DELETE','PUT'], '/tariff', App\Action\CMSAction::class . ':page');
     $app->map(['GET', 'POST','DELETE','PUT'], '/tag', App\Action\CMSAction::class . ':page');

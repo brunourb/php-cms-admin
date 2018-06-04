@@ -52,14 +52,13 @@ class Page
      */
     private $menu;
 
-
-
     /**
      * @param int $id
      */
     public function setId($id) {
         $this->id = $id;
     }
+
 
     /**
      * Get id

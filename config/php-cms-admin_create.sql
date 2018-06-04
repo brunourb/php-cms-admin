@@ -1,5 +1,5 @@
 -- Created by Vertabelo (http://vertabelo.com)
--- Last modification date: 2018-05-28 03:03:34.129
+-- Last modification date: 2018-06-03 23:17:24.688
 
 -- tables
 -- Table: banner
@@ -130,7 +130,7 @@ CREATE TABLE tariff (
     id int NOT NULL AUTO_INCREMENT,
     description varchar(100) NOT NULL,
     date_init date NULL,
-    date_end int NULL,
+    date_end date NULL,
     enabled tinyint(1) NULL,
     CONSTRAINT tariff_pk PRIMARY KEY (id)
 );

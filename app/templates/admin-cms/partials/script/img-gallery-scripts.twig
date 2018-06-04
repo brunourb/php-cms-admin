@@ -7,7 +7,7 @@
 <script>
     $(function () {
 
-        var ENDPOINT = "/painel/img-gallery";
+        var ENDPOINT = "/painel/content";
         var METHOD_POST = "POST";
         var METHOD_GET = "GET";
         var METHOD_PUT = "PUT";
@@ -22,50 +22,6 @@
                     $(".modal-body input").val("");
                     $(".modal-body select").val("");
                     $('#menuModal').modal('show');
-
-                    break;
-
-                case "btnSalvar":
-
-                    if($('#txtContentEdit') && $('#txtContentEdit').val() != ""){
-                        $.ajax({
-                            url: ENDPOINT, //this is the submit URL
-                            type: METHOD_PUT, //or POST
-                            data: $('#formImg').serialize(),
-                            success: function (data) {
-                                $('#formImg').trigger("reset");
-                                toastr.success('Registro atualizado com sucesso.').success(
-                                    setTimeout(function(){
-                                        location.reload();
-                                    }, 5000)
-
-                                ); //TODO Twig Ajax
-                            },
-                            error: function (request, status, error) {
-                                var message = 'Erro na operação. {0} \nStatus: {1} \nErro: {2}'.format(request.responseText, status, error);
-                                toastr.error(message);
-                            }
-                        });
-                    }else{
-                        $.ajax({
-                            url: ENDPOINT, //this is the submit URL
-                            type: METHOD_POST, //or POST
-                            data: $('#formImg').serialize(),
-                            success: function (data) {
-                                $('#formVideo').trigger("reset");
-                                toastr.success('Registro inserido com sucesso.').success(
-                                    setTimeout(function(){
-                                        location.reload();
-                                    }, 5000)
-
-                                ); //TODO Twig Ajax
-                            },
-                            error: function (request, status, error) {
-                                var message = 'Erro na operação. {0} \nStatus: {1} \nErro: {2}'.format(request.responseText, status, error);
-                                toastr.error(message);
-                            }
-                        });
-                    }
 
                     break;
 
@@ -91,33 +47,6 @@
 
                     break;
 
-                case "btnEditImg":
-                    $('#data-id').val($(this).data("id"));
-
-                    $.ajax({
-                        url: ENDPOINT, //this is the submit URL
-                        type: METHOD_GET, //or POST
-                        data: { id: $('#data-id').val(), gallery: window.location.pathname.split( '/' )[3]},//$("#removeData").val($(event.relatedTarget).data('id')),
-                        success: function (response) {
-                            $('#formImg').trigger("reset");
-
-                            var selected = response.contentEdit;
-
-                            $('#txtContentEdit').val(selected.id);
-                            $('#txtDescription').val(selected.description);
-                            $('#txtTitle').val(selected.title);
-                            $('#txtCaption').val(selected.caption);
-                            $('#txtUrl').val(selected.url);
-
-                        },
-                        error: function (request, status, error) {
-                            var message = 'Erro na operação. {0} \nStatus: {1} \nErro: {2}'.format(request.responseText, status, error);
-                            toastr.error(message);
-                        }
-                    });
-
-                    break;
-
 
                 case "btnUpdateImg":
                     $('#data-id').val($(this).data("id"));
@@ -125,13 +54,62 @@
                     break;
 
 
+                case "btnAtualizar":
+
+                    $.ajax({
+                        url: ENDPOINT, //this is the submit URL
+                        type: METHOD_PUT, //or POST
+                        data: $('#formImg').serialize(),
+                        success: function (data) {
+                            $('#formImg').trigger("reset");
+                            toastr.success('Registro atualizado com sucesso.').success(
+                                setTimeout(function(){
+                                    location.reload();
+                                }, 5000)
+
+                            ); //TODO Twig Ajax
+                        },
+                        error: function (request, status, error) {
+                            var message = 'Erro na operação. {0} \nStatus: {1} \nErro: {2}'.format(request.responseText, status, error);
+                            toastr.error(message);
+                        }
+                    });
+                    break;
+
+
             }
         });
 
-    });
 
-function editContent(id){
-    alert('sssss');
-}
+        $('.editContent a').click(function(evt) {
+            evt.preventDefault();
+            //$('#editContentMetaData').css("display", "block");
+
+            $.ajax({
+                url: ENDPOINT, //this is the submit URL
+                data: { id: $(this).data("id")},//$("#removeData").val($(event.relatedTarget).data('id')),
+                type: METHOD_GET, //or POST
+                success: function (response) {
+
+                    $('#editContentMetaData').show();
+
+                    var selected = response.contentEdit;
+
+                    $('#txtContentEdit').val(selected.id);
+                    $('#txtDescription').val(selected.description);
+                    $('#txtTitle').val(selected.title);
+                    $('#txtCaption').val(selected.caption);
+                    $('#txtUrl').val(selected.url);
+
+                },
+                error: function (request, status, error) {
+                    $('#editContentMetaData').hide();
+                    var message = 'Erro na operação. {0} \nStatus: {1} \nErro: {2}'.format(request.responseText, status, error);
+                    toastr.error(message);
+                }
+            });
+        });
+
+    });
 
 </script>

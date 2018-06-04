@@ -76,6 +76,7 @@ class GenericResource extends AbstractResource {
                     break;
 
                 case 'img-gallery':
+                case 'content':
 
                     $content = new ContentResource($this->getEntityManager());
                     return $content->service($request,$response,$args);

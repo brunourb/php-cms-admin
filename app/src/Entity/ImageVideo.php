@@ -67,13 +67,13 @@ class ImageVideo
     private $gallery;
 
 
-
     /**
      * @param int $id
      */
     public function setId($id) {
         $this->id = $id;
     }
+
 
     /**
      * Get id

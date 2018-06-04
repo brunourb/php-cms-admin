@@ -173,6 +173,12 @@ class ImageVideoResource extends AbstractResource {
      * @throws OptimisticLockException
      */
     function delete(Request $request, $args) {
+
+        $objContent = $this->entityManager->getRepository(ContentResource::$REPOSITORY)->findBy(array('imageVideo'=>$request->getParam('id')));
+        if($objContent && count($objContent)>0){
+            throw new \Exception("Você deve remover os registros vinculados a estes cadastro.\n Veja a galeria de imagens/fotos.");
+        }
+
         $objImgVideo = $this->entityManager->getRepository(ImageVideoResource::$REPOSITORY)->findOneBy(array('id' => $request->getParam('id')));
         $this->entityManager->remove($objImgVideo);
         $this->entityManager->flush();

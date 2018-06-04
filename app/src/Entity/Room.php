@@ -45,8 +45,6 @@ class Room
      */
     private $hotel;
 
-
-
     /**
      * @param int $id
      */

@@ -40,7 +40,7 @@ class Menu
      *
      * @ORM\Column(name="data_created", type="datetime", nullable=false)
      */
-    private $dataCreated;
+    private $dataCreated = 'CURRENT_TIMESTAMP';
 
     /**
      * @var \App\Entity\Menu
@@ -53,13 +53,13 @@ class Menu
     private $menu;
 
 
-
     /**
      * @param int $id
      */
     public function setId($id) {
         $this->id = $id;
     }
+
 
     /**
      * Get id

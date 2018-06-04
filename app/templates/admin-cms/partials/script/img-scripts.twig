@@ -79,7 +79,7 @@
                         url: ENDPOINT, //this is the submit URL
                         type: METHOD_DELETE, //or POST
                         data: { id: $('#data-id').val()},//$("#removeData").val($(event.relatedTarget).data('id')),
-                        success: function (data) {
+                        success: function (response,data) {
                             $('#removeData').modal('hide')
                             toastr.warning('Registro removido com sucesso.').onsuccess(
                                 setTimeout(function(){

@@ -77,9 +77,8 @@ class HotelResource extends AbstractResource{
         if($request->getParam('id')!=null){
 
             $queryBuilder = $this->entityManager->createQueryBuilder();
-            $queryBuilder->select(array('h','t'))
+            $queryBuilder->select(array('h'))
                 ->from(HotelResource::$REPOSITORY, 'h')
-                ->join('h.tariff','t')
                 ->where('h.id = :id')->setParameter('id',$request->getParam('id'));
 
             $query = $queryBuilder->getQuery();
@@ -87,19 +86,12 @@ class HotelResource extends AbstractResource{
             $data->hotelEdit = is_array($query->getArrayResult()) ? $query->getArrayResult()[0] : $query->getArrayResult();
         }
         $queryBuilder = $this->entityManager->createQueryBuilder();
-        $queryBuilder->select('h,t')
-            ->from(HotelResource::$REPOSITORY, 'h')
-            ->leftJoin('h.tariff','t');
+        $queryBuilder->select('h')
+            ->from(HotelResource::$REPOSITORY, 'h');
 
         $hotels = $queryBuilder->getQuery()->getArrayResult();
         $data->hotels = $hotels;
 
-        $queryBuilder = $this->entityManager->createQueryBuilder();
-        $queryBuilder->select('t')
-            ->from(TariffResource::$REPOSITORY,'t');
-        $tariffs = $queryBuilder->getQuery()->getArrayResult();
-
-        $data->tariffs = $tariffs;
         return $data;
     }
 
@@ -114,8 +106,6 @@ class HotelResource extends AbstractResource{
         $objHotel->setId($request->getParam("txtHotelEdit"));
         $objHotel->setDescription($request->getParam("txtDescription"));
         $objHotel->setEnabled((bool)$request->getParam('chkStatus') ? 1 : 0);
-        $objTariff = $this->entityManager->getRepository(TariffResource::$REPOSITORY)->findOneBy(array('id' => $request->getParam('txtTariff')));
-        $objHotel->setTariff($objTariff);
 
         $this->entityManager->merge($objHotel);
         $this->entityManager->flush();
@@ -132,8 +122,6 @@ class HotelResource extends AbstractResource{
         $objHotel = new Hotel();
         $objHotel->setDescription($request->getParam("txtDescription"));
         $objHotel->setEnabled((bool)$request->getParam('chkStatus') ? 1 : 0);
-        $objTariff = $this->entityManager->getRepository(TariffResource::$REPOSITORY)->findOneBy(array('id' => $request->getParam('txtTariff')));
-        $objHotel->setTariff($objTariff);
 
         $this->entityManager->persist($objHotel);
         $this->entityManager->flush();

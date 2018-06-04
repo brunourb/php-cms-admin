@@ -75,29 +75,45 @@ class ContentResource extends AbstractResource {
 
         $data = new \stdClass();
 
-        $imgVideo = explode("/",$request->getUri()->getPath())[3];
-
-        if($request->getParam('id')){
+        $pathParam = explode("/",$request->getUri()->getPath())[2];
+        if($pathParam == "content"){
             //TODO remove duplicate code
+            $id = $request->getParam("id");
             $queryBuilder = $this->entityManager->createQueryBuilder();
             $queryBuilder->select(array('c'))
                 ->from(ContentResource::$REPOSITORY, 'c')
-                ->where('c.id = :id')->setParameter('id',$request->getParam('id'));
+                ->where('c.id = :id')->setParameter('id',$id);
 
             $query = $queryBuilder->getQuery();
 
             $data->contentEdit = is_array($query->getArrayResult()) ? $query->getArrayResult()[0] : $query->getArrayResult();
+
         }
-        elseif(isset($imgVideo)){
-            $queryBuilder = $this->entityManager->createQueryBuilder();
-            $queryBuilder->select(array('c','img'))
-                ->from(ContentResource::$REPOSITORY, 'c')
-                ->innerJoin('c.imageVideo','img')
-                ->where('c.imageVideo = :id')->setParameter('id',$imgVideo);
+        else{
+            $imgVideo = explode("/",$request->getUri()->getPath())[3];
 
-            $query = $queryBuilder->getQuery();
+            if($request->getParam('id')){
+                //TODO remove duplicate code
+                $queryBuilder = $this->entityManager->createQueryBuilder();
+                $queryBuilder->select(array('c'))
+                    ->from(ContentResource::$REPOSITORY, 'c')
+                    ->where('c.id = :id')->setParameter('id',$request->getParam('id'));
 
-            $data->contentEdit = $query->getArrayResult();
+                $query = $queryBuilder->getQuery();
+
+                $data->contentEdit = is_array($query->getArrayResult()) ? $query->getArrayResult()[0] : $query->getArrayResult();
+            }
+            elseif(isset($imgVideo)){
+                $queryBuilder = $this->entityManager->createQueryBuilder();
+                $queryBuilder->select(array('c','img'))
+                    ->from(ContentResource::$REPOSITORY, 'c')
+                    ->innerJoin('c.imageVideo','img')
+                    ->where('c.imageVideo = :id')->setParameter('id',$imgVideo);
+
+                $query = $queryBuilder->getQuery();
+
+                $data->contentEdit = $query->getArrayResult();
+            }
         }
 
         return $data;
@@ -175,9 +191,20 @@ class ContentResource extends AbstractResource {
      */
     function delete(Request $request, $args) {
         $obj = $this->entityManager->getRepository(ContentResource::$REPOSITORY)->findOneBy(array('id' => $request->getParam('id')));
+
+        $diretorioUpload = $_SERVER['DOCUMENT_ROOT']."/website/assets/img/img-gallery/".$obj->getImageVideo()->getId();
+        $image = $diretorioUpload."/".$obj->getNameGenerate();
+        $thumb = $diretorioUpload.'/thumb/thumb_'.$obj->getNameGenerate();
+
+        unlink($image);
+        unlink($thumb);
+
+        if(count(scandir($diretorioUpload))==3){
+            unlink($diretorioUpload);
+        }
+
         $this->entityManager->remove($obj);
         $this->entityManager->flush();
-
     }
 
     /**

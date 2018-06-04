@@ -17,13 +17,12 @@
                     <div class="panel-body">
 
                         <form role="form" id="formHotel" enctype="multipart/form-data">
-
                             <div class="form-group">
-                                <label for="txtTariff">Tarifa (Vig&ecirc;ncia)</label>
-                                <select class="form-control  select2" id="txtTariff" name="txtTariff">
+                                <label for="txtTariff">Hotel</label>
+                                <select class="form-control  select2" id="txtHotel" name="txtHotel">
                                     <option value="">Selecione uma opção</option>
-                                    {% for tariff in data.tariffs %}
-                                        <option value="{{ tariff.id }}">{{ tariff.description }} - {{ tariff.dateInit|date("d/m/Y") }} a {{ tariff.dateEnd|date("d/m/Y") }}</option>
+                                    {% for hotel in data.hotels %}
+                                        <option value="{{ hotel.id }}">{{ hotel.description }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
@@ -95,9 +94,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for hotel in data.hotels %}
+                    {% for room in data.rooms %}
                         <tr>
-                            <td>{{ hotel.id }}</td>
+                            <td>{{ room.id }}</td>
                             <td><b>{{ hotel.tariff.description }}</b> | ({{ hotel.tariff.dateInit ? hotel.tariff.dateInit.date|date("d/m/Y") : ' - '}} à {{ hotel.tariff.dateEnd ? hotel.tariff.dateEnd.date|date("d/m/Y") : ' - '}})</td>
                             <td>{{ hotel.description }}</td>
 

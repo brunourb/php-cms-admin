@@ -45,8 +45,6 @@ class Tag
      */
     private $page;
 
-
-
     /**
      * @param int $id
      */

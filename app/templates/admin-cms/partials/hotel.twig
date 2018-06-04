@@ -17,18 +17,6 @@
                     <div class="panel-body">
 
                         <form role="form" id="formHotel" enctype="multipart/form-data">
-
-                            <div class="form-group">
-                                <label for="txtTariff">Tarifa (Vig&ecirc;ncia)</label>
-                                <select class="form-control  select2" id="txtTariff" name="txtTariff">
-                                    <option value="">Selecione uma opção</option>
-                                    {% for tariff in data.tariffs %}
-                                        <option value="{{ tariff.id }}">{{ tariff.description }} - {{ tariff.dateInit|date("d/m/Y") }} a {{ tariff.dateEnd|date("d/m/Y") }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-
-
                             <div class="form-group">
                                 <label for="txtDescription">Descri&ccedil;&atilde;o</label>
                                 <input type="text" class="form-control" id="txtDescription" name="txtDescription" placeholder="Informe uma descrição do hotel">
@@ -88,7 +76,6 @@
                     <thead>
                     <tr>
                         <th width="5%">#</th>
-                        <th width="35%">TARIFA</th>
                         <th width="35%">DESCRI&Ccedil;&Atilde;O</th>
                         <th width="10%">STATUS</th>
                         <th width="5%">AÇÃO</th>
@@ -98,7 +85,6 @@
                     {% for hotel in data.hotels %}
                         <tr>
                             <td>{{ hotel.id }}</td>
-                            <td><b>{{ hotel.tariff.description }}</b> | ({{ hotel.tariff.dateInit ? hotel.tariff.dateInit.date|date("d/m/Y") : ' - '}} à {{ hotel.tariff.dateEnd ? hotel.tariff.dateEnd.date|date("d/m/Y") : ' - '}})</td>
                             <td>{{ hotel.description }}</td>
 
 

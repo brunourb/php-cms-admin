@@ -52,8 +52,6 @@ class PageDetails
      */
     private $page;
 
-
-
     /**
      * @param int $id
      */

@@ -38,8 +38,6 @@ class TagValues
      */
     private $tag;
 
-
-
     /**
      * @param int $id
      */

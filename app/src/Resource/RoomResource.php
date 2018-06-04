@@ -98,8 +98,15 @@ class RoomResource extends AbstractResource{
         $queryBuilder->select('t')
             ->from(TariffResource::$REPOSITORY,'t');
         $tariffs = $queryBuilder->getQuery()->getArrayResult();
-
         $data->tariffs = $tariffs;
+
+        $queryBuilder = $this->entityManager->createQueryBuilder();
+        $queryBuilder->select('h')
+            ->from(HotelResource::$REPOSITORY,'h');
+        $hotels = $queryBuilder->getQuery()->getArrayResult();
+        $data->hotels = $hotels;
+
+
         return $data;
     }
 

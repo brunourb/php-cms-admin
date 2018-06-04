@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Hotel
  *
- * @ORM\Table(name="hotel", indexes={@ORM\Index(name="tariff_values_tariff", columns={"tariff_id"})})
+ * @ORM\Table(name="hotel")
  * @ORM\Entity
  */
 class Hotel
@@ -34,18 +34,6 @@ class Hotel
      * @ORM\Column(name="enabled", type="boolean", nullable=true)
      */
     private $enabled;
-
-    /**
-     * @var \App\Entity\Tariff
-     *
-     * @ORM\ManyToOne(targetEntity="App\Entity\Tariff")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="tariff_id", referencedColumnName="id")
-     * })
-     */
-    private $tariff;
-
-
 
     /**
      * @param int $id
@@ -110,29 +98,5 @@ class Hotel
     public function getEnabled()
     {
         return $this->enabled;
-    }
-
-    /**
-     * Set tariff
-     *
-     * @param \App\Entity\Tariff $tariff
-     *
-     * @return Hotel
-     */
-    public function setTariff(\App\Entity\Tariff $tariff = null)
-    {
-        $this->tariff = $tariff;
-
-        return $this;
-    }
-
-    /**
-     * Get tariff
-     *
-     * @return \App\Entity\Tariff
-     */
-    public function getTariff()
-    {
-        return $this->tariff;
     }
 }

@@ -55,8 +55,11 @@ https://stackoverflow.com/questions/2068344/how-do-i-get-a-youtube-video-thumbna
  ## Generate Entities
  
      ./vendor/doctrine/orm/bin/doctrine dbal:import config/php-cms-admin_create.sql
+     ./vendor/doctrine/orm/bin/doctrine orm:convert-mapping --namespace="App\\Entity\\" --force  --from-database annotation ./app/src/Entity
+     ./vendor/doctrine/orm/bin/doctrine orm:generate-entities --generate-annotations="true" --generate-methods="true" --update-entities="true"  app/src/Entity
+     
+     ---------------------------
+     
      ./vendor/doctrine/orm/bin/doctrine orm:convert-mapping --namespace="App\\Entities\\" --force  --from-database annotation ./app/src/Entities
-     ./vendor/doctrine/orm/bin/doctrine orm:generate-entities ./app/src/Entities/ --generate-annotations=true
-     ./vendor/doctrine/orm/bin/doctrine orm:generate-entities --generate-annotations="true" app/src/Entity
      ./vendor/doctrine/orm/bin/doctrine orm:generate-entities --generate-annotations="true" --generate-methods="true" --regenerate-entities="true" --update-entities="true"  app/src/Entity
 

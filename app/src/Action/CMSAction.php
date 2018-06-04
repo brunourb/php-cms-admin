@@ -54,7 +54,7 @@ final class CMSAction extends DefaultAction
         $data = $this->resource($page,$request,$response,$args);
 
         if($request->getParam('id') && !$request->isPost()){
-            return $response->withStatus(200)
+            return $response->withStatus($data->getStatusCode())
                 ->withHeader('Content-Type', 'application/json')
                 ->write(json_encode($data));
         }else{
@@ -63,6 +63,16 @@ final class CMSAction extends DefaultAction
 
             return $response;
         }
+    }
+
+    public function content(Request $request, Response $response, $args){
+        $this->logger->info("Page action dispatched");
+        $page = $request->getUri()->getPath() == '/painel' ? explode("/", $request->getUri()->getPath())[1] : explode("/", $request->getUri()->getPath())[2];
+
+        $data = $this->resource($page,$request,$response,$args);
+        return $response->withStatus(200)
+            ->withHeader('Content-Type', 'application/json')
+            ->write(json_encode($data));
     }
 
     /**

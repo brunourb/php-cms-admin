@@ -66,7 +66,6 @@ class Gallery
     private $room;
 
 
-
     /**
      * @param int $id
      */

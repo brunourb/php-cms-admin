@@ -36,7 +36,7 @@ class Tariff
     private $dateInit;
 
     /**
-     * @var DateTime
+     * @var \DateTime
      *
      * @ORM\Column(name="date_end", type="date", nullable=true)
      */
@@ -48,8 +48,6 @@ class Tariff
      * @ORM\Column(name="enabled", type="boolean", nullable=true)
      */
     private $enabled;
-
-
 
     /**
      * @param int $id
@@ -119,7 +117,7 @@ class Tariff
     /**
      * Set dateEnd
      *
-     * @param integer $dateEnd
+     * @param \DateTime $dateEnd
      *
      * @return Tariff
      */
@@ -133,7 +131,7 @@ class Tariff
     /**
      * Get dateEnd
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getDateEnd()
     {
