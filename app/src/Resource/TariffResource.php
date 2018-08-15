@@ -154,4 +154,59 @@ class TariffResource extends AbstractResource{
         $data = explode("/",$date);
         return sprintf('%s-%s-%s',$data[2],$data[1],$data[0]);
     }
+
+    /**
+     * @param Request $request
+     * @param Response $response
+     * @return Response|static
+     */
+    public function upload(Request $request, Response $response) {
+
+        $errors = [];
+
+        $files = $request->getUploadedFiles();
+
+        foreach ($files as $data) {
+            try {
+                if (empty($data->file)) {
+                    throw new Exception('Expected a newfile');
+                }
+
+                if ($data->getError() === UPLOAD_ERR_OK) {
+                    $uploadFileName = $data->getClientFilename();
+                    $token = md5(uniqid(rand(), true));
+
+                    $idGaleria = explode("/",$request->getParam("pathName"))[3];
+                    $diretorioUpload = $_SERVER['DOCUMENT_ROOT']."/website/assets/img/img-gallery/$idGaleria";
+                    $diretorioUploadThumb = $diretorioUpload.'/thumb';
+
+                    if(!is_dir($diretorioUpload)){
+                        mkdir($diretorioUpload,0775);
+                        mkdir($diretorioUploadThumb,0775);
+                    }
+
+                    $arquivo = sprintf("%s/%s.%s",$diretorioUpload,$token,pathinfo($data->getClientFilename(), PATHINFO_EXTENSION));
+
+                    $content = new Content();
+                    $content->setNameGenerate(sprintf("%s.%s",$token,pathinfo($data->getClientFilename(), PATHINFO_EXTENSION)));
+                    $content->setDescription($uploadFileName);
+
+                    $imgVideo = $this->entityManager->getRepository(ImageVideoResource::$REPOSITORY)->findOneBy(array("id"=>$idGaleria));
+                    $content->setImageVideo($imgVideo);
+
+                    $this->entityManager->persist($content);
+                    $this->entityManager->flush();
+
+                    $data->moveTo($arquivo);
+                    $this->createThumbnail($diretorioUploadThumb,$arquivo,$token,pathinfo($data->getClientFilename(), PATHINFO_EXTENSION));
+
+                }
+            } catch (\Exception $e) {
+                array_push($errors, 'Failed to upload '. $data->getClientFilename());
+                return $response->withJson(['errors' => $errors], 500, JSON_PRETTY_PRINT);
+            }
+        }
+
+        return $response;
+    }
 }

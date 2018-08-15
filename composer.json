@@ -16,6 +16,10 @@
             "App\\": "app/src"
         }
     },
+    "scripts": {
+        "start": "php -S 0.0.0.0:8888 -t public index.php"
+
+    },
     "require": {
         "slim/slim": "^3.0",
         "slim/twig-view": "^2.0",

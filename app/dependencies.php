@@ -64,7 +64,7 @@ $container['em'] = function ($c) {
 // -----------------------------------------------------------------------------
 
 $container[App\Action\HomeAction::class] = function ($c) {
-    return new App\Action\HomeAction($c->get('view'), $c->get('logger'));
+    return new App\Action\HomeAction($c->get('view'), $c->get('logger'), $c->get('em'));
 };
 
 $container[App\Action\CMSAction::class] = function ($c) {

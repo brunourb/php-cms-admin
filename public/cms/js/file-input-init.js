@@ -1,5 +1,11 @@
 $("#file-0").fileinput({
-    'allowedFileExtensions' : ['jpg', 'png','gif'],
+    allowedFileExtensions : ['jpg', 'png','gif','jpeg'],
+    uploadUrl: '/painel/upload',
+    deleteUrl: "/painel/upload",
+    showUpload: false,
+    showCaption: false,
+    maxFileSize: 1000,
+    maxFileCount: 1
 });
 $("#file-1").fileinput({
     initialPreview: ["<img src='Desert.jpg' class='file-preview-image'>", "<img src='Jellyfish.jpg' class='file-preview-image'>"],
@@ -8,7 +14,7 @@ $("#file-1").fileinput({
         {caption: 'Jellyfish.jpg', width: '120px', url: '#'},
     ],
     uploadUrl: '#',
-    allowedFileExtensions : ['jpg', 'png','gif'],
+    allowedFileExtensions : ['jpg', 'png','gif','jpeg'],
     overwriteInitial: false,
     maxFileSize: 1000,
     maxFilesNum: 10,
@@ -28,7 +34,7 @@ $("#file-3").fileinput({
     showUpload: false,
     showCaption: false,
    // browseClass: "btn btn-primary btn-lg",
-    allowedFileExtensions : ['jpg', 'png','gif'],
+    allowedFileExtensions : ['jpg', 'png','gif','jpeg'],
     overwriteInitial: false,
     maxFileSize: 1000,
     maxFilesNum: 10
@@ -36,7 +42,7 @@ $("#file-3").fileinput({
 
 $("#file-4").fileinput({
     uploadUrl: '/painel/upload',
-    allowedFileExtensions : ['jpg', 'png','gif'],
+    allowedFileExtensions : ['jpg', 'png','gif','jpeg'],
     overwriteInitial: false,
     maxFileSize: 1000,
     maxFilesNum: 10,

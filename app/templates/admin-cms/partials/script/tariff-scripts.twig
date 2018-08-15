@@ -1,5 +1,10 @@
 {% include 'default-script.twig' %}
 <!--picker initialization-->
+
+<!--bootstrap-fileinput-master-->
+<script type="text/javascript" src="/cms/js/bootstrap-fileinput-master/js/fileinput.js"></script>
+<script type="text/javascript" src="/cms/js/file-input-init.js"></script>
+
 <script>
     $(function () {
 
@@ -124,6 +129,10 @@
                     $('#removeData').modal('show');
                     break;
 
+                case "btnUploadTariff":
+                    $('#data-id').val($(this).data("id"));
+                    $('#modalUploadFile').modal('show');
+                    break;
 
             }
         });

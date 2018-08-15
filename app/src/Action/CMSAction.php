@@ -54,7 +54,7 @@ final class CMSAction extends DefaultAction
         $data = $this->resource($page,$request,$response,$args);
 
         if($request->getParam('id') && !$request->isPost()){
-            return $response->withStatus($data->getStatusCode())
+            return $response->withStatus(200)
                 ->withHeader('Content-Type', 'application/json')
                 ->write(json_encode($data));
         }else{
